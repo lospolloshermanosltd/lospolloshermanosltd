@@ -8,20 +8,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Oswald:wght@300;400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap"
     rel="stylesheet"
   >
 
   <style>
     :root {
-      --bg: #040404;
-      --panel: rgba(255,255,255,0.025);
-      --panel-2: rgba(255,255,255,0.04);
-      --line: rgba(255,255,255,0.14);
-      --line-soft: rgba(255,255,255,0.08);
-      --text: #f4f4f4;
-      --muted: rgba(255,255,255,0.56);
-      --dim: rgba(255,255,255,0.34);
+      --bg: #000000;
+      --ink: #c7cecf;         /* 네가 올린 회백색 느낌 */
+      --ink-soft: rgba(199, 206, 207, 0.72);
+      --ink-dim: rgba(199, 206, 207, 0.42);
+      --line: rgba(199, 206, 207, 0.16);
+      --panel: rgba(199, 206, 207, 0.03);
+      --panel-hover: rgba(199, 206, 207, 0.06);
     }
 
     * {
@@ -33,166 +32,180 @@
     html, body {
       min-height: 100%;
       background: var(--bg);
-      color: var(--text);
+      color: var(--ink);
       font-family: "Inter", system-ui, sans-serif;
     }
 
     body {
       overflow-x: hidden;
-      position: relative;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at 50% 18%, rgba(255,255,255,0.05), transparent 28%),
-        radial-gradient(circle at 50% 100%, rgba(255,255,255,0.03), transparent 32%),
-        linear-gradient(to bottom, rgba(255,255,255,0.025), transparent 20%, transparent 80%, rgba(255,255,255,0.018));
-      pointer-events: none;
-      z-index: 0;
     }
 
     .page {
-      position: relative;
-      z-index: 1;
       width: 100%;
-      max-width: 1020px;
-      margin: 0 auto;
-      padding: 28px 18px 64px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 24px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid var(--line-soft);
-      margin-bottom: 28px;
-    }
-
-    .eyebrow {
-      font-size: 10px;
-      letter-spacing: 0.34em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    .title {
-      font-family: "Oswald", sans-serif;
-      font-size: clamp(26px, 5vw, 56px);
-      line-height: 0.95;
-      font-weight: 300;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .subtitle {
-      margin-top: 12px;
-      font-size: 11px;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--dim);
-    }
-
-    .status {
-      text-align: right;
-      padding-top: 6px;
-      flex-shrink: 0;
-    }
-
-    .status-label {
-      font-size: 10px;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .status-value {
-      font-size: 12px;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--text);
+      min-height: 100vh;
+      background: #000;
     }
 
     .hero {
-      display: grid;
-      grid-template-columns: minmax(300px, 500px) 1fr;
-      gap: 34px;
-      align-items: center;
-      margin-bottom: 26px;
-    }
-
-    .symbol-wrap {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .symbol {
-      width: min(82vw, 460px);
-      height: auto;
-      display: block;
-      filter: drop-shadow(0 0 26px rgba(255,255,255,0.03));
-    }
-
-    .hero-side {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      align-items: center;
+      justify-content: center;
+      padding: 36px 20px 70px;
     }
 
-    .info-block {
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border: 1px solid var(--line-soft);
-      padding: 16px 16px 14px;
+    .hero-title {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: clamp(42px, 6vw, 92px);
+      letter-spacing: 0.035em;
+      line-height: 1;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-align: center;
+      margin-bottom: 22px;
     }
 
-    .info-kicker {
+    .oval-stage {
+      position: relative;
+      width: min(92vw, 1080px);
+      aspect-ratio: 1312 / 931;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .oval-base {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    .quad {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--ink);
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .quad-label {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: clamp(16px, 1.4vw, 28px);
+      letter-spacing: 0.22em;
+      color: var(--ink-soft);
+      line-height: 1;
+      margin-bottom: 8px;
+      white-space: nowrap;
+    }
+
+    .quad-value {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: clamp(34px, 3.5vw, 72px);
+      letter-spacing: 0.05em;
+      line-height: 1;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    /* 위치는 이미지 기준으로 수동 조정 */
+    .quad-capacity {
+      top: 21%;
+      left: 26%;
+      transform: translate(-50%, -50%);
+    }
+
+    .quad-channels {
+      top: 21%;
+      left: 56%;
+      transform: translate(-50%, -50%);
+    }
+
+    .quad-rebal {
+      top: 63%;
+      left: 25.5%;
+      transform: translate(-50%, -50%);
+    }
+
+    .quad-ppm {
+      top: 63%;
+      left: 56%;
+      transform: translate(-50%, -50%);
+    }
+
+    .hero-sub {
+      margin-top: 18px;
+      font-size: 12px;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      text-align: center;
+    }
+
+    .hero-meta {
+      margin-top: 14px;
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
       font-size: 10px;
       letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 10px;
+      color: var(--ink-dim);
+      text-align: center;
     }
 
-    .info-body {
-      font-size: 14px;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.82);
+    .meta-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--ink-dim);
+    }
+
+    .content {
+      width: 100%;
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 18px 70px;
     }
 
     .section {
-      margin-top: 20px;
+      border-top: 1px solid var(--line);
       padding-top: 18px;
-      border-top: 1px solid var(--line-soft);
+      margin-top: 28px;
     }
 
     .section-title {
       font-size: 10px;
       letter-spacing: 0.34em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--ink-soft);
       margin-bottom: 16px;
     }
 
     .pubkey-box {
       width: 100%;
       background: var(--panel);
-      border: 1px solid var(--line-soft);
+      border: 1px solid var(--line);
       padding: 18px;
       cursor: pointer;
-      transition: border-color .2s ease, background .2s ease;
+      transition: background .2s ease, border-color .2s ease;
     }
 
     .pubkey-box:hover {
-      background: var(--panel-2);
-      border-color: var(--line);
+      background: var(--panel-hover);
+      border-color: rgba(199, 206, 207, 0.28);
     }
 
     .copy-hint {
@@ -201,13 +214,13 @@
       font-size: 10px;
       letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: var(--dim);
+      color: var(--ink-dim);
     }
 
     .pubkey-text {
       font-size: 13px;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.88);
+      line-height: 1.75;
+      color: var(--ink);
       word-break: break-all;
     }
 
@@ -222,21 +235,21 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 46px;
+      min-height: 48px;
       padding: 0 18px;
       border: 1px solid var(--line);
       background: transparent;
-      color: var(--text);
+      color: var(--ink);
       text-decoration: none;
       font-size: 10px;
-      letter-spacing: 0.24em;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       transition: background .2s ease, border-color .2s ease, transform .2s ease;
     }
 
     .btn:hover {
-      background: rgba(255,255,255,0.04);
-      border-color: rgba(255,255,255,0.3);
+      background: var(--panel-hover);
+      border-color: rgba(199, 206, 207, 0.30);
       transform: translateY(-1px);
     }
 
@@ -252,7 +265,7 @@
       gap: 14px;
       align-items: center;
       background: var(--panel);
-      border: 1px solid var(--line-soft);
+      border: 1px solid var(--line);
       padding: 14px 16px;
     }
 
@@ -262,7 +275,7 @@
 
     .channel-alias {
       font-size: 14px;
-      color: var(--text);
+      color: var(--ink);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -271,35 +284,35 @@
     .channel-meta {
       margin-top: 6px;
       font-size: 10px;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--dim);
+      color: var(--ink-dim);
     }
 
     .channel-capacity {
       font-size: 12px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.88);
+      color: var(--ink-soft);
       white-space: nowrap;
     }
 
     .loading-text,
     .empty-text {
       font-size: 13px;
-      color: var(--dim);
-      padding: 6px 2px;
+      color: var(--ink-dim);
+      padding: 8px 2px;
     }
 
     .footer {
       margin-top: 34px;
       padding-top: 18px;
-      border-top: 1px solid var(--line-soft);
+      border-top: 1px solid var(--line);
       text-align: center;
       font-size: 10px;
-      letter-spacing: 0.28em;
+      letter-spacing: 0.30em;
       text-transform: uppercase;
-      color: var(--dim);
+      color: var(--ink-dim);
     }
 
     .toast {
@@ -309,12 +322,12 @@
       transform: translateX(-50%) translateY(10px);
       opacity: 0;
       pointer-events: none;
-      background: rgba(255,255,255,0.08);
+      background: rgba(199, 206, 207, 0.10);
       border: 1px solid var(--line);
-      color: var(--text);
+      color: var(--ink);
       padding: 10px 14px;
       font-size: 10px;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.20em;
       text-transform: uppercase;
       transition: opacity .2s ease, transform .2s ease;
       backdrop-filter: blur(8px);
@@ -327,257 +340,134 @@
     }
 
     @media (max-width: 900px) {
-      .hero {
-        grid-template-columns: 1fr;
-      }
-
-      .topbar {
-        flex-direction: column;
-      }
-
-      .status {
-        text-align: left;
+      .quad-label {
+        margin-bottom: 6px;
       }
     }
 
-    @media (max-width: 680px) {
-      .title {
-        white-space: normal;
+    @media (max-width: 720px) {
+      .hero {
+        padding: 28px 14px 48px;
+      }
+
+      .hero-title {
+        font-size: clamp(34px, 9vw, 62px);
+        margin-bottom: 12px;
+      }
+
+      .oval-stage {
+        width: min(96vw, 900px);
+      }
+
+      .quad-label {
+        font-size: clamp(12px, 2.1vw, 18px);
+        letter-spacing: 0.16em;
+      }
+
+      .quad-value {
+        font-size: clamp(24px, 5.4vw, 40px);
       }
 
       .channel-item {
         grid-template-columns: 1fr;
       }
 
-      .page {
-        padding: 22px 14px 54px;
+      .content {
+        padding: 0 14px 54px;
       }
     }
   </style>
 </head>
 <body>
   <div class="page">
-    <header class="topbar">
-      <div>
-        <div class="eyebrow">Routing Node</div>
-        <h1 class="title">LOS POLLOS HERMANOS LTD</h1>
-        <div class="subtitle">Lightning Mainnet Infrastructure</div>
-      </div>
-
-      <div class="status">
-        <div class="status-label">Node Status</div>
-        <div class="status-value" id="nodeStatus">Online</div>
-      </div>
-    </header>
-
     <section class="hero">
-      <div class="symbol-wrap">
-        <svg class="symbol" viewBox="0 0 560 500" aria-hidden="true">
-          <!-- outer imperfect oval -->
-          <path
-            d="M86 252
-               C88 145, 166 82, 279 80
-               C392 77, 475 135, 478 244
-               C481 352, 405 420, 281 422
-               C155 424, 80 360, 86 252Z"
-            fill="none"
-            stroke="rgba(255,255,255,0.92)"
-            stroke-width="16"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+      <h1 class="hero-title">LOS POLLOS HERMANOS LTD</h1>
 
-          <!-- faint second contour -->
-          <path
-            d="M102 252
-               C104 157, 174 100, 279 98
-               C382 96, 459 149, 462 246
-               C464 341, 393 401, 281 404
-               C166 406, 96 349, 102 252Z"
-            fill="none"
-            stroke="rgba(255,255,255,0.14)"
-            stroke-width="2.2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+      <div class="oval-stage">
+        <img src="ozark-oval.png" alt="" class="oval-base" />
 
-          <!-- broken inner dividers -->
-          <path
-            d="M280 112
-               C278 160, 280 198, 280 238
-               M280 262
-               C280 302, 281 340, 281 389"
-            fill="none"
-            stroke="rgba(255,255,255,0.42)"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-dasharray="0 0"
-          />
+        <div class="quad quad-capacity">
+          <div class="quad-label">Capacity</div>
+          <div class="quad-value" id="symbolCapacity">...</div>
+        </div>
 
-          <path
-            d="M122 248
-               C170 247, 212 248, 253 248
-               M306 248
-               C346 248, 390 247, 438 247"
-            fill="none"
-            stroke="rgba(255,255,255,0.42)"
-            stroke-width="2"
-            stroke-linecap="round"
-          />
+        <div class="quad quad-channels">
+          <div class="quad-label">Channels</div>
+          <div class="quad-value" id="symbolChannels">...</div>
+        </div>
 
-          <!-- quadrant text -->
-          <!-- TL -->
-          <g transform="translate(146 176) rotate(-2)">
-            <text
-              x="0" y="-12"
-              fill="rgba(255,255,255,0.55)"
-              font-family="Oswald, sans-serif"
-              font-size="15"
-              font-weight="300"
-              letter-spacing="3"
-              text-transform="uppercase"
-            >CAPACITY</text>
-            <text
-              id="symbolCapacity"
-              x="0" y="30"
-              fill="#f4f4f4"
-              font-family="Oswald, sans-serif"
-              font-size="36"
-              font-weight="300"
-              letter-spacing="2"
-            >...</text>
-          </g>
+        <div class="quad quad-rebal">
+          <div class="quad-label">Rebalancing</div>
+          <div class="quad-value">Auto</div>
+        </div>
 
-          <!-- TR -->
-          <g transform="translate(314 170) rotate(1.5)">
-            <text
-              x="0" y="-12"
-              fill="rgba(255,255,255,0.55)"
-              font-family="Oswald, sans-serif"
-              font-size="15"
-              font-weight="300"
-              letter-spacing="3"
-            >CHANNELS</text>
-            <text
-              id="symbolChannels"
-              x="0" y="30"
-              fill="#f4f4f4"
-              font-family="Oswald, sans-serif"
-              font-size="36"
-              font-weight="300"
-              letter-spacing="2"
-            >...</text>
-          </g>
-
-          <!-- BL -->
-          <g transform="translate(128 330) rotate(1.3)">
-            <text
-              x="0" y="-10"
-              fill="rgba(255,255,255,0.55)"
-              font-family="Oswald, sans-serif"
-              font-size="15"
-              font-weight="300"
-              letter-spacing="3"
-            >REBALANCING</text>
-            <text
-              x="0" y="28"
-              fill="#f4f4f4"
-              font-family="Oswald, sans-serif"
-              font-size="31"
-              font-weight="300"
-              letter-spacing="3"
-            >AUTO</text>
-          </g>
-
-          <!-- BR -->
-          <g transform="translate(328 326) rotate(-1.6)">
-            <text
-              x="0" y="-10"
-              fill="rgba(255,255,255,0.55)"
-              font-family="Oswald, sans-serif"
-              font-size="15"
-              font-weight="300"
-              letter-spacing="3"
-            >PPM</text>
-            <text
-              x="0" y="28"
-              fill="#f4f4f4"
-              font-family="Oswald, sans-serif"
-              font-size="31"
-              font-weight="300"
-              letter-spacing="3"
-            >MANAGED</text>
-          </g>
-        </svg>
+        <div class="quad quad-ppm">
+          <div class="quad-label">PPM</div>
+          <div class="quad-value">Managed</div>
+        </div>
       </div>
 
-      <div class="hero-side">
-        <div class="info-block">
-          <div class="info-kicker">Profile</div>
-          <div class="info-body">
-            Private routing node with a stripped-down shell-company presentation.
-            Public liquidity, active channels, automated rebalancing, and fee discipline.
+      <div class="hero-sub">Lightning Mainnet Infrastructure</div>
+
+      <div class="hero-meta">
+        <span>Node Status <strong id="nodeStatus" style="color: var(--ink); font-weight: 500;">Online</strong></span>
+        <span class="meta-dot"></span>
+        <span>Private Routing</span>
+        <span class="meta-dot"></span>
+        <span>Mainnet</span>
+      </div>
+    </section>
+
+    <main class="content">
+      <section class="section">
+        <div class="section-title">Pubkey</div>
+
+        <div class="pubkey-box" onclick="copyPubkey()" title="클릭하여 복사">
+          <span class="copy-hint">Click to copy</span>
+          <div class="pubkey-text" id="pubkeyText">
+            033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
           </div>
         </div>
 
-        <div class="info-block">
-          <div class="info-kicker">Operations</div>
-          <div class="info-body">
-            Capacity and channel count are fetched live. Routing policy stays maintained,
-            and the page keeps the tone cold, minimal, and slightly off-balance.
-          </div>
+        <div class="button-row">
+          <a
+            class="btn"
+            href="lightning:033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28@"
+          >
+            Connect
+          </a>
+
+          <a
+            class="btn"
+            href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Amboss
+          </a>
+
+          <a
+            class="btn"
+            href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Mempool
+          </a>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section">
-      <div class="section-title">Pubkey</div>
-
-      <div class="pubkey-box" onclick="copyPubkey()" title="클릭하여 복사">
-        <span class="copy-hint">Click to copy</span>
-        <div class="pubkey-text" id="pubkeyText">
-          033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
+      <section class="section">
+        <div class="section-title">Channels</div>
+        <div class="channels-list" id="channelsList">
+          <div class="loading-text">Loading channels...</div>
         </div>
-      </div>
+      </section>
 
-      <div class="button-row">
-        <a
-          class="btn"
-          href="lightning:033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28@"
-        >
-          Connect
-        </a>
-
-        <a
-          class="btn"
-          href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Amboss
-        </a>
-
-        <a
-          class="btn"
-          href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Mempool
-        </a>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-title">Channels</div>
-      <div class="channels-list" id="channelsList">
-        <div class="loading-text">Loading channels...</div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      LOS POLLOS HERMANOS LTD / ROUTING INFRASTRUCTURE / MAINNET
-    </footer>
+      <footer class="footer">
+        LOS POLLOS HERMANOS LTD / ROUTING NODE / MAINNET
+      </footer>
+    </main>
   </div>
 
   <div class="toast" id="toast">Copied</div>
@@ -593,7 +483,6 @@
         const btc = n / 100000000;
         return `${btc.toFixed(btc >= 10 ? 1 : 2)} BTC`;
       }
-
       if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M SATS`;
       if (n >= 1000) return `${(n / 1000).toFixed(0)}K SATS`;
       return `${n} SATS`;
