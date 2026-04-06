@@ -7,18 +7,16 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --bg: #000000;
-      --ink: #c7cecf;         /* 네가 올린 회백색 느낌 */
+      --ink: #c7cecf;
       --ink-soft: rgba(199, 206, 207, 0.72);
       --ink-dim: rgba(199, 206, 207, 0.42);
       --line: rgba(199, 206, 207, 0.16);
+      --line-strong: rgba(199, 206, 207, 0.28);
       --panel: rgba(199, 206, 207, 0.03);
       --panel-hover: rgba(199, 206, 207, 0.06);
     }
@@ -52,27 +50,28 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 36px 20px 70px;
+      padding: 26px 20px 72px;
     }
 
     .hero-title {
       font-family: "Bebas Neue", sans-serif;
-      font-size: clamp(42px, 6vw, 92px);
-      letter-spacing: 0.035em;
+      font-size: clamp(34px, 4.6vw, 74px);
       line-height: 1;
+      letter-spacing: 0.03em;
       text-transform: uppercase;
       color: var(--ink);
       text-align: center;
-      margin-bottom: 22px;
+      margin-bottom: 12px;
     }
 
     .oval-stage {
       position: relative;
-      width: min(92vw, 1080px);
+      width: min(92vw, 980px);
       aspect-ratio: 1312 / 931;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: visible;
     }
 
     .oval-base {
@@ -89,73 +88,74 @@
 
     .quad {
       position: absolute;
+      width: 24%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       color: var(--ink);
-      text-transform: uppercase;
       pointer-events: none;
     }
 
     .quad-label {
       font-family: "Bebas Neue", sans-serif;
-      font-size: clamp(16px, 1.4vw, 28px);
-      letter-spacing: 0.22em;
-      color: var(--ink-soft);
+      font-size: clamp(14px, 1.2vw, 24px);
+      letter-spacing: 0.18em;
       line-height: 1;
-      margin-bottom: 8px;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 6px;
       white-space: nowrap;
     }
 
     .quad-value {
       font-family: "Bebas Neue", sans-serif;
-      font-size: clamp(34px, 3.5vw, 72px);
-      letter-spacing: 0.05em;
-      line-height: 1;
+      font-size: clamp(28px, 3vw, 56px);
+      letter-spacing: 0.03em;
+      line-height: 0.95;
+      text-transform: uppercase;
       color: var(--ink);
       white-space: nowrap;
     }
 
-    /* 위치는 이미지 기준으로 수동 조정 */
     .quad-capacity {
-      top: 21%;
-      left: 26%;
+      top: 31%;
+      left: 34%;
       transform: translate(-50%, -50%);
     }
 
     .quad-channels {
-      top: 21%;
-      left: 56%;
+      top: 31%;
+      left: 66%;
       transform: translate(-50%, -50%);
     }
 
     .quad-rebal {
-      top: 63%;
-      left: 25.5%;
+      top: 69%;
+      left: 33%;
       transform: translate(-50%, -50%);
     }
 
     .quad-ppm {
-      top: 63%;
-      left: 56%;
+      top: 69%;
+      left: 66%;
       transform: translate(-50%, -50%);
     }
 
     .hero-sub {
-      margin-top: 18px;
-      font-size: 12px;
-      letter-spacing: 0.34em;
+      margin-top: 16px;
+      font-size: 11px;
+      letter-spacing: 0.32em;
       text-transform: uppercase;
       color: var(--ink-soft);
       text-align: center;
     }
 
     .hero-meta {
-      margin-top: 14px;
+      margin-top: 12px;
       display: flex;
-      gap: 18px;
+      gap: 16px;
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
@@ -205,7 +205,7 @@
 
     .pubkey-box:hover {
       background: var(--panel-hover);
-      border-color: rgba(199, 206, 207, 0.28);
+      border-color: var(--line-strong);
     }
 
     .copy-hint {
@@ -249,7 +249,7 @@
 
     .btn:hover {
       background: var(--panel-hover);
-      border-color: rgba(199, 206, 207, 0.30);
+      border-color: var(--line-strong);
       transform: translateY(-1px);
     }
 
@@ -339,33 +339,52 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    @media (max-width: 900px) {
-      .quad-label {
-        margin-bottom: 6px;
-      }
-    }
-
     @media (max-width: 720px) {
       .hero {
-        padding: 28px 14px 48px;
+        padding: 24px 14px 48px;
       }
 
       .hero-title {
-        font-size: clamp(34px, 9vw, 62px);
-        margin-bottom: 12px;
+        font-size: clamp(30px, 8vw, 56px);
+        margin-bottom: 8px;
       }
 
       .oval-stage {
         width: min(96vw, 900px);
       }
 
+      .quad {
+        width: 27%;
+      }
+
       .quad-label {
-        font-size: clamp(12px, 2.1vw, 18px);
-        letter-spacing: 0.16em;
+        font-size: clamp(11px, 2vw, 16px);
+        letter-spacing: 0.14em;
+        margin-bottom: 4px;
       }
 
       .quad-value {
-        font-size: clamp(24px, 5.4vw, 40px);
+        font-size: clamp(20px, 5vw, 36px);
+      }
+
+      .quad-capacity {
+        top: 31%;
+        left: 34%;
+      }
+
+      .quad-channels {
+        top: 31%;
+        left: 66%;
+      }
+
+      .quad-rebal {
+        top: 69%;
+        left: 33%;
+      }
+
+      .quad-ppm {
+        top: 69%;
+        left: 66%;
       }
 
       .channel-item {
@@ -430,28 +449,15 @@
         </div>
 
         <div class="button-row">
-          <a
-            class="btn"
-            href="lightning:033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28@"
-          >
+          <a class="btn" href="lightning:033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28@">
             Connect
           </a>
 
-          <a
-            class="btn"
-            href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a class="btn" href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noreferrer">
             Amboss
           </a>
 
-          <a
-            class="btn"
-            href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a class="btn" href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noreferrer">
             Mempool
           </a>
         </div>
