@@ -11,602 +11,198 @@
 
   <style>
     :root {
-      --bg: #000000;
+      --bg: #000;
       --ink: #c7cecf;
-      --ink-soft: rgba(199, 206, 207, 0.72);
-      --ink-dim: rgba(199, 206, 207, 0.42);
-      --line: rgba(199, 206, 207, 0.16);
-      --line-strong: rgba(199, 206, 207, 0.28);
-      --panel: rgba(199, 206, 207, 0.03);
-      --panel-hover: rgba(199, 206, 207, 0.06);
+      --ink-soft: rgba(199,206,207,.7);
+      --ink-dim: rgba(199,206,207,.4);
+      --line: rgba(199,206,207,.15);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      min-height: 100%;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: "Inter", system-ui, sans-serif;
-    }
+    * { box-sizing: border-box; margin:0; padding:0; }
 
     body {
-      overflow-x: hidden;
-    }
-
-    .page {
-      width: 100%;
-      min-height: 100vh;
-      background: #000;
+      background:#000;
+      color:var(--ink);
+      font-family:"Inter",sans-serif;
     }
 
     .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 20px 72px;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
     }
 
     .hero-title {
-      font-family: "Jost", "Inter", sans-serif;
-      font-size: clamp(26px, 3.9vw, 56px);
-      line-height: 1;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-      text-transform: uppercase;
-      color: var(--ink);
-      text-align: center;
-      margin-bottom: 14px;
+      font-family:"Jost",sans-serif;
+      font-size:clamp(26px,3.8vw,54px);
+      font-weight:600;
+      letter-spacing:.01em;
+      margin-bottom:16px;
+      text-align:center;
     }
 
     .oval-stage {
-      position: relative;
-      width: min(96vw, 1080px);
-      aspect-ratio: 1312 / 931;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: visible;
+      position:relative;
+      width:min(96vw,1080px);
+      aspect-ratio:1312/931;
     }
 
     .oval-base {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-      user-select: none;
-      -webkit-user-drag: none;
-      pointer-events: none;
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:contain;
     }
 
     .quad {
-      position: absolute;
-      width: 18%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: var(--ink);
-      pointer-events: none;
+      position:absolute;
+      width:18%;
+      text-align:center;
+      transform:translate(-50%,-50%);
     }
 
     .quad-label {
-      font-family: "Jost", "Inter", sans-serif;
-      font-size: clamp(10px, 0.95vw, 17px);
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      line-height: 1;
-      text-transform: uppercase;
-      color: var(--ink-soft);
-      margin-bottom: 6px;
-      white-space: nowrap;
+      font-family:"Jost";
+      font-size:12px;
+      letter-spacing:.18em;
+      color:var(--ink-soft);
+      margin-bottom:6px;
     }
 
     .quad-value {
-      font-family: "Jost", "Inter", sans-serif;
-      font-size: clamp(21px, 2.25vw, 40px);
-      font-weight: 600;
-      letter-spacing: 0.005em;
-      line-height: 0.95;
-      text-transform: uppercase;
-      color: var(--ink);
-      white-space: nowrap;
+      font-family:"Jost";
+      font-size:clamp(20px,2.2vw,38px);
+      font-weight:600;
     }
 
-    .quad-capacity {
-      top: 35.5%;
-      left: 38.5%;
-      transform: translate(-50%, -50%);
-    }
-
-    .quad-channels {
-      top: 35.5%;
-      left: 61.5%;
-      transform: translate(-50%, -50%);
-    }
-
-    .quad-rebal {
-      top: 65.5%;
-      left: 39%;
-      transform: translate(-50%, -50%);
-    }
-
-    .quad-ppm {
-      top: 65.5%;
-      left: 61%;
-      transform: translate(-50%, -50%);
-    }
-
-    .hero-sub {
-      margin-top: 10px;
-      font-size: 10px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--ink-soft);
-      text-align: center;
-    }
-
-    .hero-meta {
-      margin-top: 10px;
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      font-size: 9px;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-      text-align: center;
-    }
-
-    .meta-dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 999px;
-      background: var(--ink-dim);
-    }
+    .quad-capacity { top:35.5%; left:38.5%; }
+    .quad-channels { top:35.5%; left:61.5%; }
+    .quad-rebal    { top:65.5%; left:39%; }
+    .quad-ppm      { top:65.5%; left:61%; }
 
     .content {
-      width: 100%;
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 0 18px 70px;
+      max-width:900px;
+      margin:0 auto;
+      padding:40px 20px 80px;
     }
 
     .section {
-      border-top: 1px solid var(--line);
-      padding-top: 18px;
-      margin-top: 28px;
+      border-top:1px solid var(--line);
+      padding-top:18px;
+      margin-top:28px;
     }
 
     .section-title {
-      font-size: 10px;
-      letter-spacing: 0.34em;
-      text-transform: uppercase;
-      color: var(--ink-soft);
-      margin-bottom: 16px;
+      font-size:10px;
+      letter-spacing:.35em;
+      color:var(--ink-soft);
+      margin-bottom:14px;
     }
 
-    .pubkey-box {
-      width: 100%;
-      background: var(--panel);
-      border: 1px solid var(--line);
-      padding: 18px;
-      cursor: pointer;
-      transition: background .2s ease, border-color .2s ease;
+    .pubkey {
+      font-size:13px;
+      line-height:1.6;
+      word-break:break-all;
+      padding:10px 0;
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      cursor:pointer;
     }
 
-    .pubkey-box:hover {
-      background: var(--panel-hover);
-      border-color: var(--line-strong);
+    .links {
+      margin-top:14px;
+      font-size:11px;
+      letter-spacing:.25em;
+      color:var(--ink);
     }
 
-    .copy-hint {
-      display: inline-block;
-      margin-bottom: 10px;
-      font-size: 10px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
+    .links a {
+      color:var(--ink);
+      text-decoration:none;
     }
 
-    .pubkey-text {
-      font-size: 13px;
-      line-height: 1.75;
-      color: var(--ink);
-      word-break: break-all;
+    .links a:hover {
+      color:#fff;
     }
 
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 0 18px;
-      border: 1px solid var(--line);
-      background: transparent;
-      color: var(--ink);
-      text-decoration: none;
-      font-size: 10px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      transition: background .2s ease, border-color .2s ease, transform .2s ease;
-    }
-
-    .btn:hover {
-      background: var(--panel-hover);
-      border-color: var(--line-strong);
-      transform: translateY(-1px);
-    }
-
-    .channels-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .channel-item {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 14px;
-      align-items: center;
-      background: var(--panel);
-      border: 1px solid var(--line);
-      padding: 14px 16px;
-    }
-
-    .channel-main {
-      min-width: 0;
-    }
-
-    .channel-alias {
-      font-size: 14px;
-      color: var(--ink);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .channel-meta {
-      margin-top: 6px;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-    }
-
-    .channel-capacity {
-      font-size: 12px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--ink-soft);
-      white-space: nowrap;
-    }
-
-    .loading-text,
-    .empty-text {
-      font-size: 13px;
-      color: var(--ink-dim);
-      padding: 8px 2px;
+    .channels {
+      font-size:13px;
+      color:var(--ink-dim);
+      padding:6px 0;
     }
 
     .footer {
-      margin-top: 34px;
-      padding-top: 18px;
-      border-top: 1px solid var(--line);
-      text-align: center;
-      font-size: 10px;
-      letter-spacing: 0.30em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-    }
-
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 20px;
-      transform: translateX(-50%) translateY(10px);
-      opacity: 0;
-      pointer-events: none;
-      background: rgba(199, 206, 207, 0.10);
-      border: 1px solid var(--line);
-      color: var(--ink);
-      padding: 10px 14px;
-      font-size: 10px;
-      letter-spacing: 0.20em;
-      text-transform: uppercase;
-      transition: opacity .2s ease, transform .2s ease;
-      backdrop-filter: blur(8px);
-      z-index: 20;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    @media (max-width: 720px) {
-      .hero {
-        padding: 22px 14px 48px;
-      }
-
-      .hero-title {
-        font-size: clamp(24px, 7.2vw, 48px);
-        margin-bottom: 8px;
-      }
-
-      .oval-stage {
-        width: min(98vw, 900px);
-      }
-
-      .quad {
-        width: 20%;
-      }
-
-      .quad-label {
-        font-size: clamp(9px, 1.8vw, 13px);
-        letter-spacing: 0.14em;
-        margin-bottom: 4px;
-      }
-
-      .quad-value {
-        font-size: clamp(18px, 4.6vw, 30px);
-      }
-
-      .quad-capacity {
-        top: 35.5%;
-        left: 38.5%;
-      }
-
-      .quad-channels {
-        top: 35.5%;
-        left: 61.5%;
-      }
-
-      .quad-rebal {
-        top: 65.5%;
-        left: 39%;
-      }
-
-      .quad-ppm {
-        top: 65.5%;
-        left: 61%;
-      }
-
-      .channel-item {
-        grid-template-columns: 1fr;
-      }
-
-      .content {
-        padding: 0 14px 54px;
-      }
+      margin-top:40px;
+      text-align:center;
+      font-size:10px;
+      letter-spacing:.3em;
+      color:var(--ink-dim);
+      border-top:1px solid var(--line);
+      padding-top:16px;
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <section class="hero">
-      <h1 class="hero-title">LOS POLLOS HERMANOS LTD</h1>
 
-      <div class="oval-stage">
-        <img src="ozark-oval.png" alt="" class="oval-base" />
+<div class="hero">
+  <div class="hero-title">LOS POLLOS HERMANOS LTD</div>
 
-        <div class="quad quad-capacity">
-          <div class="quad-label">Capacity</div>
-          <div class="quad-value" id="symbolCapacity">...</div>
-        </div>
+  <div class="oval-stage">
+    <img src="ozark-oval.png" class="oval-base" />
 
-        <div class="quad quad-channels">
-          <div class="quad-label">Channels</div>
-          <div class="quad-value" id="symbolChannels">...</div>
-        </div>
+    <div class="quad quad-capacity">
+      <div class="quad-label">CAPACITY</div>
+      <div class="quad-value" id="cap">?</div>
+    </div>
 
-        <div class="quad quad-rebal">
-          <div class="quad-label">Rebalancing</div>
-          <div class="quad-value">Auto</div>
-        </div>
+    <div class="quad quad-channels">
+      <div class="quad-label">CHANNELS</div>
+      <div class="quad-value" id="ch">?</div>
+    </div>
 
-        <div class="quad quad-ppm">
-          <div class="quad-label">PPM</div>
-          <div class="quad-value">Managed</div>
-        </div>
-      </div>
+    <div class="quad quad-rebal">
+      <div class="quad-label">REBALANCING</div>
+      <div class="quad-value">AUTO</div>
+    </div>
 
-      <div class="hero-sub">Lightning Mainnet Infrastructure</div>
+    <div class="quad quad-ppm">
+      <div class="quad-label">PPM</div>
+      <div class="quad-value">MANAGED</div>
+    </div>
+  </div>
+</div>
 
-      <div class="hero-meta">
-        <span>Node Status <strong id="nodeStatus" style="color: var(--ink); font-weight: 500;">Online</strong></span>
-        <span class="meta-dot"></span>
-        <span>Private Routing</span>
-        <span class="meta-dot"></span>
-        <span>Mainnet</span>
-      </div>
-    </section>
+<div class="content">
 
-    <main class="content">
-      <section class="section">
-        <div class="section-title">Pubkey</div>
+  <div class="section">
+    <div class="section-title">ACCESS</div>
 
-        <div class="pubkey-box" onclick="copyPubkey()" title="클릭하여 복사">
-          <span class="copy-hint">Click to copy</span>
-          <div class="pubkey-text" id="pubkeyText">
-            033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
-          </div>
-        </div>
+    <div class="section-title" style="margin-top:10px;">PUBKEY</div>
+    <div class="pubkey" onclick="navigator.clipboard.writeText(this.innerText)">
+      033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
+    </div>
 
-        <div class="button-row">
-          <a class="btn" href="lightning:033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28@">
-            Connect
-          </a>
-
-          <a class="btn" href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noreferrer">
-            Amboss
-          </a>
-
-          <a class="btn" href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noreferrer">
-            Mempool
-          </a>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-title">Channels</div>
-        <div class="channels-list" id="channelsList">
-          <div class="loading-text">Loading channels...</div>
-        </div>
-      </section>
-
-      <footer class="footer">
-        LOS POLLOS HERMANOS LTD / ROUTING NODE / MAINNET
-      </footer>
-    </main>
+    <div class="links">
+      <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">AMBOSS</a>
+      &nbsp;/&nbsp;
+      <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">MEMPOOL</a>
+    </div>
   </div>
 
-  <div class="toast" id="toast">Copied</div>
+  <div class="section">
+    <div class="section-title">CHANNEL DATA</div>
+    <div class="channels">Channel data unavailable</div>
+  </div>
 
-  <script>
-    const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
+  <div class="footer">
+    LOS POLLOS HERMANOS LTD
+  </div>
 
-    function satsToDisplay(sats) {
-      const n = Number(sats);
-      if (!Number.isFinite(n) || n <= 0) return '0';
+</div>
 
-      if (n >= 100000000) {
-        const btc = n / 100000000;
-        return `${btc.toFixed(btc >= 10 ? 1 : 2)} BTC`;
-      }
-      if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M SATS`;
-      if (n >= 1000) return `${(n / 1000).toFixed(0)}K SATS`;
-      return `${n} SATS`;
-    }
-
-    function satsToBtcShort(sats) {
-      const n = Number(sats);
-      if (!Number.isFinite(n) || n <= 0) return '0 BTC';
-      const btc = n / 100000000;
-      return `${btc.toFixed(btc >= 10 ? 1 : 2)} BTC`;
-    }
-
-    function escapeHtml(str) {
-      return String(str)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
-    }
-
-    function showToast(message = 'Copied') {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.classList.add('show');
-      clearTimeout(showToast._timer);
-      showToast._timer = setTimeout(() => {
-        toast.classList.remove('show');
-      }, 1400);
-    }
-
-    async function copyPubkey() {
-      try {
-        await navigator.clipboard.writeText(PUBKEY);
-        showToast('Pubkey copied');
-      } catch {
-        showToast('Copy failed');
-      }
-    }
-
-    function renderChannels(channels = []) {
-      const list = document.getElementById('channelsList');
-
-      if (!Array.isArray(channels) || channels.length === 0) {
-        list.innerHTML = `<div class="empty-text">No channels available.</div>`;
-        return;
-      }
-
-      const topChannels = [...channels]
-        .sort((a, b) => Number(b.capacity || 0) - Number(a.capacity || 0))
-        .slice(0, 12);
-
-      list.innerHTML = topChannels.map((ch) => {
-        const alias =
-          ch.alias ||
-          ch.partner_alias ||
-          ch.remote_alias ||
-          ch.node_alias ||
-          'Unknown Peer';
-
-        const capacity = satsToDisplay(ch.capacity || ch.local_balance || 0);
-        const shortId = ch.short_channel_id || ch.chan_id || 'N/A';
-        const fee = ch.fee_rate != null ? ` / ${ch.fee_rate} ppm` : '';
-
-        return `
-          <div class="channel-item">
-            <div class="channel-main">
-              <div class="channel-alias">${escapeHtml(alias)}</div>
-              <div class="channel-meta">${escapeHtml(String(shortId))}${escapeHtml(fee)}</div>
-            </div>
-            <div class="channel-capacity">${capacity}</div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    async function loadNodeData() {
-      try {
-        const res = await fetch('/api/node', { cache: 'no-store' });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-        const data = await res.json();
-        const node = data.node || {};
-        const channels = data.channels || [];
-
-        const channelCount =
-          node.active_channel_count ??
-          node.channel_count ??
-          channels.length ??
-          0;
-
-        const totalCapacity =
-          node.capacity ??
-          node.total_capacity ??
-          node.public_capacity ??
-          channels.reduce((sum, ch) => sum + Number(ch.capacity || 0), 0);
-
-        document.getElementById('symbolChannels').textContent = String(channelCount);
-        document.getElementById('symbolCapacity').textContent = satsToBtcShort(totalCapacity);
-
-        if (node.last_update || node.updated_at || node.updated) {
-          document.getElementById('nodeStatus').textContent = 'Online';
-        }
-
-        renderChannels(channels);
-      } catch (err) {
-        console.error(err);
-        document.getElementById('symbolChannels').textContent = '?';
-        document.getElementById('symbolCapacity').textContent = '?';
-        document.getElementById('channelsList').innerHTML =
-          `<div class="empty-text">Failed to load channel data.</div>`;
-      }
-    }
-
-    loadNodeData();
-  </script>
 </body>
 </html>
