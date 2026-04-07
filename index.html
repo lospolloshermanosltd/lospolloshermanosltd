@@ -11,13 +11,12 @@
 
   <style>
     :root {
-      --bg: #000;
-      --ink: #c7cecf;
-      --ink-soft: rgba(199,206,207,.76);
-      --ink-dim: rgba(199,206,207,.42);
-      --line: rgba(199,206,207,.12);
-      --white: #f2f4f5;
-      --oval-ink: #C7D3D1;
+      --bg: #000000;
+      --ink: #C7D3D1;
+      --ink-soft: rgba(199,211,209,.78);
+      --ink-dim: rgba(199,211,209,.44);
+      --line: rgba(199,211,209,.12);
+      --white-soft: #e8eeed;
     }
 
     * {
@@ -43,31 +42,32 @@
     }
 
     .page {
-      width: min(100%, 1180px);
-      padding: 12px 20px 20px;
+      width: min(100%, 1200px);
+      padding: 10px 22px 18px;
     }
 
     .hero {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 4px;
+      padding-top: 2px;
     }
 
     .hero-title {
       font-family: "Jost", sans-serif;
-      font-size: clamp(34px, 3.8vw, 62px);
+      font-size: clamp(28px, 3.2vw, 52px);
       font-weight: 600;
-      letter-spacing: .03em;
+      letter-spacing: .028em;
       line-height: 1;
-      color: var(--white);
+      color: var(--ink);
       text-align: center;
       margin-bottom: 8px;
+      opacity: .95;
     }
 
     .hero-sub {
       font-size: 8px;
-      letter-spacing: .24em;
+      letter-spacing: .22em;
       text-transform: uppercase;
       color: var(--ink-dim);
       opacity: .58;
@@ -77,9 +77,9 @@
 
     .oval-stage {
       position: relative;
-      width: min(64vw, 620px);
+      width: min(66vw, 640px);
       aspect-ratio: 1312 / 931;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .oval-base {
@@ -101,9 +101,9 @@
 
     .quad-label {
       font-family: "Jost", sans-serif;
-      font-size: 9px;
+      font-size: 8px;
       font-weight: 400;
-      letter-spacing: .15em;
+      letter-spacing: .16em;
       text-transform: uppercase;
       color: var(--ink-soft);
       margin-bottom: 7px;
@@ -114,35 +114,32 @@
       font-weight: 600;
       line-height: 1;
       white-space: nowrap;
+      color: var(--ink);
     }
 
-    .quad-capacity { top: 36.1%; left: 37.5%; }
-    .quad-channels { top: 36.1%; left: 62.5%; }
-    .quad-rebal    { top: 65.3%; left: 37.5%; }
-    .quad-fees     { top: 65.3%; left: 62.5%; }
+    .quad-capacity { top: 36.0%; left: 37.6%; }
+    .quad-channels { top: 36.0%; left: 62.4%; }
+    .quad-ram      { top: 65.2%; left: 37.6%; }
+    .quad-storage  { top: 65.2%; left: 62.4%; }
 
     #cap {
-      font-size: clamp(19px, 1.9vw, 30px);
-      letter-spacing: 0;
-      color: var(--oval-ink);
+      font-size: clamp(17px, 1.7vw, 26px);
+      letter-spacing: -.01em;
     }
 
     #ch {
-      font-size: clamp(19px, 1.8vw, 28px);
+      font-size: clamp(18px, 1.65vw, 24px);
       letter-spacing: 0;
-      color: var(--oval-ink);
     }
 
-    .quad-rebal .quad-value {
-      font-size: clamp(18px, 1.8vw, 28px);
-      letter-spacing: .01em;
-      color: var(--white);
+    .quad-ram .quad-value {
+      font-size: clamp(18px, 1.7vw, 25px);
+      letter-spacing: 0;
     }
 
-    .quad-fees .quad-value {
-      font-size: clamp(16px, 1.55vw, 24px);
-      letter-spacing: .005em;
-      color: var(--white);
+    .quad-storage .quad-value {
+      font-size: clamp(16px, 1.48vw, 22px);
+      letter-spacing: 0;
     }
 
     .content {
@@ -174,11 +171,11 @@
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
       cursor: pointer;
-      color: var(--white);
+      color: var(--ink);
     }
 
     .pubkey:hover {
-      color: #fff;
+      color: var(--white-soft);
     }
 
     .meta-line {
@@ -196,12 +193,12 @@
     }
 
     .links a {
-      color: var(--white);
+      color: var(--ink);
       text-decoration: none;
     }
 
     .links a:hover {
-      color: #fff;
+      color: var(--white-soft);
     }
 
     .footer {
@@ -217,7 +214,7 @@
 
     @media (max-width: 900px) {
       .oval-stage {
-        width: min(72vw, 580px);
+        width: min(74vw, 600px);
       }
     }
 
@@ -227,7 +224,7 @@
       }
 
       .hero-title {
-        font-size: clamp(26px, 8vw, 40px);
+        font-size: clamp(24px, 8vw, 38px);
       }
 
       .hero-sub {
@@ -251,8 +248,8 @@
 
       #cap,
       #ch,
-      .quad-rebal .quad-value,
-      .quad-fees .quad-value {
+      .quad-ram .quad-value,
+      .quad-storage .quad-value {
         font-size: clamp(13px, 3.9vw, 20px);
       }
 
@@ -270,7 +267,7 @@
 <body>
   <div class="page">
     <div class="hero">
-      <div class="hero-title">LOS POLLOS HERMANOS LTD</div>
+      <div class="hero-title">Los Pollos Hermanos Ltd</div>
       <div class="hero-sub">Where something delicious is always routing</div>
 
       <div class="oval-stage">
@@ -286,14 +283,14 @@
           <div class="quad-value" id="ch">...</div>
         </div>
 
-        <div class="quad quad-rebal">
-          <div class="quad-label">Rebalancing</div>
-          <div class="quad-value">AUTO</div>
+        <div class="quad quad-ram">
+          <div class="quad-label">RAM</div>
+          <div class="quad-value">64GB</div>
         </div>
 
-        <div class="quad quad-fees">
-          <div class="quad-label">Fees</div>
-          <div class="quad-value">ACTIVE</div>
+        <div class="quad quad-storage">
+          <div class="quad-label">Storage</div>
+          <div class="quad-value">4TB NVMe</div>
         </div>
       </div>
     </div>
@@ -302,7 +299,10 @@
       <div class="section">
         <div class="section-title">Node</div>
 
-        <div class="section-title" style="margin-top:8px;">Public Key</div>
+        <div class="section-title" style="margin-top:8px;">Alias</div>
+        <div class="meta-line">Los Pollos Hermanos Ltd</div>
+
+        <div class="section-title" style="margin-top:12px;">Public Key</div>
         <div class="pubkey" id="pubkeyText" onclick="navigator.clipboard.writeText(this.innerText)">
           loading...
         </div>
@@ -315,12 +315,13 @@
       </div>
 
       <div class="section">
-        <div class="section-title">Hardware</div>
-        <div class="meta-line">4TB NVMe · 64GB RAM</div>
+        <div class="section-title">Operations</div>
+        <div class="meta-line">Rebalancing: active</div>
+        <div class="meta-line">Fee management: active</div>
       </div>
 
       <div class="footer">
-        LOS POLLOS HERMANOS LTD
+        Los Pollos Hermanos Ltd
       </div>
     </div>
   </div>
@@ -353,7 +354,8 @@
     function formatBtcFromSats(v) {
       const n = toNumber(v);
       if (n === null) return '-- BTC';
-      return `${(n / 100000000).toFixed(2)} BTC`;
+      const btc = n / 100000000;
+      return btc >= 10 ? `${btc.toFixed(1)} BTC` : `${btc.toFixed(2)} BTC`;
     }
 
     function formatInt(v) {
