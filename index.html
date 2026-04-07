@@ -16,6 +16,7 @@
       --ink-soft: rgba(199,206,207,.78);
       --ink-dim: rgba(199,206,207,.45);
       --line: rgba(199,206,207,.16);
+      --white: #f2f4f5;
     }
 
     * {
@@ -24,12 +25,16 @@
       padding: 0;
     }
 
-    body {
+    html, body {
       background: var(--bg);
       color: var(--ink);
       font-family: "Inter", sans-serif;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
+    }
+
+    body {
+      min-height: 100vh;
     }
 
     .hero {
@@ -45,10 +50,11 @@
       font-family: "Jost", sans-serif;
       font-size: clamp(30px, 3.8vw, 58px);
       font-weight: 600;
-      letter-spacing: .04em;
+      letter-spacing: .035em;
       text-align: center;
       line-height: 1;
-      margin-bottom: 14px;
+      margin-bottom: 8px;
+      color: var(--white);
     }
 
     .hero-sub {
@@ -58,7 +64,8 @@
       text-transform: uppercase;
       color: var(--ink-dim);
       text-align: center;
-      margin-bottom: 34px;
+      margin-bottom: 18px;
+      opacity: .72;
     }
 
     .oval-stage {
@@ -91,21 +98,23 @@
       letter-spacing: .16em;
       text-transform: uppercase;
       color: var(--ink-soft);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .quad-value {
       font-family: "Jost", sans-serif;
-      font-size: clamp(22px, 2.3vw, 40px);
-      font-weight: 500;
-      letter-spacing: .02em;
+      font-size: clamp(22px, 2.35vw, 42px);
+      font-weight: 600;
+      letter-spacing: .015em;
       line-height: 1;
+      color: var(--white);
+      white-space: nowrap;
     }
 
-    .quad-capacity { top: 35.5%; left: 38.5%; }
-    .quad-channels { top: 35.5%; left: 61.5%; }
-    .quad-rebal    { top: 65.5%; left: 39%; }
-    .quad-fees     { top: 65.5%; left: 61%; }
+    .quad-capacity { top: 36%; left: 37%; }
+    .quad-channels { top: 36%; left: 63%; }
+    .quad-rebal    { top: 66%; left: 37%; }
+    .quad-fees     { top: 66%; left: 63%; }
 
     .content {
       max-width: 900px;
@@ -136,7 +145,7 @@
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
       cursor: pointer;
-      color: var(--ink);
+      color: var(--white);
     }
 
     .pubkey:hover {
@@ -159,12 +168,20 @@
     }
 
     .links a {
-      color: var(--ink);
+      color: var(--white);
       text-decoration: none;
     }
 
     .links a:hover {
       color: #fff;
+    }
+
+    .status-ok {
+      color: var(--ink-dim);
+    }
+
+    .status-bad {
+      color: #9aa3a5;
     }
 
     .footer {
@@ -182,7 +199,7 @@
       .hero-sub {
         font-size: 10px;
         letter-spacing: .18em;
-        margin-bottom: 26px;
+        margin-bottom: 18px;
       }
 
       .quad {
@@ -239,22 +256,22 @@
 
       <div class="quad quad-capacity">
         <div class="quad-label">Capacity</div>
-        <div class="quad-value" id="cap">-- BTC</div>
+        <div class="quad-value" id="cap">LOADING</div>
       </div>
 
       <div class="quad quad-channels">
         <div class="quad-label">Channels</div>
-        <div class="quad-value" id="ch">--</div>
+        <div class="quad-value" id="ch">LOADING</div>
       </div>
 
       <div class="quad quad-rebal">
         <div class="quad-label">Rebalancing</div>
-        <div class="quad-value">Auto</div>
+        <div class="quad-value">AUTO</div>
       </div>
 
       <div class="quad quad-fees">
         <div class="quad-label">Fees</div>
-        <div class="quad-value">Dynamic</div>
+        <div class="quad-value">DYNAMIC</div>
       </div>
     </div>
   </div>
@@ -265,14 +282,14 @@
       <div class="section-title">Node</div>
 
       <div class="section-title" style="margin-top:10px;">Public Key</div>
-      <div class="pubkey" onclick="navigator.clipboard.writeText(this.innerText)">
-        033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
+      <div class="pubkey" id="pubkeyText" onclick="navigator.clipboard.writeText(this.innerText)">
+        loading...
       </div>
 
       <div class="links">
-        <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">Amboss</a>
+        <a id="ambossLink" href="#" target="_blank" rel="noopener noreferrer">Amboss</a>
         &nbsp;/&nbsp;
-        <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">Mempool</a>
+        <a id="mempoolLink" href="#" target="_blank" rel="noopener noreferrer">Mempool</a>
       </div>
     </div>
 
@@ -283,7 +300,7 @@
 
     <div class="section">
       <div class="section-title">Routing</div>
-      <div class="meta-line">Channel data unavailable</div>
+      <div class="meta-line status-ok" id="routingStatus">Fetching live node data...</div>
     </div>
 
     <div class="footer">
@@ -291,6 +308,67 @@
     </div>
 
   </div>
+
+  <script>
+    const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
+    const MEMPOOL_NODE_API = `https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`;
+    const MEMPOOL_NODE_URL = `https://mempool.space/lightning/node/${PUBKEY}`;
+    const AMBOSS_NODE_URL = `https://amboss.space/node/${PUBKEY}`;
+
+    const elCap = document.getElementById('cap');
+    const elCh = document.getElementById('ch');
+    const elPub = document.getElementById('pubkeyText');
+    const elRouting = document.getElementById('routingStatus');
+    const elAmboss = document.getElementById('ambossLink');
+    const elMempool = document.getElementById('mempoolLink');
+
+    elPub.textContent = PUBKEY;
+    elAmboss.href = AMBOSS_NODE_URL;
+    elMempool.href = MEMPOOL_NODE_URL;
+
+    function satsToBtc(sats) {
+      if (typeof sats !== 'number' || Number.isNaN(sats)) return '-- BTC';
+      return `${(sats / 100000000).toFixed(2)} BTC`;
+    }
+
+    function formatChannels(n) {
+      if (typeof n !== 'number' || Number.isNaN(n)) return '--';
+      return new Intl.NumberFormat('en-US').format(n);
+    }
+
+    async function loadNodeStats() {
+      try {
+        const res = await fetch(MEMPOOL_NODE_API, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' },
+          cache: 'no-store'
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        elCap.textContent = satsToBtc(data.capacity);
+        elCh.textContent = formatChannels(data.channels);
+
+        const alias = data.alias ? `${data.alias} · ` : '';
+        elRouting.textContent = `${alias}Live data loaded from mempool.space`;
+        elRouting.classList.remove('status-bad');
+        elRouting.classList.add('status-ok');
+      } catch (err) {
+        console.error('Failed to load node stats:', err);
+        elCap.textContent = '-- BTC';
+        elCh.textContent = '--';
+        elRouting.textContent = 'Live node data unavailable';
+        elRouting.classList.remove('status-ok');
+        elRouting.classList.add('status-bad');
+      }
+    }
+
+    loadNodeStats();
+  </script>
 
 </body>
 </html>
