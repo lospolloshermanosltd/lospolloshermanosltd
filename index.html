@@ -15,7 +15,7 @@
       --ink: #c7cecf;
       --ink-soft: rgba(199,206,207,.78);
       --ink-dim: rgba(199,206,207,.45);
-      --line: rgba(199,206,207,.16);
+      --line: rgba(199,206,207,.14);
       --white: #f2f4f5;
     }
 
@@ -31,47 +31,54 @@
       font-family: "Inter", sans-serif;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
+      min-height: 100%;
     }
 
     body {
-      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page {
+      width: min(100%, 1180px);
+      margin: 0 auto;
+      padding: 18px 24px 40px;
     }
 
     .hero {
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 28px 24px 40px;
+      justify-content: flex-start;
+      padding-top: 8px;
     }
 
     .hero-title {
       font-family: "Jost", sans-serif;
-      font-size: clamp(30px, 3.8vw, 58px);
+      font-size: clamp(24px, 3vw, 46px);
       font-weight: 600;
-      letter-spacing: .035em;
+      letter-spacing: .03em;
       text-align: center;
       line-height: 1;
-      margin-bottom: 8px;
       color: var(--white);
+      margin-bottom: 8px;
     }
 
     .hero-sub {
-      font-family: "Inter", sans-serif;
-      font-size: 11px;
-      letter-spacing: .28em;
+      font-size: 10px;
+      letter-spacing: .24em;
       text-transform: uppercase;
       color: var(--ink-dim);
       text-align: center;
-      margin-bottom: 18px;
+      margin-bottom: 22px;
       opacity: .72;
     }
 
     .oval-stage {
       position: relative;
-      width: min(96vw, 1080px);
+      width: min(72vw, 720px);
       aspect-ratio: 1312 / 931;
+      margin-bottom: 12px;
     }
 
     .oval-base {
@@ -86,85 +93,80 @@
 
     .quad {
       position: absolute;
-      width: 18%;
+      width: 17%;
       text-align: center;
       transform: translate(-50%, -50%);
     }
 
     .quad-label {
       font-family: "Jost", sans-serif;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 400;
-      letter-spacing: .16em;
+      letter-spacing: .15em;
       text-transform: uppercase;
       color: var(--ink-soft);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .quad-value {
       font-family: "Jost", sans-serif;
-      font-size: clamp(22px, 2.35vw, 42px);
+      font-size: clamp(18px, 1.9vw, 28px);
       font-weight: 600;
-      letter-spacing: .015em;
+      letter-spacing: .01em;
       line-height: 1;
       color: var(--white);
       white-space: nowrap;
     }
 
-    .quad-capacity { top: 36%; left: 37%; }
-    .quad-channels { top: 36%; left: 63%; }
-    .quad-rebal    { top: 66%; left: 37%; }
-    .quad-fees     { top: 66%; left: 63%; }
+    .quad-capacity { top: 36.2%; left: 37.8%; }
+    .quad-channels { top: 36.2%; left: 62.2%; }
+    .quad-rebal    { top: 65.2%; left: 37.8%; }
+    .quad-fees     { top: 65.2%; left: 62.2%; }
 
     .content {
-      max-width: 900px;
+      max-width: 860px;
       margin: 0 auto;
-      padding: 12px 20px 80px;
+      width: 100%;
     }
 
     .section {
       border-top: 1px solid var(--line);
-      padding-top: 18px;
-      margin-top: 28px;
+      padding-top: 14px;
+      margin-top: 18px;
     }
 
     .section-title {
       font-family: "Jost", sans-serif;
       font-size: 10px;
-      letter-spacing: .34em;
+      letter-spacing: .30em;
       text-transform: uppercase;
       color: var(--ink-soft);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .pubkey {
       font-size: 13px;
-      line-height: 1.75;
+      line-height: 1.7;
       word-break: break-all;
-      padding: 12px 0;
+      padding: 10px 0;
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
       cursor: pointer;
       color: var(--white);
     }
 
-    .pubkey:hover {
-      color: #fff;
-    }
-
     .meta-line {
       font-size: 13px;
-      line-height: 1.8;
+      line-height: 1.7;
       color: var(--ink-dim);
-      padding: 4px 0;
+      padding: 2px 0;
     }
 
     .links {
-      margin-top: 14px;
+      margin-top: 12px;
       font-size: 11px;
-      letter-spacing: .24em;
+      letter-spacing: .22em;
       text-transform: uppercase;
-      color: var(--ink);
     }
 
     .links a {
@@ -176,169 +178,170 @@
       color: #fff;
     }
 
-    .status-ok {
-      color: var(--ink-dim);
-    }
-
-    .status-bad {
-      color: #9aa3a5;
+    .debug {
+      margin-top: 8px;
+      font-size: 11px;
+      color: rgba(199,206,207,.38);
+      line-height: 1.5;
+      word-break: break-word;
     }
 
     .footer {
-      margin-top: 40px;
+      margin-top: 28px;
       text-align: center;
       font-size: 10px;
-      letter-spacing: .3em;
+      letter-spacing: .28em;
       text-transform: uppercase;
       color: var(--ink-dim);
       border-top: 1px solid var(--line);
-      padding-top: 16px;
+      padding-top: 14px;
     }
 
-    @media (max-width: 820px) {
-      .hero-sub {
-        font-size: 10px;
-        letter-spacing: .18em;
-        margin-bottom: 18px;
-      }
-
-      .quad {
-        width: 24%;
-      }
-
-      .quad-label {
-        font-size: 10px;
-      }
-
-      .quad-value {
-        font-size: clamp(18px, 3.8vw, 28px);
+    @media (max-width: 900px) {
+      .oval-stage {
+        width: min(86vw, 640px);
       }
     }
 
-    @media (max-width: 560px) {
+    @media (max-width: 640px) {
+      .page {
+        padding: 16px 16px 32px;
+      }
+
       .hero-title {
-        line-height: 1.08;
+        font-size: clamp(22px, 8vw, 34px);
       }
 
       .hero-sub {
-        max-width: 90%;
-        line-height: 1.7;
+        font-size: 9px;
+        letter-spacing: .14em;
+        margin-bottom: 16px;
+      }
+
+      .oval-stage {
+        width: min(94vw, 560px);
       }
 
       .quad {
-        width: 28%;
+        width: 22%;
       }
 
       .quad-label {
-        font-size: 9px;
+        font-size: 8px;
         margin-bottom: 6px;
       }
 
       .quad-value {
-        font-size: clamp(16px, 4vw, 22px);
+        font-size: clamp(14px, 4vw, 22px);
       }
 
-      .content {
-        padding-left: 16px;
-        padding-right: 16px;
+      .pubkey, .meta-line {
+        font-size: 12px;
       }
     }
   </style>
 </head>
 <body>
+  <div class="page">
+    <div class="hero">
+      <div class="hero-title">LOS POLLOS HERMANOS LTD</div>
+      <div class="hero-sub">Where something delicious is always routing</div>
 
-  <div class="hero">
-    <div class="hero-title">LOS POLLOS HERMANOS LTD</div>
-    <div class="hero-sub">Where something delicious is always routing</div>
+      <div class="oval-stage">
+        <img src="ozark-oval.png" class="oval-base" alt="Ozark-inspired oval mark" />
 
-    <div class="oval-stage">
-      <img src="ozark-oval.png" class="oval-base" alt="Ozark-inspired oval mark" />
+        <div class="quad quad-capacity">
+          <div class="quad-label">Capacity</div>
+          <div class="quad-value" id="cap">...</div>
+        </div>
 
-      <div class="quad quad-capacity">
-        <div class="quad-label">Capacity</div>
-        <div class="quad-value" id="cap">LOADING</div>
-      </div>
+        <div class="quad quad-channels">
+          <div class="quad-label">Channels</div>
+          <div class="quad-value" id="ch">...</div>
+        </div>
 
-      <div class="quad quad-channels">
-        <div class="quad-label">Channels</div>
-        <div class="quad-value" id="ch">LOADING</div>
-      </div>
+        <div class="quad quad-rebal">
+          <div class="quad-label">Rebalancing</div>
+          <div class="quad-value">AUTO</div>
+        </div>
 
-      <div class="quad quad-rebal">
-        <div class="quad-label">Rebalancing</div>
-        <div class="quad-value">AUTO</div>
-      </div>
-
-      <div class="quad quad-fees">
-        <div class="quad-label">Fees</div>
-        <div class="quad-value">DYNAMIC</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="content">
-
-    <div class="section">
-      <div class="section-title">Node</div>
-
-      <div class="section-title" style="margin-top:10px;">Public Key</div>
-      <div class="pubkey" id="pubkeyText" onclick="navigator.clipboard.writeText(this.innerText)">
-        loading...
-      </div>
-
-      <div class="links">
-        <a id="ambossLink" href="#" target="_blank" rel="noopener noreferrer">Amboss</a>
-        &nbsp;/&nbsp;
-        <a id="mempoolLink" href="#" target="_blank" rel="noopener noreferrer">Mempool</a>
+        <div class="quad quad-fees">
+          <div class="quad-label">Fees</div>
+          <div class="quad-value">DYNAMIC</div>
+        </div>
       </div>
     </div>
 
-    <div class="section">
-      <div class="section-title">Hardware</div>
-      <div class="meta-line">4TB NVMe · 64GB RAM</div>
-    </div>
+    <div class="content">
+      <div class="section">
+        <div class="section-title">Node</div>
 
-    <div class="section">
-      <div class="section-title">Routing</div>
-      <div class="meta-line status-ok" id="routingStatus">Fetching live node data...</div>
-    </div>
+        <div class="section-title" style="margin-top:8px;">Public Key</div>
+        <div class="pubkey" id="pubkeyText" onclick="navigator.clipboard.writeText(this.innerText)">
+          loading...
+        </div>
 
-    <div class="footer">
-      LOS POLLOS HERMANOS LTD
-    </div>
+        <div class="links">
+          <a id="ambossLink" href="#" target="_blank" rel="noopener noreferrer">Amboss</a>
+          &nbsp;/&nbsp;
+          <a id="mempoolLink" href="#" target="_blank" rel="noopener noreferrer">Mempool</a>
+        </div>
 
+        <div class="debug" id="debugLine"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Hardware</div>
+        <div class="meta-line">4TB NVMe · 64GB RAM</div>
+      </div>
+
+      <div class="footer">
+        LOS POLLOS HERMANOS LTD
+      </div>
+    </div>
   </div>
 
   <script>
     const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
-    const MEMPOOL_NODE_API = `https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`;
-    const MEMPOOL_NODE_URL = `https://mempool.space/lightning/node/${PUBKEY}`;
-    const AMBOSS_NODE_URL = `https://amboss.space/node/${PUBKEY}`;
+    const API_URL = `https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`;
+    const AMBOSS_URL = `https://amboss.space/node/${PUBKEY}`;
+    const MEMPOOL_URL = `https://mempool.space/lightning/node/${PUBKEY}`;
 
     const elCap = document.getElementById('cap');
     const elCh = document.getElementById('ch');
     const elPub = document.getElementById('pubkeyText');
-    const elRouting = document.getElementById('routingStatus');
     const elAmboss = document.getElementById('ambossLink');
     const elMempool = document.getElementById('mempoolLink');
+    const elDebug = document.getElementById('debugLine');
 
     elPub.textContent = PUBKEY;
-    elAmboss.href = AMBOSS_NODE_URL;
-    elMempool.href = MEMPOOL_NODE_URL;
+    elAmboss.href = AMBOSS_URL;
+    elMempool.href = MEMPOOL_URL;
 
-    function satsToBtc(sats) {
-      if (typeof sats !== 'number' || Number.isNaN(sats)) return '-- BTC';
-      return `${(sats / 100000000).toFixed(2)} BTC`;
+    function toNumber(v) {
+      if (typeof v === 'number') return v;
+      if (typeof v === 'string') {
+        const n = Number(v.replace(/,/g, '').trim());
+        return Number.isFinite(n) ? n : null;
+      }
+      return null;
     }
 
-    function formatChannels(n) {
-      if (typeof n !== 'number' || Number.isNaN(n)) return '--';
+    function formatBtcFromSats(v) {
+      const n = toNumber(v);
+      if (n === null) return '-- BTC';
+      return `${(n / 100000000).toFixed(2)} BTC`;
+    }
+
+    function formatInt(v) {
+      const n = toNumber(v);
+      if (n === null) return '--';
       return new Intl.NumberFormat('en-US').format(n);
     }
 
-    async function loadNodeStats() {
+    async function loadNode() {
       try {
-        const res = await fetch(MEMPOOL_NODE_API, {
+        const res = await fetch(API_URL, {
           method: 'GET',
           headers: { 'Accept': 'application/json' },
           cache: 'no-store'
@@ -349,26 +352,38 @@
         }
 
         const data = await res.json();
+        console.log('mempool node payload:', data);
 
-        elCap.textContent = satsToBtc(data.capacity);
-        elCh.textContent = formatChannels(data.channels);
+        // 필드명 후보 여러 개 대응
+        const capacityValue =
+          data.capacity ??
+          data.total_capacity ??
+          data.capacity_sat ??
+          data.node_capacity ??
+          null;
 
-        const alias = data.alias ? `${data.alias} · ` : '';
-        elRouting.textContent = `${alias}Live data loaded from mempool.space`;
-        elRouting.classList.remove('status-bad');
-        elRouting.classList.add('status-ok');
+        const channelsValue =
+          data.channels ??
+          data.num_channels ??
+          data.channel_count ??
+          data.open_channel_count ??
+          null;
+
+        elCap.textContent = formatBtcFromSats(capacityValue);
+        elCh.textContent = formatInt(channelsValue);
+
+        const alias = data.alias || 'Node';
+        elDebug.textContent =
+          `${alias} · capacity raw: ${String(capacityValue)} · channels raw: ${String(channelsValue)}`;
       } catch (err) {
-        console.error('Failed to load node stats:', err);
+        console.error(err);
         elCap.textContent = '-- BTC';
         elCh.textContent = '--';
-        elRouting.textContent = 'Live node data unavailable';
-        elRouting.classList.remove('status-ok');
-        elRouting.classList.add('status-bad');
+        elDebug.textContent = `live fetch failed · ${err.message}`;
       }
     }
 
-    loadNodeStats();
+    loadNode();
   </script>
-
 </body>
 </html>
