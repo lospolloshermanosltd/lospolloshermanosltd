@@ -13,10 +13,10 @@
     :root {
       --bg: #000000;
       --ink: #C7D3D1;
-      --ink-soft: rgba(199,211,209,.78);
-      --ink-dim: rgba(199,211,209,.44);
+      --ink-soft: rgba(199,211,209,.82);
+      --ink-dim: rgba(199,211,209,.56);
       --line: rgba(199,211,209,.12);
-      --white-soft: #e8eeed;
+      --value: #E6ECEB;
     }
 
     * {
@@ -42,8 +42,8 @@
     }
 
     .page {
-      width: min(100%, 1200px);
-      padding: 10px 22px 18px;
+      width: min(100%, 1180px);
+      padding: 10px 20px 16px;
     }
 
     .hero {
@@ -55,24 +55,25 @@
 
     .hero-title {
       font-family: "Jost", sans-serif;
-      font-size: clamp(28px, 3.2vw, 52px);
+      font-size: clamp(32px, 3.6vw, 58px);
       font-weight: 600;
-      letter-spacing: .028em;
+      letter-spacing: .035em;
       line-height: 1;
       color: var(--ink);
       text-align: center;
+      text-transform: uppercase;
       margin-bottom: 8px;
-      opacity: .95;
+      opacity: .96;
     }
 
     .hero-sub {
-      font-size: 8px;
+      font-size: 9px;
       letter-spacing: .22em;
       text-transform: uppercase;
       color: var(--ink-dim);
-      opacity: .58;
       text-align: center;
       margin-bottom: 14px;
+      opacity: .82;
     }
 
     .oval-stage {
@@ -101,12 +102,12 @@
 
     .quad-label {
       font-family: "Jost", sans-serif;
-      font-size: 8px;
+      font-size: 10px;
       font-weight: 400;
-      letter-spacing: .16em;
+      letter-spacing: .14em;
       text-transform: uppercase;
       color: var(--ink-soft);
-      margin-bottom: 7px;
+      margin-bottom: 10px;
     }
 
     .quad-value {
@@ -114,31 +115,32 @@
       font-weight: 600;
       line-height: 1;
       white-space: nowrap;
-      color: var(--ink);
+      color: var(--value);
+      text-transform: uppercase;
     }
 
-    .quad-capacity { top: 36.0%; left: 37.6%; }
-    .quad-channels { top: 36.0%; left: 62.4%; }
-    .quad-ram      { top: 65.2%; left: 37.6%; }
-    .quad-storage  { top: 65.2%; left: 62.4%; }
+    .quad-capacity { top: 36.1%; left: 37.7%; }
+    .quad-channels { top: 36.1%; left: 62.3%; }
+    .quad-storage  { top: 65.2%; left: 37.7%; }
+    .quad-ram      { top: 65.2%; left: 62.3%; }
 
     #cap {
-      font-size: clamp(17px, 1.7vw, 26px);
+      font-size: clamp(16px, 1.6vw, 24px);
       letter-spacing: -.01em;
     }
 
     #ch {
-      font-size: clamp(18px, 1.65vw, 24px);
-      letter-spacing: 0;
-    }
-
-    .quad-ram .quad-value {
-      font-size: clamp(18px, 1.7vw, 25px);
+      font-size: clamp(16px, 1.55vw, 23px);
       letter-spacing: 0;
     }
 
     .quad-storage .quad-value {
-      font-size: clamp(16px, 1.48vw, 22px);
+      font-size: clamp(15px, 1.42vw, 21px);
+      letter-spacing: 0;
+    }
+
+    .quad-ram .quad-value {
+      font-size: clamp(16px, 1.5vw, 22px);
       letter-spacing: 0;
     }
 
@@ -151,13 +153,13 @@
     .section {
       border-top: 1px solid var(--line);
       padding-top: 12px;
-      margin-top: 14px;
+      margin-top: 12px;
     }
 
     .section-title {
       font-family: "Jost", sans-serif;
       font-size: 9px;
-      letter-spacing: .30em;
+      letter-spacing: .28em;
       text-transform: uppercase;
       color: var(--ink-soft);
       margin-bottom: 10px;
@@ -175,7 +177,7 @@
     }
 
     .pubkey:hover {
-      color: var(--white-soft);
+      color: var(--value);
     }
 
     .meta-line {
@@ -198,14 +200,14 @@
     }
 
     .links a:hover {
-      color: var(--white-soft);
+      color: var(--value);
     }
 
     .footer {
-      margin-top: 16px;
+      margin-top: 14px;
       text-align: center;
       font-size: 8px;
-      letter-spacing: .26em;
+      letter-spacing: .24em;
       text-transform: uppercase;
       color: var(--ink-dim);
       border-top: 1px solid var(--line);
@@ -220,17 +222,17 @@
 
     @media (max-width: 640px) {
       .page {
-        padding: 10px 14px 16px;
+        padding: 10px 14px 14px;
       }
 
       .hero-title {
-        font-size: clamp(24px, 8vw, 38px);
+        font-size: clamp(26px, 8vw, 40px);
       }
 
       .hero-sub {
-        font-size: 7px;
-        letter-spacing: .14em;
-        margin-bottom: 10px;
+        font-size: 8px;
+        letter-spacing: .12em;
+        margin-bottom: 12px;
       }
 
       .oval-stage {
@@ -242,15 +244,15 @@
       }
 
       .quad-label {
-        font-size: 7px;
-        margin-bottom: 4px;
+        font-size: 8px;
+        margin-bottom: 6px;
       }
 
       #cap,
       #ch,
-      .quad-ram .quad-value,
-      .quad-storage .quad-value {
-        font-size: clamp(13px, 3.9vw, 20px);
+      .quad-storage .quad-value,
+      .quad-ram .quad-value {
+        font-size: clamp(13px, 3.7vw, 19px);
       }
 
       .content {
@@ -267,61 +269,56 @@
 <body>
   <div class="page">
     <div class="hero">
-      <div class="hero-title">Los Pollos Hermanos Ltd</div>
-      <div class="hero-sub">Where something delicious is always routing</div>
+      <div class="hero-title">LOS POLLOS HERMANOS LTD</div>
+      <div class="hero-sub">WHERE SOMETHING DELICIOUS IS ALWAYS ROUTING</div>
 
       <div class="oval-stage">
         <img src="ozark-oval.png" class="oval-base" alt="Ozark-inspired oval mark" />
 
         <div class="quad quad-capacity">
-          <div class="quad-label">Capacity</div>
+          <div class="quad-label">CAPACITY</div>
           <div class="quad-value" id="cap">...</div>
         </div>
 
         <div class="quad quad-channels">
-          <div class="quad-label">Channels</div>
+          <div class="quad-label">CHANNELS</div>
           <div class="quad-value" id="ch">...</div>
+        </div>
+
+        <div class="quad quad-storage">
+          <div class="quad-label">STORAGE</div>
+          <div class="quad-value">4TB</div>
         </div>
 
         <div class="quad quad-ram">
           <div class="quad-label">RAM</div>
           <div class="quad-value">64GB</div>
         </div>
-
-        <div class="quad quad-storage">
-          <div class="quad-label">Storage</div>
-          <div class="quad-value">4TB NVMe</div>
-        </div>
       </div>
     </div>
 
     <div class="content">
       <div class="section">
-        <div class="section-title">Node</div>
-
-        <div class="section-title" style="margin-top:8px;">Alias</div>
-        <div class="meta-line">Los Pollos Hermanos Ltd</div>
-
-        <div class="section-title" style="margin-top:12px;">Public Key</div>
+        <div class="section-title">PUBLIC KEY</div>
         <div class="pubkey" id="pubkeyText" onclick="navigator.clipboard.writeText(this.innerText)">
           loading...
         </div>
 
         <div class="links">
-          <a id="ambossLink" href="#" target="_blank" rel="noopener noreferrer">Amboss</a>
+          <a id="ambossLink" href="#" target="_blank" rel="noopener noreferrer">AMBOSS</a>
           &nbsp;/&nbsp;
-          <a id="mempoolLink" href="#" target="_blank" rel="noopener noreferrer">Mempool</a>
+          <a id="mempoolLink" href="#" target="_blank" rel="noopener noreferrer">MEMPOOL</a>
         </div>
       </div>
 
       <div class="section">
-        <div class="section-title">Operations</div>
-        <div class="meta-line">Rebalancing: active</div>
-        <div class="meta-line">Fee management: active</div>
+        <div class="section-title">OPERATIONS</div>
+        <div class="meta-line">REBALANCING: ACTIVE</div>
+        <div class="meta-line">FEE MANAGEMENT: ACTIVE</div>
       </div>
 
       <div class="footer">
-        Los Pollos Hermanos Ltd
+        LOS POLLOS HERMANOS LTD
       </div>
     </div>
   </div>
@@ -354,8 +351,7 @@
     function formatBtcFromSats(v) {
       const n = toNumber(v);
       if (n === null) return '-- BTC';
-      const btc = n / 100000000;
-      return btc >= 10 ? `${btc.toFixed(1)} BTC` : `${btc.toFixed(2)} BTC`;
+      return `${(n / 100000000).toFixed(2)} BTC`;
     }
 
     function formatInt(v) {
