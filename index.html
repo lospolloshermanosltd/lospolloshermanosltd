@@ -1,372 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LOS POLLOS HERMANOS LTD</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LOS POLLOS HERMANOS LTD</title>
 
-  <style>
-    :root {
-      --bg: #000;
-      --fg: #d9e3e1;
-      --fg-soft: rgba(217, 227, 225, 0.82);
-      --fg-dim: rgba(217, 227, 225, 0.48);
-      --line: rgba(217, 227, 225, 0.12);
-      --accent: #f3d80d;
-      --accent-soft: rgba(243, 216, 13, 0.08);
-      --accent-line: rgba(243, 216, 13, 0.28);
-    }
+<style>
+:root {
+  --bg: #000;
+  --fg: #d9e3e1;
+  --fg-dim: rgba(217,227,225,0.5);
+  --line: rgba(217,227,225,0.1);
+  --accent: #f3d80d;
+}
 
-    * { box-sizing: border-box; }
+* { box-sizing: border-box; }
 
-    html, body {
-      margin: 0;
-      min-height: 100%;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: ui-monospace, monospace;
+  display: flex;
+  justify-content: center;
+}
 
-    body {
-      display: flex;
-      justify-content: center;
-    }
+.page {
+  width: min(100%, 1000px);
+  padding: 20px;
+}
 
-    .page {
-      width: min(100%, 1180px);
-      padding: 22px 18px 30px;
-    }
+/* =========================
+   CLI HEADER (핵심)
+========================= */
+.cli {
+  border: 1px solid var(--line);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  background: rgba(255,255,255,0.02);
+}
 
-    .brand {
-      text-align: center;
-      margin-bottom: 18px;
-    }
+.prompt { color: #5cff5c; }
+.path { color: #5ccfff; }
 
-    .brand-logo {
-      display: inline-block;
-      margin: 0;
-      color: var(--accent);
-      font-size: clamp(24px, 4.4vw, 56px);
-      line-height: 0.98;
-      letter-spacing: 0.08em;
-      font-weight: 900;
-      text-transform: uppercase;
-      text-shadow: 3px 3px 0 rgba(243, 216, 13, 0.18);
-      white-space: nowrap;
-    }
+.cmd {
+  color: var(--fg);
+}
 
-    .brand .sub {
-      margin-top: 12px;
-      color: var(--fg-dim);
-      font-size: 10px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-    }
+.alias {
+  color: var(--accent);
+  font-weight: 700;
+}
 
-    .terminal {
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      padding: 18px 0 16px;
-      text-align: center;
-    }
+/* blinking cursor */
+.cursor::after {
+  content: "█";
+  margin-left: 4px;
+  animation: blink 1s steps(1) infinite;
+}
 
-    .terminal-head {
-      display: inline-block;
-      padding: 9px 18px 8px;
-      border: 1px solid var(--accent-line);
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      box-shadow: inset 0 0 0 1px rgba(243, 216, 13, 0.08);
-    }
+@keyframes blink {
+  50% { opacity: 0; }
+}
 
-    .dash {
-      height: 1px;
-      background: linear-gradient(to right, transparent 0, var(--accent-line) 12%, var(--accent-line) 88%, transparent 100%);
-      margin: 16px auto 20px;
-      width: min(100%, 860px);
-    }
+/* ========================= */
 
-    .sections {
-      width: min(100%, 760px);
-      margin: 0 auto;
-      text-align: left;
-    }
+.section {
+  margin-bottom: 28px;
+}
 
-    .section {
-      margin-bottom: 30px;
-    }
+.title {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: #fff;
+  margin-bottom: 10px;
+}
 
-    .section-title {
-      color: #fff;
-      font-size: 13px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      padding-left: 2px;
-    }
+.row {
+  display: grid;
+  grid-template-columns: max-content 1fr 120px;
+  gap: 8px;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
 
-    .row {
-      display: grid;
-      grid-template-columns: max-content 1fr 120px;
-      align-items: center;
-      gap: 8px;
-      min-height: 30px;
-      font-size: 14px;
-      line-height: 1.45;
-      color: var(--fg-soft);
-    }
+.label::before {
+  content: "> ";
+  color: var(--accent);
+}
 
-    .row + .row { margin-top: 8px; }
+.fill {
+  border-bottom: 1px dotted var(--line);
+}
 
-    .row .label,
-    .row .value {
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
+.value {
+  text-align: right;
+  color: var(--accent);
+}
 
-    .row .label::before {
-      content: "> ";
-      color: var(--accent);
-    }
+/* pubkey */
+.pubkey {
+  font-size: 12px;
+  word-break: break-all;
+  cursor: pointer;
+  margin-top: 10px;
+}
 
-    .row .fill {
-      border-bottom: 1px dotted rgba(217, 227, 225, 0.1);
-      transform: translateY(-1px);
-    }
+.pubkey:hover {
+  color: #fff;
+}
 
-    .row .value {
-      color: var(--accent);
-      text-align: right;
-      font-weight: 700;
-      width: 120px;
-    }
+.footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 11px;
+}
 
-    .pubkey-wrap {
-      margin-top: 10px;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      padding: 12px 0;
-    }
+.footer a {
+  color: var(--fg);
+  text-decoration: none;
+  margin: 0 10px;
+}
 
-    .pubkey-label {
-      font-size: 12px;
-      color: var(--fg-dim);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .pubkey {
-      font-size: 13px;
-      line-height: 1.7;
-      word-break: break-all;
-      cursor: pointer;
-      color: var(--fg);
-    }
-
-    .pubkey:hover { color: #fff; }
-
-    .quote {
-      width: min(100%, 760px);
-      margin: 4px auto 0;
-      text-align: center;
-      color: var(--fg-dim);
-      font-size: 13px;
-    }
-
-    .footer {
-      width: min(100%, 760px);
-      margin: 14px auto 0;
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      font-size: 10px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-    }
-
-    .footer a {
-      color: var(--fg-soft);
-      text-decoration: none;
-    }
-
-    .footer a:hover { color: var(--accent); }
-
-    @media (max-width: 900px) {
-      .brand-logo {
-        font-size: clamp(20px, 5vw, 42px);
-        letter-spacing: 0.06em;
-      }
-    }
-
-    @media (max-width: 720px) {
-      .page { padding: 14px 10px 18px; }
-
-      .brand-logo {
-        white-space: normal;
-        line-height: 1.08;
-      }
-
-      .brand .sub,
-      .footer {
-        letter-spacing: 0.12em;
-      }
-
-      .sections {
-        width: 100%;
-      }
-
-      .row {
-        grid-template-columns: 1fr auto;
-        gap: 10px;
-        align-items: start;
-      }
-
-      .row .fill { display: none; }
-      .row .value {
-        width: auto;
-        white-space: nowrap;
-      }
-    }
-  </style>
+.footer a:hover {
+  color: var(--accent);
+}
+</style>
 </head>
+
 <body>
-  <div class="page">
-    <div class="brand">
-      <div class="brand-logo">LOS POLLOS HERMANOS LTD</div>
-      <div class="sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</div>
-    </div>
+<div class="page">
 
-    <div class="terminal">
-      <div class="terminal-head">[ ROUTING MENU ]</div>
-      <div class="dash"></div>
-
-      <div class="sections">
-        <div class="section">
-          <div class="section-title">[ NODE STATS ]</div>
-          <div class="row"><span class="label">TOTAL INVENTORY</span><span class="fill"></span><span class="value" id="capacityValue">-- BTC</span></div>
-          <div class="row"><span class="label">ACTIVE CHANNELS</span><span class="fill"></span><span class="value" id="channelsValue">--</span></div>
-          <div class="row"><span class="label">MIN ENTRY SIZE</span><span class="fill"></span><span class="value">3M SATS</span></div>
-          <div class="row"><span class="label">REBALANCING</span><span class="fill"></span><span class="value">ACTIVE</span></div>
-          <div class="row"><span class="label">FEE POLICY</span><span class="fill"></span><span class="value">DYNAMIC</span></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">[ NODE SPECS ]</div>
-          <div class="row"><span class="label">MEMORY</span><span class="fill"></span><span class="value">64GB RAM</span></div>
-          <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value">4TB NVMe SSD</span></div>
-          <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS BACKED</span></div>
-          <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value">99.9%</span></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">[ ROUTING PROFILES ]</div>
-          <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">DISCOUNT</span></div>
-          <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">STANDARD</span></div>
-          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">PREMIUM</span></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">[ ROUTING STRATEGY ]</div>
-          <div class="row"><span class="label">LIQUIDITY MANAGEMENT</span><span class="fill"></span><span class="value">ACTIVE</span></div>
-          <div class="row"><span class="label">REBALANCING</span><span class="fill"></span><span class="value">CONTINUOUS</span></div>
-          <div class="row"><span class="label">FEE MODEL</span><span class="fill"></span><span class="value">ADAPTIVE</span></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">[ SECURE CHANNEL ]</div>
-          <div class="row"><span class="label">CONTACT</span><span class="fill"></span><span class="value">PROTON</span></div>
-          <div class="pubkey-wrap">
-            <div class="pubkey-label">PUBKEY</div>
-            <div class="pubkey" id="pubkeyText" title="Click to copy">loading...</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="quote">"If the route matters, the kitchen is open."</div>
-    </div>
-
-    <div class="footer">
-      <a id="ambossLink" href="#" target="_blank" rel="noopener noreferrer">AMBOSS</a>
-      <span>/</span>
-      <a id="mempoolLink" href="#" target="_blank" rel="noopener noreferrer">MEMPOOL</a>
-    </div>
+  <!-- 🔥 CLI HEADER -->
+  <div class="cli">
+    <span class="prompt">root@node</span>:<span class="path">~</span>$ 
+    <span class="cmd">alias</span> 
+    <span class="alias">lph="LOS_POLLOS_HERMANOS_LTD"</span>
+    <span class="cursor"></span>
   </div>
 
-  <script>
-    const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
-    const API_URL = `https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`;
-    const AMBOSS_URL = `https://amboss.space/node/${PUBKEY}`;
-    const MEMPOOL_URL = `https://mempool.space/lightning/node/${PUBKEY}`;
+  <!-- NODE STATS -->
+  <div class="section">
+    <div class="title">[ NODE STATS ]</div>
+    <div class="row"><span class="label">TOTAL INVENTORY</span><span class="fill"></span><span class="value" id="capacity">-- BTC</span></div>
+    <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value" id="channels">--</span></div>
+  </div>
 
-    const capacityEl = document.getElementById('capacityValue');
-    const channelsEl = document.getElementById('channelsValue');
-    const pubkeyEl = document.getElementById('pubkeyText');
-    const ambossEl = document.getElementById('ambossLink');
-    const mempoolEl = document.getElementById('mempoolLink');
+  <!-- NODE SPECS -->
+  <div class="section">
+    <div class="title">[ NODE SPECS ]</div>
+    <div class="row"><span class="label">MEMORY</span><span class="fill"></span><span class="value">64GB</span></div>
+    <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value">4TB NVMe</span></div>
+  </div>
 
-    pubkeyEl.textContent = PUBKEY;
-    ambossEl.href = AMBOSS_URL;
-    mempoolEl.href = MEMPOOL_URL;
+  <!-- PUBKEY -->
+  <div class="section">
+    <div class="title">[ PUBKEY ]</div>
+    <div class="pubkey" id="pubkey"></div>
+  </div>
 
-    pubkeyEl.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(PUBKEY);
-        const original = PUBKEY;
-        pubkeyEl.textContent = `${original}  [COPIED]`;
-        setTimeout(() => { pubkeyEl.textContent = original; }, 1200);
-      } catch (_) {}
-    });
+  <!-- FOOTER -->
+  <div class="footer">
+    <a id="amboss" target="_blank">AMBOSS</a>
+    /
+    <a id="mempool" target="_blank">MEMPOOL</a>
+  </div>
 
-    function toNumber(value) {
-      if (typeof value === 'number' && Number.isFinite(value)) return value;
-      if (typeof value === 'string') {
-        const parsed = Number(value.replace(/,/g, '').trim());
-        return Number.isFinite(parsed) ? parsed : null;
-      }
-      return null;
-    }
+</div>
 
-    function formatBtcFromSats(value) {
-      const n = toNumber(value);
-      if (n === null) return '-- BTC';
-      return `${(n / 100000000).toFixed(2)} BTC`;
-    }
+<script>
+const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
 
-    function formatInt(value) {
-      const n = toNumber(value);
-      if (n === null) return '--';
-      return new Intl.NumberFormat('en-US').format(n);
-    }
+document.getElementById("pubkey").textContent = PUBKEY;
 
-    async function loadNode() {
-      try {
-        const res = await fetch(API_URL, {
-          method: 'GET',
-          headers: { Accept: 'application/json' },
-          cache: 'no-store'
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+document.getElementById("amboss").href =
+  `https://amboss.space/node/${PUBKEY}`;
 
-        const data = await res.json();
-        const capacityValue = data.capacity ?? data.total_capacity ?? data.capacity_sat ?? null;
-        const channelsValue = data.active_channel_count ?? data.channels ?? data.num_channels ?? data.channel_count ?? data.open_channel_count ?? null;
+document.getElementById("mempool").href =
+  `https://mempool.space/lightning/node/${PUBKEY}`;
 
-        capacityEl.textContent = formatBtcFromSats(capacityValue);
-        channelsEl.textContent = formatInt(channelsValue);
-      } catch (error) {
-        console.error(error);
-        capacityEl.textContent = '-- BTC';
-        channelsEl.textContent = '--';
-      }
-    }
+/* API */
+fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`)
+.then(r => r.json())
+.then(d => {
+  const btc = (d.capacity / 100000000).toFixed(2);
+  document.getElementById("capacity").textContent = btc + " BTC";
+  document.getElementById("channels").textContent = d.active_channel_count;
+})
+.catch(()=>{});
+</script>
 
-    loadNode();
-  </script>
 </body>
 </html>
