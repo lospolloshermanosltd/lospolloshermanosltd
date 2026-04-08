@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
 
   <style>
-    /* 네가 올린 원본 파일명(띄어쓰기 포함)을 그대로 인식하도록 수정함 */
+    /* 띄어쓰기 포함된 원본 파일명 유지 */
     @font-face {
       font-family: 'JI Burrito';
       src: url('JI Burrito.ttf') format('truetype'); 
@@ -22,11 +22,11 @@
       --fg-soft: rgba(217, 227, 225, 0.82);
       --fg-dim: rgba(217, 227, 225, 0.48);
       --line: rgba(217, 227, 225, 0.12);
-      --accent: #f3d80d; /* 노란색 */
+      --accent: #f3d80d;
       --accent-soft: rgba(243, 216, 13, 0.08);
       --accent-line: rgba(243, 216, 13, 0.28);
       --accent-glow: rgba(243, 216, 13, 0.3);
-      --brand-red: #E2231A; /* 찰떡궁합 찐 레드 */
+      --brand-red: #E2231A; 
     }
 
     * { box-sizing: border-box; }
@@ -34,7 +34,6 @@
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%; 
       background: var(--bg);
       color: var(--fg);
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
@@ -46,21 +45,22 @@
       display: flex;
       justify-content: center;
       align-items: center; 
+      min-height: 100vh; /* 화면 전체 높이 차지 */
+      padding: 40px 20px; /* 위아래 여백을 40px로 동일하게 강제 할당 (숨통 트임) */
     }
 
     .page {
-      width: min(100%, 1280px); 
-      padding: 20px 18px; 
+      width: 100%;
+      max-width: 1280px; 
     }
 
     /* 상단 타이틀 간판 */
     .brand {
       text-align: center;
-      margin-bottom: 25px; 
+      margin-bottom: 30px; 
     }
 
     .brand-title {
-      /* 1순위: JI Burrito, 2순위: Ranchers */
       font-family: 'JI Burrito', 'Ranchers', sans-serif;
       font-size: 64px;
       color: var(--accent);
@@ -83,7 +83,7 @@
     .terminal {
       border: 1px solid var(--line);
       background: #0a0a0a;
-      padding: 25px 35px 20px; 
+      padding: 35px 35px 25px; 
       position: relative;
     }
 
@@ -116,7 +116,7 @@
       grid-template-columns: minmax(auto, 420px) minmax(auto, 420px); 
       justify-content: center;
       gap: 200px; 
-      margin-top: 25px; 
+      margin-top: 20px; 
     }
 
     .section-title {
@@ -124,7 +124,7 @@
       font-size: 13px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-bottom: 12px; 
+      margin-bottom: 15px; 
       padding-bottom: 6px;
       border-bottom: 1px solid var(--line);
       display: flex;
@@ -136,7 +136,7 @@
       display: flex;
       justify-content: space-between;
       align-items: end;
-      margin-bottom: 8px; 
+      margin-bottom: 10px; 
       font-size: 14px;
       color: var(--fg-soft);
     }
@@ -172,8 +172,8 @@
     /* 하단 키 정보 영역 */
     .secure-channel {
       grid-column: 1 / -1;
-      margin-top: 25px; 
-      padding-top: 15px;
+      margin-top: 40px; 
+      padding-top: 20px;
       border-top: 1px dashed var(--line);
       text-align: center;
     }
@@ -182,7 +182,7 @@
       font-size: 11px;
       color: var(--accent);
       text-transform: uppercase;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       letter-spacing: 0.1em;
     }
 
@@ -192,7 +192,7 @@
       cursor: pointer;
       word-break: break-all;
       background: rgba(0,0,0,0.5);
-      padding: 8px 16px;
+      padding: 10px 16px;
       border: 1px solid var(--line);
       display: inline-block;
       transition: all 0.2s;
@@ -203,9 +203,9 @@
       border-color: var(--accent-line);
     }
 
-    /* 푸터 버튼 스타일 (레드 컬러 적용) */
+    /* 푸터 버튼 스타일 */
     .footer {
-      margin-top: 30px; 
+      margin-top: 40px; /* 터미널 박스와 버튼 사이 간격도 여유있게 늘림 */
       display: flex;
       justify-content: center;
       gap: 20px; 
@@ -215,13 +215,14 @@
       background-color: var(--brand-red);
       color: #fff;
       text-decoration: none;
-      padding: 10px 24px;
+      padding: 12px 28px;
       font-size: 13px;
       font-weight: bold;
       letter-spacing: 0.15em;
       border: 1px solid var(--brand-red);
       box-shadow: 0 0 15px rgba(226, 35, 26, 0.25);
       transition: all 0.2s;
+      text-transform: uppercase;
     }
 
     .footer a:hover { 
@@ -232,10 +233,10 @@
 
     /* 모바일 반응형 조절 */
     @media (max-width: 950px) {
-      body { align-items: flex-start; padding-top: 30px; height: auto; }
+      body { padding: 30px 15px; height: auto; }
       .menu-board {
         grid-template-columns: 1fr;
-        gap: 35px; 
+        gap: 40px; 
       }
       .brand-title { font-size: 48px; }
       .terminal { padding: 30px 20px 20px; }
@@ -262,7 +263,7 @@
             <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
           </div>
 
-          <div class="section" style="margin-top: 25px;">
+          <div class="section" style="margin-top: 60px;">
             <div class="section-title"><span>[ KITCHEN EQUIPMENT ]</span><span>SPEC</span></div>
             <div class="row"><span class="label">RECIPE BOOK (RAM)</span><span class="fill"></span><span class="value highlight">64GB</span></div>
             <div class="row"><span class="label">FREEZER (STORAGE)</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
@@ -280,7 +281,7 @@
             <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value">DYNAMIC</span></div>
           </div>
 
-          <div class="section" style="margin-top: 25px;">
+          <div class="section" style="margin-top: 60px;">
             <div class="section-title"><span>[ CONTACT / INFO ]</span><span>COMMS</span></div>
             <div class="row"><span class="label">DIRECT LINE</span><span class="fill"></span><span class="value">PROTON</span></div>
             <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
