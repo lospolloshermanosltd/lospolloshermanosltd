@@ -45,7 +45,8 @@
       justify-content: center;
       align-items: center; 
       min-height: 100vh; 
-      padding: 40px 20px; 
+      /* 미세 스크롤 범인 1: 40px -> 20px로 줄임 */
+      padding: 20px; 
     }
 
     .page {
@@ -55,7 +56,7 @@
 
     .brand {
       text-align: center;
-      margin-bottom: 30px; 
+      margin-bottom: 25px; 
     }
 
     .brand-title {
@@ -80,7 +81,7 @@
     .terminal {
       border: 1px solid var(--line);
       background: #0a0a0a;
-      padding: 35px 35px 25px; 
+      padding: 30px 35px 25px; 
       position: relative;
     }
 
@@ -107,12 +108,12 @@
     }
     @keyframes blinker { 50% { opacity: 0; } }
 
-    /* 여기서 하단 여백 범인을 잡음 */
     .menu-board {
       display: grid;
       grid-template-columns: minmax(auto, 420px) minmax(auto, 420px); 
-      column-gap: 200px; /* 좌우 간격만 200px 적용 */
-      row-gap: 0; /* 상하 그리드 여백은 0으로 날림 */
+      /* 최적의 비율 적용: 좌우 160px */
+      column-gap: 160px; 
+      row-gap: 0; 
       justify-content: center;
       margin-top: 20px; 
     }
@@ -166,10 +167,15 @@
       text-shadow: none;
     }
 
-    /* 하단 키 정보 영역 밸런스 재조정 */
+    /* 최적의 비율 적용: 상하 80px (160:80 = 2:1 비율) */
+    .section-spacer {
+      margin-top: 80px; 
+    }
+
     .secure-channel {
       grid-column: 1 / -1;
-      margin-top: 50px; /* 원래 있던 쓸데없는 그리드 200px을 날리고, 정규 여백 50px만 부여 */
+      /* 미세 스크롤 다이어트: 50px -> 40px */
+      margin-top: 40px; 
       padding-top: 20px;
       border-top: 1px dashed var(--line);
       text-align: center;
@@ -201,7 +207,8 @@
     }
 
     .footer {
-      margin-top: 40px; 
+      /* 미세 스크롤 다이어트: 40px -> 30px */
+      margin-top: 30px; 
       display: flex;
       justify-content: center;
       gap: 20px; 
@@ -228,14 +235,15 @@
     }
 
     @media (max-width: 950px) {
-      body { padding: 30px 15px; height: auto; }
+      body { padding: 20px 15px; height: auto; }
       .menu-board {
         grid-template-columns: 1fr;
         column-gap: 0;
-        row-gap: 40px; /* 모바일에서는 위아래로 쌓이니까 row-gap을 다시 줌 */
+        row-gap: 40px; 
       }
       .brand-title { font-size: 48px; }
       .terminal { padding: 30px 20px 20px; }
+      .section-spacer { margin-top: 0; }
     }
   </style>
 </head>
@@ -259,7 +267,7 @@
             <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
           </div>
 
-          <div class="section" style="margin-top: 90px;">
+          <div class="section section-spacer">
             <div class="section-title"><span>[ KITCHEN EQUIPMENT ]</span><span>SPEC</span></div>
             <div class="row"><span class="label">RECIPE BOOK (RAM)</span><span class="fill"></span><span class="value highlight">64GB</span></div>
             <div class="row"><span class="label">FREEZER (STORAGE)</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
@@ -277,7 +285,7 @@
             <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value">DYNAMIC</span></div>
           </div>
 
-          <div class="section" style="margin-top: 90px;">
+          <div class="section section-spacer">
             <div class="section-title"><span>[ CONTACT / INFO ]</span><span>COMMS</span></div>
             <div class="row"><span class="label">DIRECT LINE</span><span class="fill"></span><span class="value">PROTON</span></div>
             <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
