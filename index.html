@@ -7,7 +7,7 @@
 
   <style>
     :root {
-      --bg: #000;
+      --bg: #050505; /* 살짝 더 깊은 검은색 */
       --fg: #d9e3e1;
       --fg-soft: rgba(217, 227, 225, 0.82);
       --fg-dim: rgba(217, 227, 225, 0.48);
@@ -15,6 +15,7 @@
       --accent: #f3d80d;
       --accent-soft: rgba(243, 216, 13, 0.08);
       --accent-line: rgba(243, 216, 13, 0.28);
+      --accent-glow: rgba(243, 216, 13, 0.3); /* 레트로 형광 효과 */
     }
 
     * { box-sizing: border-box; }
@@ -32,89 +33,89 @@
     body {
       display: flex;
       justify-content: center;
+      padding-top: 20px;
     }
 
     .page {
-      width: min(100%, 1180px);
-      padding: 22px 18px 30px;
+      width: min(100%, 1000px);
+      padding: 0 18px 40px;
     }
 
+    /* 상단 ASCII 간판 */
     .brand {
       text-align: center;
-      margin-bottom: 18px;
+      margin-bottom: 30px;
     }
 
-    /* ASCII 아트 전용 컨테이너 및 텍스트 설정 */
     .alias-wrap {
       width: 100%;
-      max-width: 1080px;
-      margin: 0 auto;
-      overflow-x: auto; /* 넘치면 스크롤되도록 처리해 형태 보존 */
+      overflow-x: auto;
       display: flex;
       justify-content: center;
       scrollbar-width: none;
-      -ms-overflow-style: none;
     }
-
-    .alias-wrap::-webkit-scrollbar {
-      display: none;
-    }
+    .alias-wrap::-webkit-scrollbar { display: none; }
 
     .ascii-art {
       margin: 0;
       padding: 10px 20px;
       color: var(--accent);
-      font-family: monospace; /* 시스템 기본 고정폭 폰트 강제 */
-      font-size: 10px; /* 블록 크기 조정 */
-      line-height: 1; /* 상하 블록 틈새 제거 */
-      letter-spacing: 0; /* 좌우 블록 틈새 제거 */
-      white-space: pre; /* 자동 줄바꿈 절대 금지 */
+      font-family: monospace;
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: 0;
+      white-space: pre;
       text-align: left;
+      text-shadow: 0 0 8px var(--accent-glow); /* 간판 빛번짐 */
     }
 
     .brand .sub {
       margin-top: 14px;
       color: var(--fg-dim);
-      font-size: 10px;
+      font-size: 11px;
       letter-spacing: 0.28em;
       text-transform: uppercase;
     }
 
+    /* 메인 터미널 영역 */
     .terminal {
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      padding: 18px 0 16px;
-      text-align: center;
+      border: 1px solid var(--line);
+      background: #0a0a0a; /* 메뉴판 배경을 살짝 다르게 */
+      padding: 24px 30px 30px;
+      position: relative;
     }
 
+    /* 상단 POS 타이틀 */
     .terminal-head {
-      display: inline-block;
-      padding: 9px 18px 8px;
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4px 16px;
+      background: var(--bg);
       border: 1px solid var(--accent-line);
-      background: var(--accent-soft);
       color: var(--accent);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      box-shadow: inset 0 0 0 1px rgba(243, 216, 13, 0.08);
+      box-shadow: inset 0 0 10px var(--accent-soft), 0 0 10px var(--bg);
+      text-shadow: 0 0 5px var(--accent-glow);
+      white-space: nowrap;
     }
 
-    .dash {
-      height: 1px;
-      background: linear-gradient(to right, transparent 0, var(--accent-line) 12%, var(--accent-line) 88%, transparent 100%);
-      margin: 16px auto 20px;
-      width: min(100%, 860px);
+    /* 깜빡이는 커서 효과 */
+    .blink {
+      animation: blinker 1s step-end infinite;
     }
+    @keyframes blinker { 50% { opacity: 0; } }
 
-    .sections {
-      width: min(100%, 760px);
-      margin: 0 auto;
-      text-align: left;
-    }
-
-    .section {
-      margin-bottom: 30px;
+    /* 2단 메뉴판 레이아웃 */
+    .menu-board {
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* 반반 나눔 */
+      gap: 50px; /* 좌우 간격 */
+      margin-top: 20px;
     }
 
     .section-title {
@@ -122,124 +123,110 @@
       font-size: 13px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-bottom: 12px;
-      padding-left: 2px;
+      margin-bottom: 16px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--line); /* 타이틀 밑줄 */
+      display: flex;
+      justify-content: space-between;
     }
 
+    /* 항목 줄 */
     .row {
-      display: grid;
-      grid-template-columns: max-content 1fr 120px;
-      align-items: center;
-      gap: 8px;
-      min-height: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      margin-bottom: 10px;
       font-size: 14px;
-      line-height: 1.45;
       color: var(--fg-soft);
     }
 
-    .row + .row { margin-top: 8px; }
-
-    .row .label,
-    .row .value {
+    .row .label {
       text-transform: uppercase;
       white-space: nowrap;
+      padding-right: 8px;
     }
 
-    .row .label::before {
-      content: "> ";
-      color: var(--accent);
-    }
-
+    /* 점선 폭이 자동으로 좁아짐 */
     .row .fill {
-      border-bottom: 1px dotted rgba(217, 227, 225, 0.1);
-      transform: translateY(-1px);
+      flex-grow: 1;
+      border-bottom: 1px dotted rgba(217, 227, 225, 0.15);
+      position: relative;
+      top: -4px;
     }
 
     .row .value {
       color: var(--accent);
-      text-align: right;
       font-weight: 700;
-      width: 120px;
+      padding-left: 8px;
+      text-shadow: 0 0 4px var(--accent-glow);
     }
 
-    .pubkey-wrap {
-      margin-top: 10px;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      padding: 12px 0;
+    /* 스페셜 하이라이트 값 */
+    .value.highlight {
+      background: var(--accent);
+      color: #000;
+      padding: 0 6px;
+      text-shadow: none;
+    }
+
+    /* 하단 키 정보 영역 (양쪽 합침) */
+    .secure-channel {
+      grid-column: 1 / -1; /* 전체 너비 사용 */
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px dashed var(--line);
+      text-align: center;
     }
 
     .pubkey-label {
-      font-size: 12px;
-      color: var(--fg-dim);
+      font-size: 11px;
+      color: var(--accent);
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      letter-spacing: 0.1em;
     }
 
     .pubkey {
       font-size: 13px;
-      line-height: 1.7;
-      word-break: break-all;
+      color: var(--fg-dim);
       cursor: pointer;
-      color: var(--fg);
+      word-break: break-all;
+      background: rgba(0,0,0,0.5);
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      display: inline-block;
+      transition: all 0.2s;
     }
 
-    .pubkey:hover { color: #fff; }
-
-    .quote {
-      width: min(100%, 760px);
-      margin: 4px auto 0;
-      text-align: center;
-      color: var(--fg-dim);
-      font-size: 13px;
+    .pubkey:hover { 
+      color: var(--accent); 
+      border-color: var(--accent-line);
     }
 
     .footer {
-      width: min(100%, 760px);
-      margin: 14px auto 0;
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      font-size: 10px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
+      margin-top: 30px;
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 0.2em;
     }
 
     .footer a {
-      color: var(--fg-soft);
+      color: var(--fg-dim);
       text-decoration: none;
+      margin: 0 10px;
+      transition: color 0.2s;
     }
 
     .footer a:hover { color: var(--accent); }
 
-    @media (max-width: 720px) {
-      .page { padding: 14px 10px 18px; }
-
-      .brand .sub,
-      .footer {
-        letter-spacing: 0.12em;
+    /* 모바일 반응형 (1단으로 변경) */
+    @media (max-width: 768px) {
+      .menu-board {
+        grid-template-columns: 1fr;
+        gap: 30px;
       }
-
-      .sections {
-        width: 100%;
-      }
-
-      .row {
-        grid-template-columns: 1fr auto;
-        gap: 10px;
-        align-items: start;
-      }
-
-      .row .fill { display: none; }
-
-      .row .value {
-        width: auto;
-        white-space: nowrap;
-      }
-      
-      .ascii-art {
-        font-size: 8px; /* 모바일에서는 폰트 크기를 더 줄임 */
-      }
+      .ascii-art { font-size: 8px; }
+      .terminal { padding: 24px 16px 20px; }
     }
   </style>
 </head>
@@ -255,63 +242,57 @@
 ███████╗╚██████╔╝███████║    ██║     ╚██████╔╝███████╗███████╗╚██████╔╝███████║    ██║  ██║███████╗██║  ██║██║ ╚═╝ ██║██║  ██║██║ ╚████║╚██████╔╝███████║    ███████╗   ██║   ██████╔╝
 ╚══════╝ ╚═════╝ ╚══════╝    ╚═╝      ╚═════╝ ╚══════╝╚══════╝ ╚═════╝ ╚══════╝    ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝    ╚══════╝   ╚═╝   ╚═════╝ </pre>
       </div>
-
       <div class="sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</div>
     </div>
 
     <div class="terminal">
-      <div class="terminal-head">[ ROUTING MENU ]</div>
-      <div class="dash"></div>
+      <div class="terminal-head">STORE POS SYSTEM v1.2<span class="blink">_</span></div>
 
-      <div class="sections">
-        <div class="section">
-          <div class="section-title">[ NODE STATS ]</div>
-          <div class="row"><span class="label">TOTAL INVENTORY</span><span class="fill"></span><span class="value" id="capacityValue">-- BTC</span></div>
-          <div class="row"><span class="label">ACTIVE CHANNELS</span><span class="fill"></span><span class="value" id="channelsValue">--</span></div>
-          <div class="row"><span class="label">MIN ENTRY SIZE</span><span class="fill"></span><span class="value">3M SATS</span></div>
-          <div class="row"><span class="label">REBALANCING</span><span class="fill"></span><span class="value">ACTIVE</span></div>
-          <div class="row"><span class="label">FEE POLICY</span><span class="fill"></span><span class="value">DYNAMIC</span></div>
-        </div>
+      <div class="menu-board">
+        <div class="column">
+          <div class="section">
+            <div class="section-title"><span>[ TODAY'S INGREDIENTS ]</span><span>SIZE</span></div>
+            <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value" id="capacityValue">-- BTC</span></div>
+            <div class="row"><span class="label">ACTIVE FRANCHISES</span><span class="fill"></span><span class="value" id="channelsValue">--</span></div>
+            <div class="row"><span class="label">MINIMUM ORDER</span><span class="fill"></span><span class="value highlight">3M SATS</span></div>
+            <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
+          </div>
 
-        <div class="section">
-          <div class="section-title">[ NODE SPECS ]</div>
-          <div class="row"><span class="label">MEMORY</span><span class="fill"></span><span class="value">64GB RAM</span></div>
-          <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value">4TB NVMe SSD</span></div>
-          <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS BACKED</span></div>
-          <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value">99.9%</span></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">[ ROUTING PROFILES ]</div>
-          <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">DISCOUNT</span></div>
-          <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">STANDARD</span></div>
-          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">PREMIUM</span></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">[ ROUTING STRATEGY ]</div>
-          <div class="row"><span class="label">LIQUIDITY MANAGEMENT</span><span class="fill"></span><span class="value">ACTIVE</span></div>
-          <div class="row"><span class="label">REBALANCING</span><span class="fill"></span><span class="value">CONTINUOUS</span></div>
-          <div class="row"><span class="label">FEE MODEL</span><span class="fill"></span><span class="value">ADAPTIVE</span></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">[ SECURE CHANNEL ]</div>
-          <div class="row"><span class="label">CONTACT</span><span class="fill"></span><span class="value">PROTON</span></div>
-          <div class="pubkey-wrap">
-            <div class="pubkey-label">PUBKEY</div>
-            <div class="pubkey" id="pubkeyText" title="Click to copy">loading...</div>
+          <div class="section" style="margin-top: 40px;">
+            <div class="section-title"><span>[ KITCHEN EQUIPMENT ]</span><span>SPEC</span></div>
+            <div class="row"><span class="label">RECIPE BOOK (RAM)</span><span class="fill"></span><span class="value">64GB</span></div>
+            <div class="row"><span class="label">FREEZER (STORAGE)</span><span class="fill"></span><span class="value">4TB NVMe</span></div>
+            <div class="row"><span class="label">BACKUP GEN</span><span class="fill"></span><span class="value">UPS</span></div>
+            <div class="row"><span class="label">STORE HOURS</span><span class="fill"></span><span class="value">99.9%</span></div>
           </div>
         </div>
-      </div>
 
-      <div class="quote">"If the route matters, the kitchen is open."</div>
+        <div class="column">
+          <div class="section">
+            <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEE</span></div>
+            <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">MILD</span></div>
+            <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">CLASSIC</span></div>
+            <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value highlight">SPICY</span></div>
+            <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value">DYNAMIC</span></div>
+          </div>
+
+          <div class="section" style="margin-top: 40px;">
+            <div class="section-title"><span>[ CONTACT / INFO ]</span><span>COMMS</span></div>
+            <div class="row"><span class="label">DIRECT LINE</span><span class="fill"></span><span class="value">PROTON</span></div>
+            <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
+          </div>
+        </div>
+
+        <div class="secure-channel">
+          <div class="pubkey-label">>> SECURE DELIVERY ROUTE (PUBKEY) <<</div>
+          <div class="pubkey" id="pubkeyText" title="Click to copy">loading...</div>
+        </div>
+      </div>
     </div>
 
     <div class="footer">
-      <a id="ambossLink" href="#" target="_blank" rel="noopener noreferrer">AMBOSS</a>
-      <span>/</span>
-      <a id="mempoolLink" href="#" target="_blank" rel="noopener noreferrer">MEMPOOL</a>
+      <a id="ambossLink" href="#" target="_blank">AMBOSS</a> | 
+      <a id="mempoolLink" href="#" target="_blank">MEMPOOL</a>
     </div>
   </div>
 
