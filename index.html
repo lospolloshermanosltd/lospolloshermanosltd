@@ -1,428 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LOS POLLOS HERMANOS LTD</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LOS POLLOS HERMANOS LTD</title>
 
-  <style>
-    :root {
-      --bg: #000;
-      --fg: #d9e3e1;
-      --fg-soft: rgba(217, 227, 225, 0.82);
-      --fg-dim: rgba(217, 227, 225, 0.48);
-      --line: rgba(217, 227, 225, 0.12);
-      --accent: #f3d80d;
-      --accent-soft: rgba(243, 216, 13, 0.08);
-      --accent-line: rgba(243, 216, 13, 0.28);
-    }
+<style>
+:root {
+  --bg: #000;
+  --fg: #d9e3e1;
+  --fg-dim: rgba(217,227,225,0.48);
+  --accent: #f3d80d;
+}
 
-    * { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: monospace;
+  display: flex;
+  justify-content: center;
+}
 
-    html, body {
-      margin: 0;
-      min-height: 100%;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
+.page {
+  width: min(100%,1180px);
+  padding: 20px;
+}
 
-    body {
-      display: flex;
-      justify-content: center;
-    }
+.brand {
+  text-align: center;
+}
 
-    .page {
-      width: min(100%, 1180px);
-      padding: 22px 18px 30px;
-    }
+/* 핵심: ASCII 영역 */
+.alias-wrap {
+  overflow-x: auto;
+  white-space: nowrap;
+}
 
-    .brand {
-      text-align: center;
-      margin-bottom: 18px;
-    }
+.alias-text {
+  font-size: 8px; /* 중요: 크기 줄임 */
+  line-height: 1.1;
+  display: inline-block;
+  color: var(--accent);
+}
 
-    /* 상단 한 줄 alias 간판 */
-    .alias-wrap {
-      width: min(100%, 1080px);
-      margin: 0 auto;
-      overflow-x: auto;
-      overflow-y: hidden;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
+.sub {
+  margin-top: 10px;
+  font-size: 10px;
+  color: var(--fg-dim);
+  letter-spacing: 0.2em;
+}
 
-    .alias-wrap::-webkit-scrollbar {
-      display: none;
-    }
-
-    .alias-sign {
-      display: block;
-      width: 1080px;
-      height: auto;
-      margin: 0 auto;
-    }
-
-    .brand .sub {
-      margin-top: 14px;
-      color: var(--fg-dim);
-      font-size: 10px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-    }
-
-    .terminal {
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      padding: 18px 0 16px;
-      text-align: center;
-    }
-
-    .terminal-head {
-      display: inline-block;
-      padding: 9px 18px 8px;
-      border: 1px solid var(--accent-line);
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      box-shadow: inset 0 0 0 1px rgba(243, 216, 13, 0.08);
-    }
-
-    .dash {
-      height: 1px;
-      background: linear-gradient(to right, transparent 0, var(--accent-line) 12%, var(--accent-line) 88%, transparent 100%);
-      margin: 16px auto 20px;
-      width: min(100%, 860px);
-    }
-
-    .sections {
-      width: min(100%, 760px);
-      margin: 0 auto;
-      text-align: left;
-    }
-
-    .section {
-      margin-bottom: 30px;
-    }
-
-    .section-title {
-      color: #fff;
-      font-size: 13px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      padding-left: 2px;
-    }
-
-    .row {
-      display: grid;
-      grid-template-columns: max-content 1fr 120px;
-      align-items: center;
-      gap: 8px;
-      min-height: 30px;
-      font-size: 14px;
-      line-height: 1.45;
-      color: var(--fg-soft);
-    }
-
-    .row + .row { margin-top: 8px; }
-
-    .row .label,
-    .row .value {
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .row .label::before {
-      content: "> ";
-      color: var(--accent);
-    }
-
-    .row .fill {
-      border-bottom: 1px dotted rgba(217, 227, 225, 0.1);
-      transform: translateY(-1px);
-    }
-
-    .row .value {
-      color: var(--accent);
-      text-align: right;
-      font-weight: 700;
-      width: 120px;
-    }
-
-    .pubkey-wrap {
-      margin-top: 10px;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      padding: 12px 0;
-    }
-
-    .pubkey-label {
-      font-size: 12px;
-      color: var(--fg-dim);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .pubkey {
-      font-size: 13px;
-      line-height: 1.7;
-      word-break: break-all;
-      cursor: pointer;
-      color: var(--fg);
-    }
-
-    .pubkey:hover { color: #fff; }
-
-    .quote {
-      width: min(100%, 760px);
-      margin: 4px auto 0;
-      text-align: center;
-      color: var(--fg-dim);
-      font-size: 13px;
-    }
-
-    .footer {
-      width: min(100%, 760px);
-      margin: 14px auto 0;
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      font-size: 10px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-    }
-
-    .footer a {
-      color: var(--fg-soft);
-      text-decoration: none;
-    }
-
-    .footer a:hover { color: var(--accent); }
-
-    @media (max-width: 720px) {
-      .page { padding: 14px 10px 18px; }
-
-      .brand .sub,
-      .footer {
-        letter-spacing: 0.12em;
-      }
-
-      .sections {
-        width: 100%;
-      }
-
-      .row {
-        grid-template-columns: 1fr auto;
-        gap: 10px;
-        align-items: start;
-      }
-
-      .row .fill { display: none; }
-
-      .row .value {
-        width: auto;
-        white-space: nowrap;
-      }
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <div class="page">
-    <div class="brand">
-      <div class="alias-wrap">
-        <!-- 한 줄 간판형 alias -->
-        <svg class="alias-sign" viewBox="0 0 1080 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LOS POLLOS HERMANOS LTD">
-          <defs>
-            <filter id="retroShadow" x="-10%" y="-10%" width="130%" height="140%">
-              <feOffset dx="4" dy="4" result="off1"/>
-              <feOffset dx="8" dy="8" result="off2"/>
-              <feColorMatrix in="off1" type="matrix"
-                values="0 0 0 0 0
-                        0 0 0 0 0
-                        0 0 0 0 0
-                        0 0 0 0.95 0" result="black1"/>
-              <feColorMatrix in="off2" type="matrix"
-                values="0 0 0 0 0.95
-                        0 0 0 0 0.85
-                        0 0 0 0 0.05
-                        0 0 0 0.22 0" result="gold2"/>
-              <feMerge>
-                <feMergeNode in="black1"/>
-                <feMergeNode in="gold2"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
+<div class="page">
+  <div class="brand">
 
-            <filter id="pixelEdge" x="-10%" y="-10%" width="120%" height="130%">
-              <feMorphology operator="dilate" radius="1.1" in="SourceAlpha" result="thick"/>
-              <feColorMatrix in="thick" type="matrix"
-                values="0 0 0 0 0
-                        0 0 0 0 0
-                        0 0 0 0 0
-                        0 0 0 1 0" result="outlineAlpha"/>
-              <feFlood flood-color="#000000" result="outlineColor"/>
-              <feComposite in="outlineColor" in2="outlineAlpha" operator="in" result="outline"/>
-              <feMerge>
-                <feMergeNode in="outline"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-
-          <!-- 배경 없이 글자만 -->
-          <g filter="url(#retroShadow)">
-            <text
-              x="540"
-              y="102"
-              text-anchor="middle"
-              fill="#f3d80d"
-              font-family="Impact, Haettenschweiler, 'Arial Black', sans-serif"
-              font-size="66"
-              font-weight="900"
-              letter-spacing="4"
-              style="paint-order: stroke; stroke: #000; stroke-width: 3; stroke-linejoin: bevel;"
-              filter="url(#pixelEdge)"
-            >
-              LOS POLLOS HERMANOS LTD
-            </text>
-          </g>
-        </svg>
-      </div>
-
-      <div class="sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</div>
+    <div class="alias-wrap">
+<pre class="alias-text">
+██╗      ██████╗ ███████╗    ██████╗  ██████╗ ██╗     ██╗      ██████╗ ███████╗    ██╗  ██╗███████╗██████╗ ███╗   ███╗ █████╗ ███╗   ██╗ ██████╗ ███████╗    ██╗     ████████╗██████╗
+██║     ██╔═══██╗██╔════╝    ██╔══██╗██╔═══██╗██║     ██║     ██╔═══██╗██╔════╝    ██║  ██║██╔════╝██╔══██╗████╗ ████║██╔══██╗████╗  ██║██╔═══██╗██╔════╝    ██║     ╚══██╔══╝██╔══██╗
+██║     ██║   ██║███████╗    ██████╔╝██║   ██║██║     ██║     ██║   ██║███████╗    ███████║█████╗  ██████╔╝██╔████╔██║███████║██╔██╗ ██║██║   ██║███████╗    ██║        ██║   ██║  ██║
+██║     ██║   ██║╚════██║    ██╔═══╝ ██║   ██║██║     ██║     ██║   ██║╚════██║    ██╔══██║██╔══╝  ██╔══██╗██║╚██╔╝██║██╔══██║██║╚██╗██║██║   ██║╚════██║    ██║        ██║   ██║  ██║
+███████╗╚██████╔╝███████║    ██║     ╚██████╔╝███████╗███████╗╚██████╔╝███████║    ██║  ██║███████╗██║  ██║██║ ╚═╝ ██║██║  ██║██║ ╚████║╚██████╔╝███████║    ███████╗   ██║   ██████╔╝
+╚══════╝ ╚═════╝ ╚══════╝    ╚═╝      ╚═════╝ ╚══════╝╚══════╝ ╚═════╝ ╚══════╝    ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝    ╚══════╝   ╚═╝   ╚═════╝
+</pre>
     </div>
 
-    <div class="terminal">
-      <div class="terminal-head">[ ROUTING MENU ]</div>
-      <div class="dash"></div>
+    <div class="sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</div>
 
-      <div class="sections">
-        <div class="section">
-          <div class="section-title">[ NODE STATS ]</div>
-          <div class="row"><span class="label">TOTAL INVENTORY</span><span class="fill"></span><span class="value" id="capacityValue">-- BTC</span></div>
-          <div class="row"><span class="label">ACTIVE CHANNELS</span><span class="fill"></span><span class="value" id="channelsValue">--</span></div>
-          <div class="row"><span class="label">MIN ENTRY SIZE</span><span class="fill"></span><span class="value">3M SATS</span></div>
-          <div class="row"><span class="label">REBALANCING</span><span class="fill"></span><span class="value">ACTIVE</span></div>
-          <div class="row"><span class="label">FEE POLICY</span><span class="fill"></span><span class="value">DYNAMIC</span></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">[ NODE SPECS ]</div>
-          <div class="row"><span class="label">MEMORY</span><span class="fill"></span><span class="value">64GB RAM</span></div>
-          <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value">4TB NVMe SSD</span></div>
-          <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS BACKED</span></div>
-          <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value">99.9%</span></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">[ ROUTING PROFILES ]</div>
-          <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">DISCOUNT</span></div>
-          <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">STANDARD</span></div>
-          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">PREMIUM</span></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">[ ROUTING STRATEGY ]</div>
-          <div class="row"><span class="label">LIQUIDITY MANAGEMENT</span><span class="fill"></span><span class="value">ACTIVE</span></div>
-          <div class="row"><span class="label">REBALANCING</span><span class="fill"></span><span class="value">CONTINUOUS</span></div>
-          <div class="row"><span class="label">FEE MODEL</span><span class="fill"></span><span class="value">ADAPTIVE</span></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">[ SECURE CHANNEL ]</div>
-          <div class="row"><span class="label">CONTACT</span><span class="fill"></span><span class="value">PROTON</span></div>
-          <div class="pubkey-wrap">
-            <div class="pubkey-label">PUBKEY</div>
-            <div class="pubkey" id="pubkeyText" title="Click to copy">loading...</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="quote">"If the route matters, the kitchen is open."</div>
-    </div>
-
-    <div class="footer">
-      <a id="ambossLink" href="#" target="_blank" rel="noopener noreferrer">AMBOSS</a>
-      <span>/</span>
-      <a id="mempoolLink" href="#" target="_blank" rel="noopener noreferrer">MEMPOOL</a>
-    </div>
   </div>
-
-  <script>
-    const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
-    const API_URL = `https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`;
-    const AMBOSS_URL = `https://amboss.space/node/${PUBKEY}`;
-    const MEMPOOL_URL = `https://mempool.space/lightning/node/${PUBKEY}`;
-
-    const capacityEl = document.getElementById('capacityValue');
-    const channelsEl = document.getElementById('channelsValue');
-    const pubkeyEl = document.getElementById('pubkeyText');
-    const ambossEl = document.getElementById('ambossLink');
-    const mempoolEl = document.getElementById('mempoolLink');
-
-    pubkeyEl.textContent = PUBKEY;
-    ambossEl.href = AMBOSS_URL;
-    mempoolEl.href = MEMPOOL_URL;
-
-    pubkeyEl.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(PUBKEY);
-        const original = PUBKEY;
-        pubkeyEl.textContent = `${original}  [COPIED]`;
-        setTimeout(() => { pubkeyEl.textContent = original; }, 1200);
-      } catch (_) {}
-    });
-
-    function toNumber(value) {
-      if (typeof value === 'number' && Number.isFinite(value)) return value;
-      if (typeof value === 'string') {
-        const parsed = Number(value.replace(/,/g, '').trim());
-        return Number.isFinite(parsed) ? parsed : null;
-      }
-      return null;
-    }
-
-    function formatBtcFromSats(value) {
-      const n = toNumber(value);
-      if (n === null) return '-- BTC';
-      return `${(n / 100000000).toFixed(2)} BTC`;
-    }
-
-    function formatInt(value) {
-      const n = toNumber(value);
-      if (n === null) return '--';
-      return new Intl.NumberFormat('en-US').format(n);
-    }
-
-    async function loadNode() {
-      try {
-        const res = await fetch(API_URL, {
-          method: 'GET',
-          headers: { Accept: 'application/json' },
-          cache: 'no-store'
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-        const data = await res.json();
-        const capacityValue = data.capacity ?? data.total_capacity ?? data.capacity_sat ?? null;
-        const channelsValue = data.active_channel_count ?? data.channels ?? data.num_channels ?? data.channel_count ?? data.open_channel_count ?? null;
-
-        capacityEl.textContent = formatBtcFromSats(capacityValue);
-        channelsEl.textContent = formatInt(channelsValue);
-      } catch (error) {
-        console.error(error);
-        capacityEl.textContent = '-- BTC';
-        channelsEl.textContent = '--';
-      }
-    }
-
-    loadNode();
-  </script>
+</div>
 </body>
 </html>
