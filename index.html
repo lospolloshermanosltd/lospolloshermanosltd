@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,16 +7,17 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --bg: #000000;
-      --ink: #C7D3D1;
-      --ink-soft: rgba(199,211,209,.82);
-      --ink-dim: rgba(199,211,209,.56);
-      --line: rgba(199,211,209,.12);
-      --value: #E6ECEB;
+      --ink: #c7d3d1;
+      --ink-soft: rgba(199, 211, 209, 0.84);
+      --ink-dim: rgba(199, 211, 209, 0.56);
+      --line: rgba(199, 211, 209, 0.14);
+      --value: #eef3f2;
+      --accent: rgba(199, 211, 209, 0.92);
     }
 
     * {
@@ -42,226 +43,188 @@
     }
 
     .page {
-      width: min(100%, 1180px);
-      padding: 10px 20px 16px;
+      width: min(100%, 1080px);
+      padding: 16px 18px 22px;
     }
 
     .hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 2px;
+      text-align: center;
+      padding-top: 4px;
+      margin-bottom: 18px;
+    }
+
+    .ascii {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(8px, 1vw, 12px);
+      line-height: 1.05;
+      color: var(--ink-soft);
+      white-space: pre;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--line);
     }
 
     .hero-title {
       font-family: "Jost", sans-serif;
-      font-size: clamp(32px, 3.6vw, 58px);
+      font-size: clamp(24px, 3vw, 42px);
       font-weight: 600;
-      letter-spacing: .035em;
-      line-height: 1;
-      color: var(--ink);
-      text-align: center;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 8px;
-      opacity: .96;
+      color: var(--value);
+      margin-bottom: 6px;
     }
 
     .hero-sub {
-      font-size: 9px;
-      letter-spacing: .22em;
+      font-size: 10px;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
       color: var(--ink-dim);
+    }
+
+    .terminal {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .terminal-header {
       text-align: center;
-      margin-bottom: 14px;
-      opacity: .82;
-    }
-
-    .oval-stage {
-      position: relative;
-      width: min(66vw, 640px);
-      aspect-ratio: 1312 / 931;
-      margin-bottom: 8px;
-    }
-
-    .oval-base {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .quad {
-      position: absolute;
-      width: 19%;
-      text-align: center;
-      transform: translate(-50%, -50%);
-    }
-
-    .quad-label {
-      font-family: "Jost", sans-serif;
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: .14em;
+      font-size: 14px;
+      letter-spacing: 0.14em;
+      color: var(--value);
       text-transform: uppercase;
-      color: var(--ink-soft);
       margin-bottom: 10px;
     }
 
-    .quad-value {
-      font-family: "Jost", sans-serif;
-      font-weight: 600;
-      line-height: 1;
-      white-space: nowrap;
-      color: var(--value);
-      text-transform: uppercase;
-    }
-
-    .quad-capacity { top: 36.1%; left: 37.7%; }
-    .quad-channels { top: 36.1%; left: 62.3%; }
-    .quad-storage  { top: 65.2%; left: 37.7%; }
-    .quad-ram      { top: 65.2%; left: 62.3%; }
-
-    #cap {
-      font-size: clamp(16px, 1.6vw, 24px);
-      letter-spacing: -.01em;
-    }
-
-    #ch {
-      font-size: clamp(16px, 1.55vw, 23px);
-      letter-spacing: 0;
-    }
-
-    .quad-storage .quad-value {
-      font-size: clamp(15px, 1.42vw, 21px);
-      letter-spacing: 0;
-    }
-
-    .quad-ram .quad-value {
-      font-size: clamp(16px, 1.5vw, 22px);
-      letter-spacing: 0;
-    }
-
-    .content {
-      width: 100%;
-      max-width: 860px;
-      margin: 0 auto;
+    .divider {
+      color: var(--ink-dim);
+      white-space: pre;
+      overflow: hidden;
+      margin: 8px 0;
     }
 
     .section {
-      border-top: 1px solid var(--line);
-      padding-top: 12px;
-      margin-top: 12px;
+      margin-top: 10px;
     }
 
     .section-title {
-      font-family: "Jost", sans-serif;
-      font-size: 9px;
-      letter-spacing: .28em;
+      font-size: 13px;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
+      color: var(--value);
+      margin-bottom: 6px;
+    }
+
+    .menu-line {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      font-size: 14px;
+      line-height: 1.65;
       color: var(--ink-soft);
-      margin-bottom: 10px;
+    }
+
+    .menu-line::before {
+      content: "*";
+      color: var(--ink-soft);
+    }
+
+    .dots {
+      border-bottom: 1px dotted rgba(199, 211, 209, 0.26);
+      transform: translateY(-1px);
+    }
+
+    .label,
+    .value {
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+
+    .value {
+      color: var(--value);
     }
 
     .pubkey {
-      font-size: 13px;
-      line-height: 1.62;
-      word-break: break-all;
-      padding: 8px 0;
+      margin-top: 8px;
+      padding: 10px 0;
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
-      cursor: pointer;
+      font-size: 13px;
+      line-height: 1.65;
+      word-break: break-all;
       color: var(--ink);
+      cursor: pointer;
     }
 
     .pubkey:hover {
       color: var(--value);
     }
 
-    .meta-line {
+    .quote {
+      margin-top: 12px;
       font-size: 13px;
-      line-height: 1.55;
       color: var(--ink-dim);
-      padding: 2px 0;
+      text-align: center;
     }
 
-    .links {
-      margin-top: 10px;
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 14px;
       font-size: 10px;
-      letter-spacing: .22em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
     }
 
-    .links a {
+    .footer-links a {
       color: var(--ink);
       text-decoration: none;
     }
 
-    .links a:hover {
+    .footer-links a:hover {
       color: var(--value);
     }
 
-    .footer {
+    .footer-strip {
       margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
       text-align: center;
-      font-size: 8px;
-      letter-spacing: .24em;
+      font-size: 10px;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--ink-dim);
-      border-top: 1px solid var(--line);
-      padding-top: 10px;
     }
 
-    @media (max-width: 900px) {
-      .oval-stage {
-        width: min(74vw, 600px);
-      }
-    }
-
-    @media (max-width: 640px) {
+    @media (max-width: 680px) {
       .page {
-        padding: 10px 14px 14px;
+        padding: 12px 12px 18px;
       }
 
-      .hero-title {
-        font-size: clamp(26px, 8vw, 40px);
-      }
-
-      .hero-sub {
+      .ascii {
         font-size: 8px;
-        letter-spacing: .12em;
-        margin-bottom: 12px;
       }
 
-      .oval-stage {
-        width: min(90vw, 560px);
+      .terminal-header {
+        font-size: 12px;
       }
 
-      .quad {
-        width: 22%;
+      .section-title {
+        font-size: 12px;
       }
 
-      .quad-label {
-        font-size: 8px;
-        margin-bottom: 6px;
+      .menu-line {
+        font-size: 12px;
       }
 
-      #cap,
-      #ch,
-      .quad-storage .quad-value,
-      .quad-ram .quad-value {
-        font-size: clamp(13px, 3.7vw, 19px);
-      }
-
-      .content {
-        max-width: 100%;
-      }
-
-      .pubkey,
-      .meta-line {
-        font-size: 11px;
+      .hero-sub,
+      .footer-links,
+      .footer-strip {
+        letter-spacing: 0.14em;
       }
     }
   </style>
@@ -269,58 +232,67 @@
 <body>
   <div class="page">
     <div class="hero">
+      <div class="ascii">_      ____   _____    _____   ____  _      _      ____   _____ 
+| |    / __ \ / ____|  |  __ \ / __ \| |    | |    / __ \ / ____|
+| |   | |  | | (___    | |__) | |  | | |    | |   | |  | | (___  
+| |   | |  | |\___ \   |  ___/| |  | | |    | |   | |  | |\___ \ 
+| |___| |__| |____) |  | |    | |__| | |____| |___| |__| |____) |
+|______\____/|_____/   |_|     \____/|______|______\____/|_____/ </div>
       <div class="hero-title">LOS POLLOS HERMANOS LTD</div>
-      <div class="hero-sub">WHERE SOMETHING DELICIOUS IS ALWAYS ROUTING</div>
-
-      <div class="oval-stage">
-        <img src="ozark-oval.png" class="oval-base" alt="Ozark-inspired oval mark" />
-
-        <div class="quad quad-capacity">
-          <div class="quad-label">CAPACITY</div>
-          <div class="quad-value" id="cap">...</div>
-        </div>
-
-        <div class="quad quad-channels">
-          <div class="quad-label">CHANNELS</div>
-          <div class="quad-value" id="ch">...</div>
-        </div>
-
-        <div class="quad quad-storage">
-          <div class="quad-label">STORAGE</div>
-          <div class="quad-value">4TB</div>
-        </div>
-
-        <div class="quad quad-ram">
-          <div class="quad-label">RAM</div>
-          <div class="quad-value">64GB</div>
-        </div>
-      </div>
+      <div class="hero-sub">If the route matters, the kitchen is open.</div>
     </div>
 
-    <div class="content">
-      <div class="section">
-        <div class="section-title">PUBLIC KEY</div>
-        <div class="pubkey" id="pubkeyText" onclick="navigator.clipboard.writeText(this.innerText)">
-          loading...
-        </div>
+    <div class="terminal">
+      <div class="terminal-header">[ Routing Menu ]</div>
+      <div class="divider">------------------------------------------------------------</div>
 
-        <div class="links">
-          <a id="ambossLink" href="#" target="_blank" rel="noopener noreferrer">AMBOSS</a>
-          &nbsp;/&nbsp;
-          <a id="mempoolLink" href="#" target="_blank" rel="noopener noreferrer">MEMPOOL</a>
-        </div>
+      <div class="section">
+        <div class="section-title">[ Node Stats ]</div>
+        <div class="menu-line"><span class="label">Total Inventory</span><span class="dots"></span><span class="value" id="capacityValue">-- BTC</span></div>
+        <div class="menu-line"><span class="label">Active Channels</span><span class="dots"></span><span class="value" id="channelsValue">--</span></div>
+        <div class="menu-line"><span class="label">Min Entry Size</span><span class="dots"></span><span class="value">3M SATS</span></div>
+        <div class="menu-line"><span class="label">Rebalancing</span><span class="dots"></span><span class="value">ACTIVE</span></div>
+        <div class="menu-line"><span class="label">Fee Policy</span><span class="dots"></span><span class="value">DYNAMIC</span></div>
       </div>
 
       <div class="section">
-        <div class="section-title">OPERATIONS</div>
-        <div class="meta-line">REBALANCING: ACTIVE</div>
-        <div class="meta-line">FEE MANAGEMENT: ACTIVE</div>
+        <div class="section-title">[ Node Specs ]</div>
+        <div class="menu-line"><span class="label">Memory</span><span class="dots"></span><span class="value">64GB RAM</span></div>
+        <div class="menu-line"><span class="label">Storage</span><span class="dots"></span><span class="value">4TB NVMe SSD</span></div>
+        <div class="menu-line"><span class="label">Power</span><span class="dots"></span><span class="value">UPS BACKED</span></div>
+        <div class="menu-line"><span class="label">Uptime</span><span class="dots"></span><span class="value">99.9%</span></div>
       </div>
 
-      <div class="footer">
-        LOS POLLOS HERMANOS LTD
+      <div class="section">
+        <div class="section-title">[ Routing Menu ]</div>
+        <div class="menu-line"><span class="label">Outbound Heavy</span><span class="dots"></span><span class="value">Discount</span></div>
+        <div class="menu-line"><span class="label">Balanced</span><span class="dots"></span><span class="value">Standard</span></div>
+        <div class="menu-line"><span class="label">Inbound Heavy</span><span class="dots"></span><span class="value">Premium</span></div>
       </div>
+
+      <div class="section">
+        <div class="section-title">[ Routing Strategy ]</div>
+        <div class="menu-line"><span class="label">Liquidity Management</span><span class="dots"></span><span class="value">ACTIVE</span></div>
+        <div class="menu-line"><span class="label">Rebalancing</span><span class="dots"></span><span class="value">CONTINUOUS</span></div>
+        <div class="menu-line"><span class="label">Fee Model</span><span class="dots"></span><span class="value">ADAPTIVE</span></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">[ Secure Channel ]</div>
+        <div class="menu-line"><span class="label">Contact</span><span class="dots"></span><span class="value">PROTON</span></div>
+        <div class="pubkey" id="pubkeyText" title="Click to copy">loading...</div>
+      </div>
+
+      <div class="quote">"If the route matters, the kitchen is open."</div>
     </div>
+
+    <div class="footer-links">
+      <a id="ambossLink" href="#" target="_blank" rel="noopener noreferrer">AMBOSS</a>
+      <span>/</span>
+      <a id="mempoolLink" href="#" target="_blank" rel="noopener noreferrer">MEMPOOL</a>
+    </div>
+
+    <div class="footer-strip">LOS POLLOS HERMANOS LTD · ROUTING NODE</div>
   </div>
 
   <script>
@@ -329,33 +301,43 @@
     const AMBOSS_URL = `https://amboss.space/node/${PUBKEY}`;
     const MEMPOOL_URL = `https://mempool.space/lightning/node/${PUBKEY}`;
 
-    const elCap = document.getElementById('cap');
-    const elCh = document.getElementById('ch');
-    const elPub = document.getElementById('pubkeyText');
-    const elAmboss = document.getElementById('ambossLink');
-    const elMempool = document.getElementById('mempoolLink');
+    const capacityEl = document.getElementById('capacityValue');
+    const channelsEl = document.getElementById('channelsValue');
+    const pubkeyEl = document.getElementById('pubkeyText');
+    const ambossEl = document.getElementById('ambossLink');
+    const mempoolEl = document.getElementById('mempoolLink');
 
-    elPub.textContent = PUBKEY;
-    elAmboss.href = AMBOSS_URL;
-    elMempool.href = MEMPOOL_URL;
+    pubkeyEl.textContent = PUBKEY;
+    ambossEl.href = AMBOSS_URL;
+    mempoolEl.href = MEMPOOL_URL;
 
-    function toNumber(v) {
-      if (typeof v === 'number' && Number.isFinite(v)) return v;
-      if (typeof v === 'string') {
-        const n = Number(v.replace(/,/g, '').trim());
-        return Number.isFinite(n) ? n : null;
+    pubkeyEl.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(PUBKEY);
+        pubkeyEl.textContent = `${PUBKEY}  [COPIED]`;
+        setTimeout(() => {
+          pubkeyEl.textContent = PUBKEY;
+        }, 1200);
+      } catch (_) {}
+    });
+
+    function toNumber(value) {
+      if (typeof value === 'number' && Number.isFinite(value)) return value;
+      if (typeof value === 'string') {
+        const parsed = Number(value.replace(/,/g, '').trim());
+        return Number.isFinite(parsed) ? parsed : null;
       }
       return null;
     }
 
-    function formatBtcFromSats(v) {
-      const n = toNumber(v);
+    function formatBtcFromSats(value) {
+      const n = toNumber(value);
       if (n === null) return '-- BTC';
       return `${(n / 100000000).toFixed(2)} BTC`;
     }
 
-    function formatInt(v) {
-      const n = toNumber(v);
+    function formatInt(value) {
+      const n = toNumber(value);
       if (n === null) return '--';
       return new Intl.NumberFormat('en-US').format(n);
     }
@@ -364,7 +346,7 @@
       try {
         const res = await fetch(API_URL, {
           method: 'GET',
-          headers: { 'Accept': 'application/json' },
+          headers: { Accept: 'application/json' },
           cache: 'no-store'
         });
 
@@ -386,12 +368,12 @@
           data.open_channel_count ??
           null;
 
-        elCap.textContent = formatBtcFromSats(capacityValue);
-        elCh.textContent = formatInt(channelsValue);
-      } catch (err) {
-        console.error(err);
-        elCap.textContent = '-- BTC';
-        elCh.textContent = '--';
+        capacityEl.textContent = formatBtcFromSats(capacityValue);
+        channelsEl.textContent = formatInt(channelsValue);
+      } catch (error) {
+        console.error(error);
+        capacityEl.textContent = '-- BTC';
+        channelsEl.textContent = '--';
       }
     }
 
