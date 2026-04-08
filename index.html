@@ -20,7 +20,8 @@
       --fg: #d9e3e1;
       --fg-soft: rgba(217, 227, 225, 0.82);
       --fg-dim: rgba(217, 227, 225, 0.48);
-      --line: rgba(217, 227, 225, 0.12);
+      /* [수정] 차분한 회색 테두리에서 깊은 산업용 네이비로 변경, 투명도 제거 */
+      --line: #1B3E5F; 
       --accent: #f3d80d;
       --accent-soft: rgba(243, 216, 13, 0.08);
       --accent-line: rgba(243, 216, 13, 0.28);
@@ -46,7 +47,6 @@
       justify-content: center;
       align-items: center; 
       min-height: 100vh; 
-      /* [수정] 상하 대칭을 위한 35px 패딩 */
       padding: 35px 20px; 
     }
 
@@ -57,7 +57,6 @@
 
     .brand {
       text-align: center;
-      /* [수정] 상단 여백 35px */
       margin-bottom: 35px; 
     }
 
@@ -113,7 +112,6 @@
     .menu-board {
       display: grid;
       grid-template-columns: minmax(auto, 420px) minmax(auto, 420px); 
-      /* [수정] 섹시한 압축 비율: 좌우 140px */
       column-gap: 140px; 
       row-gap: 0; 
       justify-content: center;
@@ -127,7 +125,8 @@
       text-transform: uppercase;
       margin-bottom: 15px; 
       padding-bottom: 6px;
-      border-bottom: 1px solid var(--line);
+      /* [수정] 실선에서 점선으로 변경하여 디테일 추가 */
+      border-bottom: 1px dotted rgba(217, 227, 225, 0.15); 
       display: flex;
       justify-content: space-between;
     }
@@ -149,7 +148,7 @@
 
     .row .fill {
       flex-grow: 1;
-      border-bottom: 1px dotted rgba(217, 227, 225, 0.2);
+      border-bottom: 1px dotted rgba(217, 227, 225, 0.15);
       position: relative;
       top: -4px;
     }
@@ -169,7 +168,6 @@
       text-shadow: none;
     }
 
-    /* [수정] 2:1 응집도: 상하 70px */
     .section-spacer {
       margin-top: 70px; 
     }
@@ -208,7 +206,6 @@
     }
 
     .footer {
-      /* [수정] 하단 여백 35px로 대칭 */
       margin-top: 35px; 
       display: flex;
       justify-content: center;
@@ -219,7 +216,6 @@
       background-color: var(--brand-red);
       color: #fff;
       text-decoration: none;
-      /* [수정] 버튼 덩치를 키워 존재감 부여 */
       padding: 14px 40px; 
       font-size: 13px;
       font-weight: bold;
