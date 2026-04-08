@@ -1,376 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LOS POLLOS HERMANOS LTD</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
-
-  <style>
-    @font-face {
-      font-family: 'JI Burrito';
-      src: url('JI Burrito.ttf') format('truetype'); 
-    }
-
+<style>
     :root {
       --bg: #050505;
       --fg: #d9e3e1;
       --fg-soft: rgba(217, 227, 225, 0.82);
       --fg-dim: rgba(217, 227, 225, 0.48);
-      /* [전격 수정] 노란색/빨강과 온도 충돌 없는 따뜻한 느낌의 깊은 올리브-네이비로 변경 */
-      --line: #1B5E5F; 
-      --accent: #f3d80d;
-      --accent-soft: rgba(243, 216, 13, 0.08);
+      
+      /* [100점 밸런스 컬러 시스템] */
+      --line: #1F4E79;        /* Blue: 중채도/중저명도 베이스 */
+      --accent: #F3D80D;      /* Yellow: 시선 집중 하이라이트 */
+      --brand-red: #DA291C;   /* Red: 묵직한 액션/브랜드 포인트 */
+      
       --accent-glow: rgba(243, 216, 13, 0.3);
-      --brand-red: #E2231A; 
+      --line-glow: rgba(31, 78, 121, 0.4);
     }
 
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-      overflow-x: hidden;
-    }
-
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center; 
-      min-height: 100vh; 
-      padding: 35px 20px; 
-    }
-
-    .page {
-      width: 100%;
-      max-width: 1280px; 
-    }
-
-    .brand {
-      text-align: center;
-      margin-bottom: 35px; 
-    }
-
-    .brand-title {
-      font-family: 'JI Burrito', 'Ranchers', sans-serif;
-      font-size: 64px;
-      color: var(--accent);
-      margin: 0;
-      line-height: 1.1;
-      text-shadow: 0 0 12px var(--accent-glow);
-      font-weight: normal;
-      letter-spacing: 2px;
-    }
-
-    .brand .sub {
-      margin-top: 8px;
-      color: var(--fg-dim);
-      font-size: 11px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-    }
-
+    /* 터미널 본체: 선명해진 블루 테두리 */
     .terminal {
-      border: 1px solid var(--line);
+      border: 1.5px solid var(--line); /* 1px은 너무 가늘고 2px은 투박함, 1.5px이 섹시함 */
       background: #0a0a0a;
       padding: 30px 35px 25px; 
       position: relative;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(31, 78, 121, 0.05);
     }
 
-    /* [전격 수정] 감싸는 박스의 테두리를 단단하고 두꺼운 올리브-네이비로 변경 */
+    /* POS 헤더: 컨테이너(블루)와 일체화된 완벽한 대칭 */
     .terminal-head {
       position: absolute;
-      top: -15px;
+      top: -16px;
       left: 50%;
       transform: translateX(-50%);
-      padding: 6px 16px; /* 두꺼운 테두리에 맞춰 패딩 살짝 증가 */
+      padding: 6px 20px;
       background: var(--bg);
-      border: 2px solid var(--line); /* MATCHING THE INDUSTRIAL BORDER */
+      border: 1.5px solid var(--line); /* 본체 테두리와 동일 굵기/색상 */
       color: var(--accent);
       font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.2em;
+      font-weight: 800;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
-      box-shadow: 0 0 10px var(--accent-glow); /* Outer glow only, CRT style */
+      box-shadow: 0 0 15px var(--line-glow); /* 블루 베이스의 은은한 광원 */
       text-shadow: 0 0 5px var(--accent-glow);
-      white-space: nowrap;
     }
 
-    .blink {
-      animation: blinker 1s step-end infinite;
-    }
-    @keyframes blinker { 50% { opacity: 0; } }
-
-    .menu-board {
-      display: grid;
-      grid-template-columns: minmax(auto, 420px) minmax(auto, 420px); 
-      column-gap: 140px; 
-      row-gap: 0; 
-      justify-content: center;
-      margin-top: 20px; 
-    }
-
+    /* 내부 구분선: 영수증 감성을 위한 점선 최적화 */
     .section-title {
+      border-bottom: 1px dotted var(--line); /* 파란색 점선으로 디테일 통일 */
       color: #fff;
       font-size: 13px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 15px; 
+      margin-bottom: 15px;
       padding-bottom: 6px;
-      border-bottom: 1px dotted rgba(217, 227, 225, 0.15); 
       display: flex;
       justify-content: space-between;
-    }
-
-    .row {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      margin-bottom: 10px; 
-      font-size: 14px;
-      color: var(--fg-soft);
-    }
-
-    .row .label {
-      text-transform: uppercase;
-      white-space: nowrap;
-      padding-right: 8px;
     }
 
     .row .fill {
-      flex-grow: 1;
-      border-bottom: 1px dotted rgba(217, 227, 225, 0.15);
-      position: relative;
-      top: -4px;
+      border-bottom: 1px dotted rgba(31, 78, 121, 0.3); /* 채널 채우기도 블루톤 점선 */
     }
 
-    .row .value {
-      color: var(--accent);
-      font-weight: 700;
-      padding-left: 8px;
-      text-shadow: 0 0 4px var(--accent-glow);
-      white-space: nowrap;
-    }
-
-    .value.highlight {
-      background: var(--accent);
-      color: #000;
-      padding: 0 6px;
-      text-shadow: none;
-    }
-
-    .section-spacer {
-      margin-top: 70px; 
-    }
-
-    .secure-channel {
-      grid-column: 1 / -1;
-      margin-top: 40px; 
-      padding-top: 20px;
-      border-top: 1px dashed var(--line);
-      text-align: center;
-    }
-
-    .pubkey-label {
-      font-size: 11px;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      letter-spacing: 0.1em;
-    }
-
-    .pubkey {
-      font-size: 13px;
-      color: var(--fg-dim);
-      cursor: pointer;
-      word-break: break-all;
-      background: rgba(0,0,0,0.5);
-      padding: 10px 16px;
-      border: 1px solid var(--line);
-      display: inline-block;
-      transition: all 0.2s;
-    }
-
-    .pubkey:hover { 
-      color: var(--accent); 
-      border-color: var(--accent-line);
-    }
-
-    .footer {
-      margin-top: 35px; 
-      display: flex;
-      justify-content: center;
-      gap: 25px; 
-    }
-
+    /* 하단 버튼: 묵직한 레드로 무게감 확보 */
     .footer a {
       background-color: var(--brand-red);
       color: #fff;
-      text-decoration: none;
-      padding: 14px 40px; 
-      font-size: 13px;
-      font-weight: bold;
-      letter-spacing: 0.15em;
       border: 1px solid var(--brand-red);
-      box-shadow: 0 0 15px rgba(226, 35, 26, 0.25);
-      transition: all 0.2s;
-      text-transform: uppercase;
+      padding: 14px 45px; /* 약간 더 키워서 안정감 부여 */
+      font-weight: 900;
+      box-shadow: 0 0 20px rgba(218, 41, 28, 0.25);
     }
-
-    .footer a:hover { 
-      background-color: var(--bg);
-      color: var(--brand-red);
-      box-shadow: 0 0 20px rgba(226, 35, 26, 0.4);
-    }
-
-    @media (max-width: 950px) {
-      body { padding: 20px 15px; height: auto; }
-      .menu-board {
-        grid-template-columns: 1fr;
-        column-gap: 0;
-        row-gap: 40px; 
-      }
-      .brand-title { font-size: 48px; }
-      .terminal { padding: 30px 20px 20px; }
-      .section-spacer { margin-top: 0; }
-    }
-  </style>
-</head>
-<body>
-  <div class="page">
-    <div class="brand">
-      <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
-      <div class="sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</div>
-    </div>
-
-    <div class="terminal">
-      <div class="terminal-head">STORE POS SYSTEM v1.2<span class="blink">_</span></div>
-
-      <div class="menu-board">
-        <div class="column">
-          <div class="section">
-            <div class="section-title"><span>[ TODAY'S INGREDIENTS ]</span><span>SIZE</span></div>
-            <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">-- BTC</span></div>
-            <div class="row"><span class="label">ACTIVE FRANCHISES</span><span class="fill"></span><span class="value highlight" id="channelsValue">--</span></div>
-            <div class="row"><span class="label">MINIMUM ORDER</span><span class="fill"></span><span class="value">3M SATS</span></div>
-            <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
-          </div>
-
-          <div class="section section-spacer">
-            <div class="section-title"><span>[ KITCHEN EQUIPMENT ]</span><span>SPEC</span></div>
-            <div class="row"><span class="label">RECIPE BOOK (RAM)</span><span class="fill"></span><span class="value highlight">64GB</span></div>
-            <div class="row"><span class="label">FREEZER (STORAGE)</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
-            <div class="row"><span class="label">BACKUP GEN</span><span class="fill"></span><span class="value">UPS</span></div>
-            <div class="row"><span class="label">STORE HOURS</span><span class="fill"></span><span class="value">99.9%</span></div>
-          </div>
-        </div>
-
-        <div class="column">
-          <div class="section">
-            <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEE</span></div>
-            <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">MILD</span></div>
-            <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">CLASSIC</span></div>
-            <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value highlight">SPICY</span></div>
-            <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value">DYNAMIC</span></div>
-          </div>
-
-          <div class="section section-spacer">
-            <div class="section-title"><span>[ CONTACT / INFO ]</span><span>COMMS</span></div>
-            <div class="row"><span class="label">DIRECT LINE</span><span class="fill"></span><span class="value">PROTON</span></div>
-            <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
-          </div>
-        </div>
-
-        <div class="secure-channel">
-          <div class="pubkey-label">>> SECURE DELIVERY ROUTE (PUBKEY) <<</div>
-          <div class="pubkey" id="pubkeyText" title="Click to copy">loading...</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      <a id="ambossLink" href="#" target="_blank">AMBOSS</a>
-      <a id="mempoolLink" href="#" target="_blank">MEMPOOL</a>
-    </div>
-  </div>
-
-  <script>
-    const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
-    const API_URL = `https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`;
-    const AMBOSS_URL = `https://amboss.space/node/${PUBKEY}`;
-    const MEMPOOL_URL = `https://mempool.space/lightning/node/${PUBKEY}`;
-
-    const capacityEl = document.getElementById('capacityValue');
-    const channelsEl = document.getElementById('channelsValue');
-    const pubkeyEl = document.getElementById('pubkeyText');
-    const ambossEl = document.getElementById('ambossLink');
-    const mempoolEl = document.getElementById('mempoolLink');
-
-    pubkeyEl.textContent = PUBKEY;
-    ambossEl.href = AMBOSS_URL;
-    mempoolEl.href = MEMPOOL_URL;
-
-    pubkeyEl.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(PUBKEY);
-        const original = PUBKEY;
-        pubkeyEl.textContent = `${original}  [COPIED]`;
-        setTimeout(() => { pubkeyEl.textContent = original; }, 1200);
-      } catch (_) {}
-    });
-
-    function toNumber(value) {
-      if (typeof value === 'number' && Number.isFinite(value)) return value;
-      if (typeof value === 'string') {
-        const parsed = Number(value.replace(/,/g, '').trim());
-        return Number.isFinite(parsed) ? parsed : null;
-      }
-      return null;
-    }
-
-    function formatBtcFromSats(value) {
-      const n = toNumber(value);
-      if (n === null) return '-- BTC';
-      return `${(n / 100000000).toFixed(2)} BTC`;
-    }
-
-    function formatInt(value) {
-      const n = toNumber(value);
-      if (n === null) return '--';
-      return new Intl.NumberFormat('en-US').format(n);
-    }
-
-    async function loadNode() {
-      try {
-        const res = await fetch(API_URL, {
-          method: 'GET',
-          headers: { Accept: 'application/json' },
-          cache: 'no-store'
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-        const data = await res.json();
-        const capacityValue = data.capacity ?? data.total_capacity ?? data.capacity_sat ?? null;
-        const channelsValue = data.active_channel_count ?? data.channels ?? data.num_channels ?? data.channel_count ?? data.open_channel_count ?? null;
-
-        capacityEl.textContent = formatBtcFromSats(capacityValue);
-        channelsEl.textContent = formatInt(channelsValue);
-      } catch (error) {
-        console.error(error);
-        capacityEl.textContent = '-- BTC';
-        channelsEl.textContent = '--';
-      }
-    }
-
-    loadNode();
-  </script>
-</body>
-</html>
+</style>
