@@ -10,9 +10,11 @@
       --bg: #000;
       --fg: #d9e3e1;
       --fg-soft: rgba(217, 227, 225, 0.82);
-      --fg-dim: rgba(217, 227, 225, 0.46);
+      --fg-dim: rgba(217, 227, 225, 0.48);
       --line: rgba(217, 227, 225, 0.12);
-      --accent: #F3D80D;
+      --accent: #f3d80d;
+      --accent-soft: rgba(243, 216, 13, 0.08);
+      --accent-line: rgba(243, 216, 13, 0.28);
     }
 
     * { box-sizing: border-box; }
@@ -34,7 +36,7 @@
 
     .page {
       width: min(100%, 1180px);
-      padding: 22px 18px 28px;
+      padding: 22px 18px 30px;
     }
 
     .brand {
@@ -42,17 +44,21 @@
       margin-bottom: 18px;
     }
 
-    .brand pre {
-      margin: 0 0 8px;
+    .brand-logo {
+      display: inline-block;
+      margin: 0;
       color: var(--accent);
-      font-size: clamp(10px, 1vw, 14px);
-      line-height: 1.02;
-      white-space: pre;
-      overflow-x: auto;
+      font-size: clamp(24px, 4.4vw, 56px);
+      line-height: 0.98;
+      letter-spacing: 0.08em;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-shadow: 3px 3px 0 rgba(243, 216, 13, 0.18);
+      white-space: nowrap;
     }
 
     .brand .sub {
-      margin-top: 8px;
+      margin-top: 12px;
       color: var(--fg-dim);
       font-size: 10px;
       letter-spacing: 0.28em;
@@ -62,53 +68,61 @@
     .terminal {
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
-      padding: 18px 0 14px;
+      padding: 18px 0 16px;
+      text-align: center;
     }
 
     .terminal-head {
-      text-align: center;
-      color: #fff;
-      font-size: 14px;
-      letter-spacing: 0.18em;
+      display: inline-block;
+      padding: 9px 18px 8px;
+      border: 1px solid var(--accent-line);
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      box-shadow: inset 0 0 0 1px rgba(243, 216, 13, 0.08);
     }
 
     .dash {
       height: 1px;
-      background: linear-gradient(to right, transparent 0, var(--line) 12%, var(--line) 88%, transparent 100%);
-      margin: 0 auto 18px;
+      background: linear-gradient(to right, transparent 0, var(--accent-line) 12%, var(--accent-line) 88%, transparent 100%);
+      margin: 16px auto 20px;
       width: min(100%, 860px);
     }
 
     .sections {
-      width: min(100%, 860px);
+      width: min(100%, 760px);
       margin: 0 auto;
+      text-align: left;
     }
 
     .section {
-      margin-bottom: 18px;
+      margin-bottom: 30px;
     }
 
     .section-title {
       color: #fff;
       font-size: 13px;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      padding-left: 2px;
     }
 
     .row {
       display: grid;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: max-content 1fr 120px;
       align-items: center;
-      gap: 12px;
-      min-height: 24px;
+      gap: 8px;
+      min-height: 30px;
       font-size: 14px;
+      line-height: 1.45;
       color: var(--fg-soft);
     }
 
-    .row + .row { margin-top: 3px; }
+    .row + .row { margin-top: 8px; }
 
     .row .label,
     .row .value {
@@ -117,12 +131,12 @@
     }
 
     .row .label::before {
-      content: "* ";
+      content: "> ";
       color: var(--accent);
     }
 
     .row .fill {
-      border-bottom: 1px dotted rgba(217, 227, 225, 0.18);
+      border-bottom: 1px dotted rgba(217, 227, 225, 0.1);
       transform: translateY(-1px);
     }
 
@@ -130,13 +144,14 @@
       color: var(--accent);
       text-align: right;
       font-weight: 700;
+      width: 120px;
     }
 
     .pubkey-wrap {
-      margin-top: 8px;
+      margin-top: 10px;
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
-      padding: 10px 0;
+      padding: 12px 0;
     }
 
     .pubkey-label {
@@ -148,7 +163,7 @@
 
     .pubkey {
       font-size: 13px;
-      line-height: 1.65;
+      line-height: 1.7;
       word-break: break-all;
       cursor: pointer;
       color: var(--fg);
@@ -157,15 +172,15 @@
     .pubkey:hover { color: #fff; }
 
     .quote {
-      width: min(100%, 860px);
-      margin: 2px auto 0;
+      width: min(100%, 760px);
+      margin: 4px auto 0;
       text-align: center;
       color: var(--fg-dim);
       font-size: 13px;
     }
 
     .footer {
-      width: min(100%, 860px);
+      width: min(100%, 760px);
       margin: 14px auto 0;
       display: flex;
       justify-content: center;
@@ -182,43 +197,48 @@
 
     .footer a:hover { color: var(--accent); }
 
+    @media (max-width: 900px) {
+      .brand-logo {
+        font-size: clamp(20px, 5vw, 42px);
+        letter-spacing: 0.06em;
+      }
+    }
+
     @media (max-width: 720px) {
       .page { padding: 14px 10px 18px; }
-      .brand pre { font-size: 8px; }
-      .brand .sub, .footer { letter-spacing: 0.12em; }
+
+      .brand-logo {
+        white-space: normal;
+        line-height: 1.08;
+      }
+
+      .brand .sub,
+      .footer {
+        letter-spacing: 0.12em;
+      }
+
+      .sections {
+        width: 100%;
+      }
+
       .row {
         grid-template-columns: 1fr auto;
         gap: 10px;
         align-items: start;
       }
+
       .row .fill { display: none; }
-      .row .value { white-space: normal; }
+      .row .value {
+        width: auto;
+        white-space: nowrap;
+      }
     }
   </style>
 </head>
 <body>
   <div class="page">
     <div class="brand">
-      <pre>██╗      ██████╗ ███████╗    ██████╗  ██████╗ ██╗     ██╗      ██████╗ ███████╗
-██║     ██╔═══██╗██╔════╝    ██╔══██╗██╔═══██╗██║     ██║     ██╔═══██╗██╔════╝
-██║     ██║   ██║███████╗    ██████╔╝██║   ██║██║     ██║     ██║   ██║███████╗
-██║     ██║   ██║╚════██║    ██╔═══╝ ██║   ██║██║     ██║     ██║   ██║╚════██║
-███████╗╚██████╔╝███████║    ██║     ╚██████╔╝███████╗███████╗╚██████╔╝███████║
-╚══════╝ ╚═════╝ ╚══════╝    ╚═╝      ╚═════╝ ╚══════╝╚══════╝ ╚═════╝ ╚══════╝
-
-██╗  ██╗███████╗██████╗ ███╗   ███╗ █████╗ ███╗   ██╗ ██████╗ ███████╗
-██║  ██║██╔════╝██╔══██╗████╗ ████║██╔══██╗████╗  ██║██╔═══██╗██╔════╝
-███████║█████╗  ██████╔╝██╔████╔██║███████║██╔██╗ ██║██║   ██║███████╗
-██╔══██║██╔══╝  ██╔══██╗██║╚██╔╝██║██╔══██║██║╚██╗██║██║   ██║╚════██║
-██║  ██║███████╗██║  ██║██║ ╚═╝ ██║██║  ██║██║ ╚████║╚██████╔╝███████║
-╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
-
-██╗     ████████╗██████╗
-██║     ╚══██╔══╝██╔══██╗
-██║        ██║   ██║  ██║
-██║        ██║   ██║  ██║
-███████╗   ██║   ██████╔╝
-╚══════╝   ╚═╝   ╚═════╝ </pre>
+      <div class="brand-logo">LOS POLLOS HERMANOS LTD</div>
       <div class="sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</div>
     </div>
 
@@ -245,7 +265,7 @@
         </div>
 
         <div class="section">
-          <div class="section-title">[ ROUTING MENU ]</div>
+          <div class="section-title">[ ROUTING PROFILES ]</div>
           <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">DISCOUNT</span></div>
           <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">STANDARD</span></div>
           <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">PREMIUM</span></div>
