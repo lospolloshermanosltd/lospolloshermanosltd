@@ -10,16 +10,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
 
   <style>
+    /* 네가 구한 JI Burrito 폰트 파일을 같은 폴더에 넣었을 때 작동하는 세팅 */
+    @font-face {
+      font-family: 'JI Burrito';
+      src: url('JIBurrito.ttf') format('truetype'); 
+      /* 파일 확장자가 다르면 위 woff, otf 등에 맞춰 수정해야 함 */
+    }
+
     :root {
       --bg: #050505;
       --fg: #d9e3e1;
       --fg-soft: rgba(217, 227, 225, 0.82);
       --fg-dim: rgba(217, 227, 225, 0.48);
       --line: rgba(217, 227, 225, 0.12);
-      --accent: #f3d80d;
+      --accent: #f3d80d; /* 노란색 */
       --accent-soft: rgba(243, 216, 13, 0.08);
       --accent-line: rgba(243, 216, 13, 0.28);
       --accent-glow: rgba(243, 216, 13, 0.3);
+      --brand-red: #E2231A; /* 찰떡궁합 찐 레드 */
     }
 
     * { box-sizing: border-box; }
@@ -27,7 +35,7 @@
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%; /* 스크롤 방지를 위해 100% 할당 */
+      height: 100%; 
       background: var(--bg);
       color: var(--fg);
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
@@ -38,22 +46,23 @@
     body {
       display: flex;
       justify-content: center;
-      align-items: center; /* 화면 세로 정중앙 배치로 스크롤 최소화 */
+      align-items: center; 
     }
 
     .page {
-      width: min(100%, 1180px);
-      padding: 20px 18px; /* 하단 패딩 대폭 축소 */
+      width: min(100%, 1280px); /* 간격이 넓어졌으니 전체 컨테이너도 살짝 늘림 */
+      padding: 20px 18px; 
     }
 
     /* 상단 타이틀 간판 */
     .brand {
       text-align: center;
-      margin-bottom: 25px; /* 불필요한 하단 여백 축소 */
+      margin-bottom: 25px; 
     }
 
     .brand-title {
-      font-family: 'Ranchers', sans-serif;
+      /* 1순위: JI Burrito, 2순위: Ranchers */
+      font-family: 'JI Burrito', 'Ranchers', sans-serif;
       font-size: 64px;
       color: var(--accent);
       margin: 0;
@@ -75,7 +84,7 @@
     .terminal {
       border: 1px solid var(--line);
       background: #0a0a0a;
-      padding: 25px 35px 20px; /* 내부 여백 압축 */
+      padding: 25px 35px 20px; 
       position: relative;
     }
 
@@ -107,8 +116,8 @@
       display: grid;
       grid-template-columns: minmax(auto, 420px) minmax(auto, 420px); 
       justify-content: center;
-      gap: 120px; 
-      margin-top: 25px; /* 여백 축소 */
+      gap: 200px; /* 요청한 200px 간격 적용 */
+      margin-top: 25px; 
     }
 
     .section-title {
@@ -116,7 +125,7 @@
       font-size: 13px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-bottom: 12px; /* 여백 축소 */
+      margin-bottom: 12px; 
       padding-bottom: 6px;
       border-bottom: 1px solid var(--line);
       display: flex;
@@ -128,7 +137,7 @@
       display: flex;
       justify-content: space-between;
       align-items: end;
-      margin-bottom: 8px; /* 항목 간 간격 타이트하게 축소 */
+      margin-bottom: 8px; 
       font-size: 14px;
       color: var(--fg-soft);
     }
@@ -164,7 +173,7 @@
     /* 하단 키 정보 영역 */
     .secure-channel {
       grid-column: 1 / -1;
-      margin-top: 25px; /* 크게 비어있던 공간 축소 */
+      margin-top: 25px; 
       padding-top: 15px;
       border-top: 1px dashed var(--line);
       text-align: center;
@@ -195,28 +204,39 @@
       border-color: var(--accent-line);
     }
 
+    /* 푸터 버튼 스타일 (레드 컬러 적용) */
     .footer {
-      margin-top: 20px; /* 하단 여백 축소 */
-      text-align: center;
-      font-size: 11px;
-      letter-spacing: 0.2em;
+      margin-top: 30px; 
+      display: flex;
+      justify-content: center;
+      gap: 20px; /* 버튼 사이 간격 */
     }
 
     .footer a {
-      color: var(--fg-dim);
+      background-color: var(--brand-red);
+      color: #fff;
       text-decoration: none;
-      margin: 0 10px;
-      transition: color 0.2s;
+      padding: 10px 24px;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 0.15em;
+      border: 1px solid var(--brand-red);
+      box-shadow: 0 0 15px rgba(226, 35, 26, 0.25);
+      transition: all 0.2s;
     }
 
-    .footer a:hover { color: var(--accent); }
+    .footer a:hover { 
+      background-color: var(--bg);
+      color: var(--brand-red);
+      box-shadow: 0 0 20px rgba(226, 35, 26, 0.4);
+    }
 
     /* 모바일 반응형 조절 */
-    @media (max-width: 900px) {
+    @media (max-width: 950px) {
       body { align-items: flex-start; padding-top: 30px; height: auto; }
       .menu-board {
         grid-template-columns: 1fr;
-        gap: 35px;
+        gap: 35px; /* 모바일에선 200px 간격을 유지하면 박살나므로 줄임 */
       }
       .brand-title { font-size: 48px; }
       .terminal { padding: 30px 20px 20px; }
@@ -276,7 +296,7 @@
     </div>
 
     <div class="footer">
-      <a id="ambossLink" href="#" target="_blank">AMBOSS</a> | 
+      <a id="ambossLink" href="#" target="_blank">AMBOSS</a>
       <a id="mempoolLink" href="#" target="_blank">MEMPOOL</a>
     </div>
   </div>
