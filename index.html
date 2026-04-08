@@ -20,11 +20,10 @@
       --fg: #d9e3e1;
       --fg-soft: rgba(217, 227, 225, 0.82);
       --fg-dim: rgba(217, 227, 225, 0.48);
-      /* [수정] 차분한 회색 테두리에서 깊은 산업용 네이비로 변경, 투명도 제거 */
-      --line: #1B3E5F; 
+      /* [전격 수정] 노란색/빨강과 온도 충돌 없는 따뜻한 느낌의 깊은 올리브-네이비로 변경 */
+      --line: #1B5E5F; 
       --accent: #f3d80d;
       --accent-soft: rgba(243, 216, 13, 0.08);
-      --accent-line: rgba(243, 216, 13, 0.28);
       --accent-glow: rgba(243, 216, 13, 0.3);
       --brand-red: #E2231A; 
     }
@@ -86,20 +85,21 @@
       position: relative;
     }
 
+    /* [전격 수정] 감싸는 박스의 테두리를 단단하고 두꺼운 올리브-네이비로 변경 */
     .terminal-head {
       position: absolute;
       top: -15px;
       left: 50%;
       transform: translateX(-50%);
-      padding: 4px 16px;
+      padding: 6px 16px; /* 두꺼운 테두리에 맞춰 패딩 살짝 증가 */
       background: var(--bg);
-      border: 1px solid var(--accent-line);
+      border: 2px solid var(--line); /* MATCHING THE INDUSTRIAL BORDER */
       color: var(--accent);
       font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      box-shadow: inset 0 0 10px var(--accent-soft), 0 0 10px var(--bg);
+      box-shadow: 0 0 10px var(--accent-glow); /* Outer glow only, CRT style */
       text-shadow: 0 0 5px var(--accent-glow);
       white-space: nowrap;
     }
@@ -125,7 +125,6 @@
       text-transform: uppercase;
       margin-bottom: 15px; 
       padding-bottom: 6px;
-      /* [수정] 실선에서 점선으로 변경하여 디테일 추가 */
       border-bottom: 1px dotted rgba(217, 227, 225, 0.15); 
       display: flex;
       justify-content: space-between;
