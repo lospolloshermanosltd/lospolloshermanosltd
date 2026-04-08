@@ -10,11 +10,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
 
   <style>
-    /* 네가 구한 JI Burrito 폰트 파일을 같은 폴더에 넣었을 때 작동하는 세팅 */
+    /* 네가 올린 원본 파일명(띄어쓰기 포함)을 그대로 인식하도록 수정함 */
     @font-face {
       font-family: 'JI Burrito';
-      src: url('JIBurrito.ttf') format('truetype'); 
-      /* 파일 확장자가 다르면 위 woff, otf 등에 맞춰 수정해야 함 */
+      src: url('JI Burrito.ttf') format('truetype'); 
     }
 
     :root {
@@ -50,7 +49,7 @@
     }
 
     .page {
-      width: min(100%, 1280px); /* 간격이 넓어졌으니 전체 컨테이너도 살짝 늘림 */
+      width: min(100%, 1280px); 
       padding: 20px 18px; 
     }
 
@@ -116,7 +115,7 @@
       display: grid;
       grid-template-columns: minmax(auto, 420px) minmax(auto, 420px); 
       justify-content: center;
-      gap: 200px; /* 요청한 200px 간격 적용 */
+      gap: 200px; 
       margin-top: 25px; 
     }
 
@@ -209,7 +208,7 @@
       margin-top: 30px; 
       display: flex;
       justify-content: center;
-      gap: 20px; /* 버튼 사이 간격 */
+      gap: 20px; 
     }
 
     .footer a {
@@ -236,7 +235,7 @@
       body { align-items: flex-start; padding-top: 30px; height: auto; }
       .menu-board {
         grid-template-columns: 1fr;
-        gap: 35px; /* 모바일에선 200px 간격을 유지하면 박살나므로 줄임 */
+        gap: 35px; 
       }
       .brand-title { font-size: 48px; }
       .terminal { padding: 30px 20px 20px; }
