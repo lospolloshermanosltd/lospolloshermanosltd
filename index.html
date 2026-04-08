@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -26,10 +26,10 @@
 
     html, body {
       margin: 0;
-      min-height: 100%;
+      padding: 0;
+      height: 100%; /* 스크롤 방지를 위해 100% 할당 */
       background: var(--bg);
       color: var(--fg);
-      /* 본문은 터미널 콘셉트 유지를 위해 모노스페이스 고정 */
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
@@ -38,49 +38,47 @@
     body {
       display: flex;
       justify-content: center;
-      padding-top: 40px;
+      align-items: center; /* 화면 세로 정중앙 배치로 스크롤 최소화 */
     }
 
     .page {
       width: min(100%, 1180px);
-      padding: 0 18px 40px;
+      padding: 20px 18px; /* 하단 패딩 대폭 축소 */
     }
 
-    /* 상단 타이틀 간판 (ASCII 대체) */
+    /* 상단 타이틀 간판 */
     .brand {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 25px; /* 불필요한 하단 여백 축소 */
     }
 
     .brand-title {
-      font-family: 'Pirata One', 'Old English Text MT', serif; /* 사진 폰트 반영 */
-      font-size: 72px;
+      font-family: 'Ranchers', sans-serif;
+      font-size: 64px;
       color: var(--accent);
       margin: 0;
       line-height: 1.1;
-      text-shadow: 0 0 15px var(--accent-glow);
+      text-shadow: 0 0 12px var(--accent-glow);
       font-weight: normal;
       letter-spacing: 2px;
     }
 
     .brand .sub {
-      margin-top: 14px;
+      margin-top: 8px;
       color: var(--fg-dim);
       font-size: 11px;
       letter-spacing: 0.28em;
       text-transform: uppercase;
-      font-family: ui-monospace, monospace; /* 서브타이틀은 다시 모노로 */
     }
 
     /* 메인 터미널 영역 */
     .terminal {
       border: 1px solid var(--line);
       background: #0a0a0a;
-      padding: 30px 40px 40px;
+      padding: 25px 35px 20px; /* 내부 여백 압축 */
       position: relative;
     }
 
-    /* 상단 POS 타이틀 */
     .terminal-head {
       position: absolute;
       top: -15px;
@@ -104,14 +102,13 @@
     }
     @keyframes blinker { 50% { opacity: 0; } }
 
-    /* 2단 메뉴판 레이아웃 조절 */
+    /* 2단 메뉴판 레이아웃 */
     .menu-board {
       display: grid;
-      /* 컬럼 최대 너비를 400px로 제한하여 라벨과 값 사이 점선 길이를 줄임 */
-      grid-template-columns: minmax(auto, 400px) minmax(auto, 400px); 
-      justify-content: center; /* 전체를 중앙 정렬 */
-      gap: 150px; /* 좌우 간격 대폭 확장 */
-      margin-top: 30px;
+      grid-template-columns: minmax(auto, 420px) minmax(auto, 420px); 
+      justify-content: center;
+      gap: 120px; 
+      margin-top: 25px; /* 여백 축소 */
     }
 
     .section-title {
@@ -119,7 +116,7 @@
       font-size: 13px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 12px; /* 여백 축소 */
       padding-bottom: 6px;
       border-bottom: 1px solid var(--line);
       display: flex;
@@ -131,7 +128,7 @@
       display: flex;
       justify-content: space-between;
       align-items: end;
-      margin-bottom: 12px;
+      margin-bottom: 8px; /* 항목 간 간격 타이트하게 축소 */
       font-size: 14px;
       color: var(--fg-soft);
     }
@@ -167,8 +164,8 @@
     /* 하단 키 정보 영역 */
     .secure-channel {
       grid-column: 1 / -1;
-      margin-top: 40px;
-      padding-top: 24px;
+      margin-top: 25px; /* 크게 비어있던 공간 축소 */
+      padding-top: 15px;
       border-top: 1px dashed var(--line);
       text-align: center;
     }
@@ -177,7 +174,7 @@
       font-size: 11px;
       color: var(--accent);
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       letter-spacing: 0.1em;
     }
 
@@ -187,7 +184,7 @@
       cursor: pointer;
       word-break: break-all;
       background: rgba(0,0,0,0.5);
-      padding: 10px 16px;
+      padding: 8px 16px;
       border: 1px solid var(--line);
       display: inline-block;
       transition: all 0.2s;
@@ -199,7 +196,7 @@
     }
 
     .footer {
-      margin-top: 30px;
+      margin-top: 20px; /* 하단 여백 축소 */
       text-align: center;
       font-size: 11px;
       letter-spacing: 0.2em;
@@ -216,11 +213,12 @@
 
     /* 모바일 반응형 조절 */
     @media (max-width: 900px) {
+      body { align-items: flex-start; padding-top: 30px; height: auto; }
       .menu-board {
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 35px;
       }
-      .brand-title { font-size: 50px; }
+      .brand-title { font-size: 48px; }
       .terminal { padding: 30px 20px 20px; }
     }
   </style>
@@ -228,7 +226,7 @@
 <body>
   <div class="page">
     <div class="brand">
-      <h1 class="brand-title">Los Pollos Hermanos Family</h1>
+      <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
       <div class="sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</div>
     </div>
 
@@ -245,7 +243,7 @@
             <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
           </div>
 
-          <div class="section" style="margin-top: 40px;">
+          <div class="section" style="margin-top: 25px;">
             <div class="section-title"><span>[ KITCHEN EQUIPMENT ]</span><span>SPEC</span></div>
             <div class="row"><span class="label">RECIPE BOOK (RAM)</span><span class="fill"></span><span class="value highlight">64GB</span></div>
             <div class="row"><span class="label">FREEZER (STORAGE)</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
@@ -263,7 +261,7 @@
             <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value">DYNAMIC</span></div>
           </div>
 
-          <div class="section" style="margin-top: 40px;">
+          <div class="section" style="margin-top: 25px;">
             <div class="section-title"><span>[ CONTACT / INFO ]</span><span>COMMS</span></div>
             <div class="row"><span class="label">DIRECT LINE</span><span class="fill"></span><span class="value">PROTON</span></div>
             <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
