@@ -4,93 +4,70 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LOS POLLOS HERMANOS LTD</title>
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
-
   <style>
     @font-face {
       font-family: 'JI Burrito';
       src: url('JI Burrito.ttf') format('truetype'); 
       font-display: swap;
     }
-
     :root {
       --bg: #050505;
       --fg: #d9e3e1;
-      --fg-soft: rgba(217, 227, 225, 0.82);
-      --fg-dim: rgba(217, 227, 225, 0.48);
-      --line: #1F4E79;        
+      --fg-soft: rgba(217, 227, 225, 0.85);
+      --fg-dim: rgba(217, 227, 225, 0.45);
+      /* [The Golden Ratio] 수학적 궁합을 유지하며 명도만 물리적으로 튜닝 */
+      --line: #143A5C;        
       --accent: #F3D80D;      
       --brand-red: #DA291C;   
-      --accent-glow: rgba(243, 216, 13, 0.3);
-      --line-glow: rgba(31, 78, 121, 0.4);
+      --accent-glow: rgba(243, 216, 13, 0.35);
+      --line-glow: rgba(20, 58, 92, 0.25);
     }
-
     * { box-sizing: border-box; }
-
     html, body {
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       background: var(--bg);
       color: var(--fg);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
-
     body {
-      display: flex;
-      justify-content: center;
-      align-items: center; 
-      min-height: 100vh; 
-      padding: 35px 20px; 
+      display: flex; justify-content: center; align-items: center; 
+      min-height: 100vh; padding: 40px 20px; 
     }
-
-    .page {
-      width: 100%;
-      max-width: 1280px; 
-    }
-
-    .brand {
-      text-align: center;
-      margin-bottom: 35px; 
-    }
-
+    .page { width: 100%; max-width: 1200px; }
+    .brand { text-align: center; margin-bottom: 45px; }
     .brand-title {
       font-family: 'JI Burrito', 'Ranchers', sans-serif;
-      font-size: 64px;
+      font-size: 68px;
       color: var(--accent);
       margin: 0;
-      line-height: 1.1;
-      text-shadow: 0 0 12px var(--accent-glow);
-      font-weight: normal;
-      letter-spacing: 2px;
+      line-height: 1;
+      text-shadow: 0 0 15px var(--accent-glow);
+      letter-spacing: 1px;
     }
-
     .brand .sub {
-      margin-top: 8px;
+      margin-top: 10px;
       color: var(--fg-dim);
       font-size: 11px;
-      letter-spacing: 0.28em;
+      letter-spacing: 0.35em;
       text-transform: uppercase;
     }
-
     .terminal {
       border: 2px solid var(--line);
-      background: #0a0a0a;
-      padding: 30px 35px 25px; 
+      background: #080808;
+      padding: 40px 45px 35px; 
       position: relative;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      box-shadow: 0 0 40px rgba(0,0,0,0.9);
     }
-
     .terminal-head {
       position: absolute;
-      top: -16px;
-      left: 50%;
+      top: -16px; left: 50%;
       transform: translateX(-50%);
-      padding: 6px 20px;
+      padding: 6px 24px;
       background: var(--bg);
       border: 2px solid var(--line);
       color: var(--accent);
@@ -98,147 +75,73 @@
       font-weight: 800;
       letter-spacing: 0.25em;
       text-transform: uppercase;
-      box-shadow: 0 0 15px var(--line-glow);
+      box-shadow: 0 0 20px var(--line-glow);
       text-shadow: 0 0 5px var(--accent-glow);
       white-space: nowrap;
     }
-
-    .blink {
-      animation: blinker 1s step-end infinite;
-    }
+    .blink { animation: blinker 1s step-end infinite; }
     @keyframes blinker { 50% { opacity: 0; } }
-
     .menu-board {
       display: grid;
-      grid-template-columns: minmax(auto, 420px) minmax(auto, 420px); 
-      column-gap: 140px; 
+      grid-template-columns: 1fr 1fr; 
+      column-gap: 120px; 
       row-gap: 0; 
-      justify-content: center;
       margin-top: 20px; 
     }
-
     .section-title {
       color: #fff;
       font-size: 13px;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 15px; 
-      padding-bottom: 6px;
+      margin-bottom: 18px; 
+      padding-bottom: 8px;
       border-bottom: 1px dotted var(--line); 
       display: flex;
       justify-content: space-between;
     }
-
     .row {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      margin-bottom: 10px; 
-      font-size: 14px;
-      color: var(--fg-soft);
+      display: flex; justify-content: space-between; align-items: end;
+      margin-bottom: 12px; font-size: 15px; color: var(--fg-soft);
     }
-
-    .row .label {
-      text-transform: uppercase;
-      white-space: nowrap;
-      padding-right: 8px;
-    }
-
+    .row .label { text-transform: uppercase; white-space: nowrap; padding-right: 10px; }
     .row .fill {
-      flex-grow: 1;
-      border-bottom: 1px dotted rgba(31, 78, 121, 0.3);
-      position: relative;
-      top: -4px;
+      flex-grow: 1; border-bottom: 1px dotted rgba(20, 58, 92, 0.4);
+      position: relative; top: -4px;
     }
-
     .row .value {
-      color: var(--accent);
-      font-weight: 700;
-      padding-left: 8px;
-      text-shadow: 0 0 4px var(--accent-glow);
-      white-space: nowrap;
+      color: var(--accent); font-weight: 700; padding-left: 10px;
+      text-shadow: 0 0 5px var(--accent-glow); white-space: nowrap;
     }
-
-    .value.highlight {
-      background: var(--accent);
-      color: #000;
-      padding: 0 6px;
-      text-shadow: none;
-    }
-
-    .section-spacer {
-      margin-top: 70px; 
-    }
-
+    .value.highlight { background: var(--accent); color: #000; padding: 0 6px; text-shadow: none; }
+    .section-spacer { margin-top: 60px; }
     .secure-channel {
-      grid-column: 1 / -1;
-      margin-top: 40px; 
-      padding-top: 20px;
-      border-top: 1px dashed var(--line);
-      text-align: center;
+      grid-column: 1 / -1; margin-top: 50px; padding-top: 25px;
+      border-top: 1px dashed var(--line); text-align: center;
     }
-
     .pubkey-label {
-      font-size: 11px;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      letter-spacing: 0.1em;
+      font-size: 11px; color: var(--accent); text-transform: uppercase;
+      margin-bottom: 10px; letter-spacing: 0.15em;
     }
-
     .pubkey {
-      font-size: 13px;
-      color: var(--fg-dim);
-      cursor: pointer;
-      word-break: break-all;
-      background: rgba(0,0,0,0.5);
-      padding: 10px 16px;
-      border: 1px solid var(--line);
-      display: inline-block;
-      transition: all 0.2s;
+      font-size: 13px; color: var(--fg-dim); cursor: pointer;
+      word-break: break-all; background: rgba(0,0,0,0.6);
+      padding: 12px 20px; border: 1px solid var(--line);
+      display: inline-block; transition: all 0.2s ease;
     }
-
-    .pubkey:hover { 
-      color: var(--accent); 
-      border-color: var(--accent);
-    }
-
-    .footer {
-      margin-top: 35px; 
-      display: flex;
-      justify-content: center;
-      gap: 25px; 
-    }
-
+    .pubkey:hover { color: var(--accent); border-color: var(--accent); }
+    .footer { margin-top: 40px; display: flex; justify-content: center; gap: 30px; }
     .footer a {
-      background-color: var(--brand-red);
-      color: #fff;
-      text-decoration: none;
-      padding: 14px 45px; 
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: 0.15em;
-      border: 1px solid var(--brand-red);
-      box-shadow: 0 0 15px rgba(218, 41, 28, 0.25);
-      transition: all 0.2s;
-      text-transform: uppercase;
+      background-color: var(--brand-red); color: #fff; text-decoration: none;
+      padding: 15px 50px; font-size: 14px; font-weight: 900;
+      letter-spacing: 0.2em; border: 1px solid var(--brand-red);
+      box-shadow: 0 0 20px rgba(218, 41, 28, 0.3);
+      transition: all 0.2s ease; text-transform: uppercase;
     }
-
-    .footer a:hover { 
-      background-color: var(--bg);
-      color: var(--brand-red);
-    }
-
+    .footer a:hover { background-color: var(--bg); color: var(--brand-red); }
     @media (max-width: 950px) {
-      body { padding: 20px 15px; height: auto; }
-      .menu-board {
-        grid-template-columns: 1fr;
-        column-gap: 0;
-        row-gap: 40px; 
-      }
-      .brand-title { font-size: 48px; }
-      .terminal { padding: 30px 20px 20px; }
-      .section-spacer { margin-top: 0; }
+      .menu-board { grid-template-columns: 1fr; column-gap: 0; row-gap: 50px; }
+      .brand-title { font-size: 52px; }
+      .terminal { padding: 35px 25px 25px; }
     }
   </style>
 </head>
@@ -248,10 +151,8 @@
       <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
       <div class="sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</div>
     </div>
-
     <div class="terminal">
       <div class="terminal-head">STORE POS SYSTEM v1.2<span class="blink">_</span></div>
-
       <div class="menu-board">
         <div class="column">
           <div class="section">
@@ -289,44 +190,31 @@
         </div>
       </div>
     </div>
-
     <div class="footer">
-      <a id="ambossLink" href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">AMBOSS</a>
-      <a id="mempoolLink" href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">MEMPOOL</a>
+      <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">AMBOSS</a>
+      <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">MEMPOOL</a>
     </div>
   </div>
-
   <script>
     const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
     const API_URL = `https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`;
-
-    const capacityEl = document.getElementById('capacityValue');
-    const channelsEl = document.getElementById('channelsValue');
-    const pubkeyEl = document.getElementById('pubkeyText');
-
-    pubkeyEl.addEventListener('click', async () => {
+    const capEl = document.getElementById('capacityValue');
+    const chanEl = document.getElementById('channelsValue');
+    const pubEl = document.getElementById('pubkeyText');
+    pubEl.onclick = async () => {
+      await navigator.clipboard.writeText(PUBKEY);
+      pubEl.textContent = 'COPIED TO CLIPBOARD';
+      setTimeout(() => { pubEl.textContent = PUBKEY; }, 1000);
+    };
+    async function load() {
       try {
-        await navigator.clipboard.writeText(PUBKEY);
-        const original = PUBKEY;
-        pubkeyEl.textContent = 'COPIED TO CLIPBOARD';
-        setTimeout(() => { pubkeyEl.textContent = original; }, 1200);
-      } catch (err) {}
-    });
-
-    async function loadNode() {
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-        const cap = data.capacity || 0;
-        const chan = data.active_channel_count || 0;
-        capacityEl.textContent = `${(cap / 100000000).toFixed(2)} BTC`;
-        channelsEl.textContent = chan.toLocaleString();
-      } catch (e) {
-        capacityEl.textContent = 'OFFLINE';
-        channelsEl.textContent = 'OFFLINE';
-      }
+        const r = await fetch(API_URL);
+        const d = await r.json();
+        capEl.textContent = `${((d.capacity||0)/100000000).toFixed(2)} BTC`;
+        chanEl.textContent = (d.active_channel_count||0).toLocaleString();
+      } catch(e) { capEl.textContent = 'ERROR'; chanEl.textContent = 'ERROR'; }
     }
-    loadNode();
+    load();
   </script>
 </body>
 </html>
