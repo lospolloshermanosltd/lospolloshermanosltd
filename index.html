@@ -58,11 +58,15 @@
       display: none;
     }
 
-    .alias-sign {
+    .ascii-art {
       display: block;
-      width: 1080px;
-      height: auto;
       margin: 0 auto;
+      color: var(--accent);
+      font-size: 11px;
+      line-height: 1.2;
+      white-space: pre;
+      width: max-content;
+      text-align: left;
     }
 
     .brand .sub {
@@ -236,63 +240,12 @@
   <div class="page">
     <div class="brand">
       <div class="alias-wrap">
-        <!-- 한 줄 간판형 alias -->
-        <svg class="alias-sign" viewBox="0 0 1080 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LOS POLLOS HERMANOS LTD">
-          <defs>
-            <filter id="retroShadow" x="-10%" y="-10%" width="130%" height="140%">
-              <feOffset dx="4" dy="4" result="off1"/>
-              <feOffset dx="8" dy="8" result="off2"/>
-              <feColorMatrix in="off1" type="matrix"
-                values="0 0 0 0 0
-                        0 0 0 0 0
-                        0 0 0 0 0
-                        0 0 0 0.95 0" result="black1"/>
-              <feColorMatrix in="off2" type="matrix"
-                values="0 0 0 0 0.95
-                        0 0 0 0 0.85
-                        0 0 0 0 0.05
-                        0 0 0 0.22 0" result="gold2"/>
-              <feMerge>
-                <feMergeNode in="black1"/>
-                <feMergeNode in="gold2"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-
-            <filter id="pixelEdge" x="-10%" y="-10%" width="120%" height="130%">
-              <feMorphology operator="dilate" radius="1.1" in="SourceAlpha" result="thick"/>
-              <feColorMatrix in="thick" type="matrix"
-                values="0 0 0 0 0
-                        0 0 0 0 0
-                        0 0 0 0 0
-                        0 0 0 1 0" result="outlineAlpha"/>
-              <feFlood flood-color="#000000" result="outlineColor"/>
-              <feComposite in="outlineColor" in2="outlineAlpha" operator="in" result="outline"/>
-              <feMerge>
-                <feMergeNode in="outline"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-
-          <!-- 배경 없이 글자만 -->
-          <g filter="url(#retroShadow)">
-            <text
-              x="540"
-              y="102"
-              text-anchor="middle"
-              fill="#f3d80d"
-              font-family="Impact, Haettenschweiler, 'Arial Black', sans-serif"
-              font-size="66"
-              font-weight="900"
-              letter-spacing="4"
-              style="paint-order: stroke; stroke: #000; stroke-width: 3; stroke-linejoin: bevel;"
-              filter="url(#pixelEdge)"
-            >
-              LOS POLLOS HERMANOS LTD
-            </text>
-          </g>
-        </svg>
+        <pre class="ascii-art">
+██╗ ██████╗ ███████╗ ██████╗ ██████╗ ██╗ ██╗ ██████╗ ███████╗ ██╗ ██╗███████╗██████╗ ███╗ ███╗ █████╗ ███╗ ██╗ ██████╗ ███████╗ ██╗ ████████╗██████╗
+██║ ██╔══██╗██╔════╝ ██╔══██╗██╔═══██╗██║ ██║ ██╔══██╗██╔════╝ ██║ ██║██╔════╝██╔══██╗████╗ ████║██╔══██╗████╗ ██║██╔═══██╗██╔════╝ ██║ ╚══██╔══╝██╔══██╗
+██║ ██║ ██║███████╗ ██████╔╝██║ ██║██║ ██║ ██║ ██║███████╗ ███████║█████╗ ██████╔╝██╔████╔██║███████║██╔██╗ ██║██║ ██║███████╗ ██║ ██║ ██║ ██║
+██║ ██║ ██║╚════██║ ██╔═══╝ ██║ ██║██║ ██║ ██║ ██║╚════██║ ██╔══██║██╔══╝ ██╔══██╗██║╚██╔╝██║██╔══██║██║╚██╗██║██║ ██║╚════██║ ██║ ██║ ██║ ██║
+███████╗██████╔╝███████║ ██║ ╚██████╔╝███████╗███████╗██████╔╝███████║ ██║ ██║███████╗██║ ██║██║ ╚═╝ ██║██║ ██║██║ ╚████║╚██████╔╝███████║ ███████╗ ██║ ██████╔╝</pre>
       </div>
 
       <div class="sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</div>
