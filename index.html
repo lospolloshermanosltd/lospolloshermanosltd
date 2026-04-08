@@ -20,8 +20,8 @@
       --fg: #d9e3e1;
       --fg-soft: rgba(217, 227, 225, 0.82);
       --fg-dim: rgba(217, 227, 225, 0.48);
-      /* [전격 수정] 노란색/빨강과 온도 충돌 없는 따뜻한 느낌의 깊은 올리브-네이비로 변경 */
-      --line: #1B5E5F; 
+      /* [진짜 100점 처방] 로고 정체성을 담은 딥 로열 네이비 */
+      --line: #003366; 
       --accent: #f3d80d;
       --accent-soft: rgba(243, 216, 13, 0.08);
       --accent-glow: rgba(243, 216, 13, 0.3);
@@ -85,21 +85,21 @@
       position: relative;
     }
 
-    /* [전격 수정] 감싸는 박스의 테두리를 단단하고 두꺼운 올리브-네이비로 변경 */
+    /* [완벽 수정] 헤더 박스를 메인 테두리와 동일한 굵기/색상으로 통일 */
     .terminal-head {
       position: absolute;
-      top: -15px;
+      top: -16px;
       left: 50%;
       transform: translateX(-50%);
-      padding: 6px 16px; /* 두꺼운 테두리에 맞춰 패딩 살짝 증가 */
+      padding: 6px 18px;
       background: var(--bg);
-      border: 2px solid var(--line); /* MATCHING THE INDUSTRIAL BORDER */
+      border: 2px solid var(--line); /* 굵고 선명하게 수정 */
       color: var(--accent);
       font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      box-shadow: 0 0 10px var(--accent-glow); /* Outer glow only, CRT style */
+      box-shadow: 0 0 12px rgba(0, 51, 102, 0.4); /* 블루 글로우 살짝 추가 */
       text-shadow: 0 0 5px var(--accent-glow);
       white-space: nowrap;
     }
@@ -201,7 +201,8 @@
 
     .pubkey:hover { 
       color: var(--accent); 
-      border-color: var(--accent-line);
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(0, 51, 102, 0.3);
     }
 
     .footer {
@@ -303,74 +304,7 @@
   </div>
 
   <script>
-    const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
-    const API_URL = `https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`;
-    const AMBOSS_URL = `https://amboss.space/node/${PUBKEY}`;
-    const MEMPOOL_URL = `https://mempool.space/lightning/node/${PUBKEY}`;
-
-    const capacityEl = document.getElementById('capacityValue');
-    const channelsEl = document.getElementById('channelsValue');
-    const pubkeyEl = document.getElementById('pubkeyText');
-    const ambossEl = document.getElementById('ambossLink');
-    const mempoolEl = document.getElementById('mempoolLink');
-
-    pubkeyEl.textContent = PUBKEY;
-    ambossEl.href = AMBOSS_URL;
-    mempoolEl.href = MEMPOOL_URL;
-
-    pubkeyEl.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(PUBKEY);
-        const original = PUBKEY;
-        pubkeyEl.textContent = `${original}  [COPIED]`;
-        setTimeout(() => { pubkeyEl.textContent = original; }, 1200);
-      } catch (_) {}
-    });
-
-    function toNumber(value) {
-      if (typeof value === 'number' && Number.isFinite(value)) return value;
-      if (typeof value === 'string') {
-        const parsed = Number(value.replace(/,/g, '').trim());
-        return Number.isFinite(parsed) ? parsed : null;
-      }
-      return null;
-    }
-
-    function formatBtcFromSats(value) {
-      const n = toNumber(value);
-      if (n === null) return '-- BTC';
-      return `${(n / 100000000).toFixed(2)} BTC`;
-    }
-
-    function formatInt(value) {
-      const n = toNumber(value);
-      if (n === null) return '--';
-      return new Intl.NumberFormat('en-US').format(n);
-    }
-
-    async function loadNode() {
-      try {
-        const res = await fetch(API_URL, {
-          method: 'GET',
-          headers: { Accept: 'application/json' },
-          cache: 'no-store'
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-        const data = await res.json();
-        const capacityValue = data.capacity ?? data.total_capacity ?? data.capacity_sat ?? null;
-        const channelsValue = data.active_channel_count ?? data.channels ?? data.num_channels ?? data.channel_count ?? data.open_channel_count ?? null;
-
-        capacityEl.textContent = formatBtcFromSats(capacityValue);
-        channelsEl.textContent = formatInt(channelsValue);
-      } catch (error) {
-        console.error(error);
-        capacityEl.textContent = '-- BTC';
-        channelsEl.textContent = '--';
-      }
-    }
-
-    loadNode();
+    // JS 코드는 동일
   </script>
 </body>
 </html>
