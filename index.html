@@ -4,31 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LOS POLLOS HERMANOS LTD</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     @font-face {
       font-family: 'JI Burrito';
-      src: url('JI Burrito.ttf') format('truetype'); 
+      src: url('JI Burrito.ttf') format('truetype');
       font-display: swap;
     }
 
     :root {
       --bg: #050505;
       --fg: #d9e3e1;
-      --fg-soft: #E6E6E6; 
-      --fg-dim: rgba(230, 230, 230, 0.5); 
-      --line: #1F4E79;        
-      --accent: #F3D80D;      
-      --brand-red: #DA291C;   
+      --fg-soft: #E6E6E6;
+      --fg-dim: rgba(230, 230, 230, 0.5);
+      --line: #1F4E79;
+      --accent: #F3D80D;
+      --brand-red: #DA291C;
       --accent-glow: rgba(243, 216, 13, 0.3);
       --line-glow: rgba(31, 78, 121, 0.4);
-      --flow-duration: 0.5s;
+
+      /* Final tuned timing */
+      --flow-duration: 1.8s;
+      --packet-duration: 2.4s;
     }
 
     * { box-sizing: border-box; }
@@ -41,21 +43,21 @@
       font-family: 'IBM Plex Mono', monospace;
       -webkit-font-smoothing: none;
       -moz-osx-font-smoothing: grayscale;
-      overflow: hidden; 
+      overflow: hidden;
     }
 
     body {
       display: flex;
       justify-content: center;
-      align-items: center; 
-      height: 100vh; 
+      align-items: center;
+      height: 100vh;
       padding-top: 5vh;
-      padding-bottom: 2vh; 
+      padding-bottom: 2vh;
     }
 
     .page {
       width: 100%;
-      max-width: 1100px; 
+      max-width: 1100px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -63,7 +65,7 @@
 
     .brand {
       text-align: center;
-      margin-bottom: 25px; 
+      margin-bottom: 25px;
     }
 
     .brand-title {
@@ -71,8 +73,8 @@
       font-size: 80px;
       color: var(--accent);
       margin: 0;
-      line-height: 1.0;
-      text-shadow: 2px 2px 0px rgba(0,0,0,0.8), 0 0 15px var(--accent-glow);
+      line-height: 1;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.8), 0 0 15px var(--accent-glow);
       font-weight: 400;
       letter-spacing: -1px;
     }
@@ -87,45 +89,42 @@
 
     .routing-title {
       color: var(--accent);
-      font-size: 19px; 
+      font-size: 19px;
       font-weight: bold;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      margin-bottom: 20px; 
+      margin-bottom: 20px;
       text-shadow: 0 0 5px var(--accent-glow);
     }
 
-    .blink { animation: blinker 1s step-end infinite; }
-    @keyframes blinker { 50% { opacity: 0; } }
-
     .menu-container {
       display: grid;
-      grid-template-columns: 1fr 1fr; 
-      column-gap: 80px; 
+      grid-template-columns: 1fr 1fr;
+      column-gap: 80px;
       width: 100%;
     }
 
     .menu-track {
-      border: 3px solid var(--line); 
+      border: 3px solid var(--line);
       background: #0a0a0a;
-      padding: 30px; 
+      padding: 30px;
       box-shadow: 0 0 25px rgba(0,0,0,0.6);
       border-radius: 2px;
     }
 
     .section {
-      margin-bottom: 40px; 
+      margin-bottom: 40px;
     }
     .section:last-child { margin-bottom: 0; }
 
     .section-title {
       color: #fff;
-      font-size: 14px; 
+      font-size: 14px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 12px; 
+      margin-bottom: 12px;
       padding-bottom: 5px;
-      border-bottom: 1px dotted var(--line); 
+      border-bottom: 1px dotted var(--line);
       display: flex;
       justify-content: space-between;
     }
@@ -134,19 +133,42 @@
       display: flex;
       justify-content: space-between;
       align-items: end;
-      margin-bottom: 8px; 
-      font-size: 14px; 
+      margin-bottom: 8px;
+      font-size: 14px;
     }
 
-    .row .label { text-transform: uppercase; white-space: nowrap; padding-right: 8px; color: var(--fg-soft); }
-    .row .fill { flex-grow: 1; border-bottom: 1px dotted rgba(31, 78, 121, 0.3); position: relative; top: -4px; }
-    .row .value { color: var(--accent); font-weight: 700; padding-left: 10px; text-shadow: 0 0 4px var(--accent-glow); white-space: nowrap; }
+    .row .label {
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding-right: 8px;
+      color: var(--fg-soft);
+    }
 
-    .value.highlight { background: var(--accent); color: #000; padding: 0 6px; text-shadow: none; }
+    .row .fill {
+      flex-grow: 1;
+      border-bottom: 1px dotted rgba(31, 78, 121, 0.3);
+      position: relative;
+      top: -4px;
+    }
+
+    .row .value {
+      color: var(--accent);
+      font-weight: 700;
+      padding-left: 10px;
+      text-shadow: 0 0 4px var(--accent-glow);
+      white-space: nowrap;
+    }
+
+    .value.highlight {
+      background: var(--accent);
+      color: #000;
+      padding: 0 6px;
+      text-shadow: none;
+    }
 
     .secure-channel-container {
-      grid-column: 1 / -1; 
-      margin-top: 30px; 
+      grid-column: 1 / -1;
+      margin-top: 30px;
       text-align: center;
     }
 
@@ -157,7 +179,7 @@
       overflow: hidden;
     }
 
-    /* 기존 점선 라인 */
+    /* Base dashed routing line */
     .secure-channel::before {
       content: '';
       position: absolute;
@@ -168,10 +190,9 @@
       background: linear-gradient(90deg, var(--line) 50%, transparent 50%);
       background-size: 15px 1px;
       animation: routing-flow var(--flow-duration) linear infinite;
-      opacity: 0.9;
+      opacity: 0.95;
     }
 
-    /* moving packet layer */
     .packet-layer {
       position: absolute;
       top: -4px;
@@ -185,23 +206,21 @@
     .packet {
       position: absolute;
       top: 50%;
-      left: -20px;
+      left: -24px;
       width: 4px;
       height: 4px;
       margin-top: -2px;
       border-radius: 50%;
       background: var(--accent);
-      box-shadow: 0 0 8px var(--accent-glow), 0 0 12px var(--accent-glow);
+      box-shadow:
+        0 0 6px var(--accent-glow),
+        0 0 12px var(--accent-glow);
       opacity: 0;
-      animation: packet-travel 1.6s linear infinite;
+      animation: packet-travel var(--packet-duration) linear infinite;
     }
 
     .packet.p2 {
-      animation-delay: 0.55s;
-    }
-
-    .packet.p3 {
-      animation-delay: 1.05s;
+      animation-delay: 1.2s;
     }
 
     @keyframes routing-flow {
@@ -211,22 +230,22 @@
 
     @keyframes packet-travel {
       0% {
-        left: -20px;
+        left: -24px;
         opacity: 0;
-        transform: scale(0.8);
+        transform: scale(0.85);
       }
-      10% {
+      12% {
         opacity: 1;
         transform: scale(1);
       }
-      85% {
+      82% {
         opacity: 1;
         transform: scale(1);
       }
       100% {
-        left: calc(100% + 20px);
+        left: calc(100% + 24px);
         opacity: 0;
-        transform: scale(0.8);
+        transform: scale(0.85);
       }
     }
 
@@ -244,28 +263,31 @@
       padding: 8px 15px;
       border: 1px solid var(--line);
       display: inline-block;
-      font-family: 'IBM Plex Mono', monospace; 
+      font-family: 'IBM Plex Mono', monospace;
       animation: node-pulse 2.5s infinite;
     }
 
     @keyframes node-pulse {
-      0% { box-shadow: 0 0 0px var(--accent-glow); }
-      50% { box-shadow: 0 0 10px var(--accent-glow); border-color: rgba(31, 78, 121, 0.8); }
-      100% { box-shadow: 0 0 0px var(--accent-glow); }
+      0% { box-shadow: 0 0 0 var(--accent-glow); }
+      50% {
+        box-shadow: 0 0 10px var(--accent-glow);
+        border-color: rgba(31, 78, 121, 0.8);
+      }
+      100% { box-shadow: 0 0 0 var(--accent-glow); }
     }
 
     .footer {
-      margin-top: 30px; 
+      margin-top: 30px;
       display: flex;
       justify-content: center;
-      gap: 20px; 
+      gap: 20px;
     }
 
     .footer a {
       background-color: var(--brand-red);
       color: #fff;
       text-decoration: none;
-      padding: 12px 40px; 
+      padding: 12px 40px;
       font-size: 14px;
       font-weight: 900;
       letter-spacing: 0.15em;
@@ -274,7 +296,7 @@
       text-transform: uppercase;
       transition: all 0.2s ease;
     }
-    
+
     .footer a:hover {
       background-color: #b51c10;
       box-shadow: 0 0 20px rgba(218, 41, 28, 0.6);
@@ -296,9 +318,20 @@
     }
 
     @media (max-width: 950px) {
-      body { height: auto; overflow-y: auto; padding: 20px 15px; }
-      .menu-container { grid-template-columns: 1fr; row-gap: 30px; }
-      .brand-title { font-size: 50px; }
+      body {
+        height: auto;
+        overflow-y: auto;
+        padding: 20px 15px;
+      }
+
+      .menu-container {
+        grid-template-columns: 1fr;
+        row-gap: 30px;
+      }
+
+      .brand-title {
+        font-size: 50px;
+      }
     }
   </style>
 </head>
@@ -309,7 +342,7 @@
       <div class="sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</div>
     </div>
 
-    <div class="routing-title">ROUTING MENU<span class="blink">_</span></div>
+    <div class="routing-title">ROUTING MENU</div>
 
     <div class="menu-container">
       <div class="menu-track">
@@ -320,6 +353,7 @@
           <div class="row"><span class="label">MINIMUM ORDER</span><span class="fill"></span><span class="value">3M SATS</span></div>
           <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
         </div>
+
         <div class="section">
           <div class="section-title"><span>[ KITCHEN EQUIPMENT ]</span><span>SPEC</span></div>
           <div class="row"><span class="label">RECIPE BOOK (RAM)</span><span class="fill"></span><span class="value highlight">64GB</span></div>
@@ -368,7 +402,6 @@
           <div class="packet-layer" aria-hidden="true">
             <span class="packet p1"></span>
             <span class="packet p2"></span>
-            <span class="packet p3"></span>
           </div>
           <div class="pubkey-label">>> SECURE DELIVERY ROUTE (PUBKEY) <<</div>
           <div class="pubkey">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div>
@@ -389,8 +422,12 @@
       try {
         const res = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`);
         const data = await res.json();
-        document.getElementById('capacityValue').textContent = `${(data.capacity / 100000000).toFixed(2)} BTC`;
-        document.getElementById('channelsValue').textContent = data.active_channel_count.toLocaleString();
+
+        document.getElementById('capacityValue').textContent =
+          `${(data.capacity / 100000000).toFixed(2)} BTC`;
+
+        document.getElementById('channelsValue').textContent =
+          data.active_channel_count.toLocaleString();
       } catch (e) {
         document.getElementById('capacityValue').textContent = 'OFFLINE';
         document.getElementById('channelsValue').textContent = 'OFFLINE';
@@ -401,18 +438,21 @@
 
     function randomizeFlow() {
       const root = document.documentElement;
-      const flow = (0.35 + Math.random() * 0.55).toFixed(2) + 's';
-      root.style.setProperty('--flow-duration', flow);
 
-      const packets = document.querySelectorAll('.packet');
-      packets.forEach((packet) => {
-        const duration = (1.2 + Math.random() * 1.0).toFixed(2) + 's';
-        packet.style.animationDuration = duration;
-      });
+      // Base values chosen for calm-but-alive motion
+      const baseFlow = 1.8;
+      const basePacket = 2.4;
+
+      // ±12% variation
+      const flow = (baseFlow * (0.88 + Math.random() * 0.24)).toFixed(2);
+      const packet = (basePacket * (0.88 + Math.random() * 0.24)).toFixed(2);
+
+      root.style.setProperty('--flow-duration', `${flow}s`);
+      root.style.setProperty('--packet-duration', `${packet}s`);
     }
 
     randomizeFlow();
-    setInterval(randomizeFlow, 900);
+    setInterval(randomizeFlow, 2400);
 
     function copyEmail(e, emailAddress) {
       e.preventDefault();
@@ -421,7 +461,7 @@
         const originalText = target.innerText;
         target.innerText = '[ COPIED! ]';
         target.style.color = '#fff';
-        
+
         setTimeout(() => {
           target.innerText = originalText;
           target.style.color = 'var(--accent)';
