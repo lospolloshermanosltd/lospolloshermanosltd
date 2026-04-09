@@ -9,44 +9,280 @@
   <link href="https://fonts.googleapis.com/css2?family=Ranchers&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     @font-face { font-family: 'JI Burrito'; src: url('JI Burrito.ttf') format('truetype'); font-display: swap; }
-    :root { --bg: #050505; --fg: #d9e3e1; --fg-soft: #E6E6E6; --fg-dim: rgba(230, 230, 230, 0.5); --line: #1F4E79; --accent: #F3D80D; --brand-red: #DA291C; --accent-glow: rgba(243, 216, 13, 0.3); --terminal-green: #7CFC00; --terminal-green-dim: rgba(124, 252, 0, 0.84); --terminal-glow: rgba(124, 252, 0, 0.28); --flow-duration: 1.8s; --packet-duration: 2.4s; }
+    :root {
+      --bg: #050505;
+      --fg: #d9e3e1;
+      --fg-soft: #E6E6E6;
+      --fg-dim: rgba(230, 230, 230, 0.5);
+      --line: #1F4E79;
+      --accent: #F3D80D;
+      --brand-red: #DA291C;
+      --accent-glow: rgba(243, 216, 13, 0.3);
+      --terminal-green: #7CFC00;
+      --terminal-green-dim: rgba(124, 252, 0, 0.84);
+      --terminal-glow: rgba(124, 252, 0, 0.28);
+      --flow-duration: 1.8s;
+      --packet-duration: 2.4s;
+    }
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); font-family: 'IBM Plex Mono', monospace; -webkit-font-smoothing: none; overflow: hidden; }
-    body { display: flex; justify-content: center; align-items: center; height: 100vh; padding-top: 5vh; padding-bottom: 2vh; }
-    .page { width: 100%; max-width: 1100px; display: flex; flex-direction: column; align-items: center; }
-    .brand { text-align: center; margin-bottom: 25px; }
-    .brand-title { font-family: 'JI Burrito', 'Ranchers', sans-serif; font-size: 80px; color: var(--accent); margin: 0; line-height: 1; text-shadow: 2px 2px 0 rgba(0,0,0,0.8), 0 0 15px var(--accent-glow); font-weight: 400; letter-spacing: -1px; }
-    .brand .sub { margin-top: 6px; color: var(--fg-dim); font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase; }
-    .routing-title { color: var(--accent); font-size: 19px; font-weight: bold; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; text-shadow: 0 0 5px var(--accent-glow); }
-    .menu-container { display: grid; grid-template-columns: 1fr 1fr; column-gap: 80px; width: 100%; }
-    .menu-track { border: 3px solid var(--line); background: #0a0a0a; padding: 30px; box-shadow: 0 0 25px rgba(0,0,0,0.6); border-radius: 2px; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'IBM Plex Mono', monospace;
+      -webkit-font-smoothing: none;
+      overflow: hidden;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding-top: 5vh;
+      padding-bottom: 2vh;
+    }
+    .page {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .brand {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .brand-title {
+      font-family: 'JI Burrito', 'Ranchers', sans-serif;
+      font-size: 80px;
+      color: var(--accent);
+      margin: 0;
+      line-height: 1;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.8), 0 0 15px var(--accent-glow);
+      font-weight: 400;
+      letter-spacing: -1px;
+    }
+    .brand .sub {
+      margin-top: 6px;
+      color: var(--fg-dim);
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+    }
+    .routing-title {
+      color: var(--accent);
+      font-size: 19px;
+      font-weight: bold;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      text-shadow: 0 0 5px var(--accent-glow);
+    }
+    .menu-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 80px;
+      width: 100%;
+    }
+    .menu-track {
+      border: 3px solid var(--line);
+      background: #0a0a0a;
+      padding: 30px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.6);
+      border-radius: 2px;
+    }
     .section { margin-bottom: 40px; }
-    .section-title { color: #fff; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; padding-bottom: 5px; border-bottom: 1px dotted var(--line); display: flex; justify-content: space-between; }
-    .row { display: flex; justify-content: space-between; align-items: end; margin-bottom: 8px; font-size: 14px; }
-    .row .label { text-transform: uppercase; white-space: nowrap; padding-right: 8px; color: var(--fg-soft); }
-    .row .fill { flex-grow: 1; border-bottom: 1px dotted rgba(31, 78, 121, 0.3); position: relative; top: -4px; }
-    .row .value { color: var(--accent); font-weight: 700; padding-left: 10px; text-shadow: 0 0 4px var(--accent-glow); white-space: nowrap; }
-    .value.highlight { background: var(--accent); color: #000; padding: 0 6px; text-shadow: none; }
-    .secure-channel-container { grid-column: 1 / -1; margin-top: 30px; text-align: center; }
-    .secure-channel { position: relative; padding-top: 22px; width: 100%; overflow: hidden; }
-    .secure-channel::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, var(--line) 50%, transparent 50%); background-size: 15px 1px; animation: routing-flow var(--flow-duration) linear infinite; opacity: 0.95; }
-    .packet-layer { position: absolute; top: -4px; left: 0; width: 100%; height: 10px; pointer-events: none; overflow: hidden; }
-    .packet { position: absolute; top: 50%; left: -24px; width: 4px; height: 4px; margin-top: -2px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent-glow), 0 0 12px var(--accent-glow); opacity: 0; animation: packet-travel var(--packet-duration) linear infinite; }
+    .section-title {
+      color: #fff;
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-bottom: 5px;
+      border-bottom: 1px dotted var(--line);
+      display: flex;
+      justify-content: space-between;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .row .label {
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding-right: 8px;
+      color: var(--fg-soft);
+    }
+    .row .fill {
+      flex-grow: 1;
+      border-bottom: 1px dotted rgba(31, 78, 121, 0.3);
+      position: relative;
+      top: -4px;
+    }
+    .row .value {
+      color: var(--accent);
+      font-weight: 700;
+      padding-left: 10px;
+      text-shadow: 0 0 4px var(--accent-glow);
+      white-space: nowrap;
+    }
+    .value.highlight {
+      background: var(--accent);
+      color: #000;
+      padding: 0 6px;
+      text-shadow: none;
+    }
+    .secure-channel-container {
+      grid-column: 1 / -1;
+      margin-top: 30px;
+      text-align: center;
+    }
+    .secure-channel {
+      position: relative;
+      padding-top: 22px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .secure-channel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--line) 50%, transparent 50%);
+      background-size: 15px 1px;
+      animation: routing-flow var(--flow-duration) linear infinite;
+      opacity: 0.95;
+    }
+    .packet-layer {
+      position: absolute;
+      top: -4px;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .packet {
+      position: absolute;
+      top: 50%;
+      left: -24px;
+      width: 4px;
+      height: 4px;
+      margin-top: -2px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow), 0 0 12px var(--accent-glow);
+      opacity: 0;
+      animation: packet-travel var(--packet-duration) linear infinite;
+    }
     .packet.p2 { animation-delay: 1.2s; }
-    @keyframes routing-flow { 0% { background-position: 0 0; } 100% { background-position: 15px 0; } }
-    @keyframes packet-travel { 0% { left: -24px; opacity: 0; transform: scale(0.85); } 12% { opacity: 1; transform: scale(1); } 82% { opacity: 1; transform: scale(1); } 100% { left: calc(100% + 24px); opacity: 0; transform: scale(0.85); } }
-    .pubkey-wrap { display: inline-flex; flex-direction: column; align-items: stretch; width: auto; max-width: 100%; margin-top: 2px; }
-    .pubkey-block { display: inline-flex; flex-direction: column; font-family: 'IBM Plex Mono', monospace; border: 1px solid var(--line); background: rgba(0,0,0,0.52); box-shadow: 0 0 12px rgba(31, 78, 121, 0.2); overflow: hidden; animation: node-pulse 2.5s infinite; min-width: 760px; max-width: 100%; }
-    .pubkey { font-size: 11px; line-height: 1.2; color: rgba(230, 230, 230, 0.62); padding: 10px 16px; white-space: nowrap; transition: color 0.2s ease; cursor: pointer; text-align: center; }
-    .status-strip { width: 100%; display: flex; align-items: center; justify-content: flex-start; gap: 9px; margin-top: 9px; padding-left: 4px; font-size: 10px; color: var(--terminal-green-dim); text-transform: uppercase; }
-    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--terminal-green); animation: live-pulse 1.6s ease-in-out infinite; }
-    @keyframes live-pulse { 0% { opacity: 0.45; transform: scale(0.92); } 50% { opacity: 1; transform: scale(1.10); } 100% { opacity: 0.45; transform: scale(0.92); } }
-    @keyframes node-pulse { 0% { box-shadow: 0 0 0 var(--accent-glow); } 50% { box-shadow: 0 0 12px var(--accent-glow); } 100% { box-shadow: 0 0 0 var(--accent-glow); } }
-    .footer { margin-top: 30px; display: flex; gap: 20px; }
-    .footer a { background-color: var(--brand-red); color: #fff; text-decoration: none; padding: 12px 40px; font-size: 14px; font-weight: 900; letter-spacing: 0.15em; border: 1px solid var(--brand-red); text-transform: uppercase; transition: all 0.2s ease; }
-    .footer a:hover { background-color: #b51c10; box-shadow: 0 0 20px rgba(218,41,28,0.6); }
-    .value a { color: var(--accent); text-decoration: none; }
-    @media (max-width: 950px) { body { height: auto; overflow-y: auto; padding: 20px 15px; } .menu-container { grid-template-columns: 1fr; row-gap: 30px; } .brand-title { font-size: 50px; } .pubkey-block { min-width: 0; width: 100%; } .pubkey { white-space: normal; word-break: break-all; } }
+    @keyframes routing-flow {
+      0% { background-position: 0 0; }
+      100% { background-position: 15px 0; }
+    }
+    @keyframes packet-travel {
+      0% { left: -24px; opacity: 0; transform: scale(0.85); }
+      12% { opacity: 1; transform: scale(1); }
+      82% { opacity: 1; transform: scale(1); }
+      100% { left: calc(100% + 24px); opacity: 0; transform: scale(0.85); }
+    }
+    .pubkey-wrap {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: auto;
+      max-width: 100%;
+      margin-top: 2px;
+    }
+    .pubkey-block {
+      display: inline-flex;
+      flex-direction: column;
+      font-family: 'IBM Plex Mono', monospace;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.52);
+      box-shadow: 0 0 12px rgba(31, 78, 121, 0.2);
+      overflow: hidden;
+      animation: node-pulse 2.5s infinite;
+      min-width: 760px;
+      max-width: 100%;
+    }
+    .pubkey {
+      font-size: 11px;
+      line-height: 1.2;
+      color: rgba(230, 230, 230, 0.62);
+      padding: 10px 16px;
+      white-space: nowrap;
+      transition: color 0.2s ease;
+      cursor: pointer;
+      text-align: center;
+    }
+    .status-strip {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 9px;
+      margin-top: 9px;
+      padding-left: 4px;
+      font-size: 10px;
+      color: var(--terminal-green-dim);
+      text-transform: uppercase;
+    }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--terminal-green);
+      animation: live-pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes live-pulse {
+      0% { opacity: 0.45; transform: scale(0.92); }
+      50% { opacity: 1; transform: scale(1.10); }
+      100% { opacity: 0.45; transform: scale(0.92); }
+    }
+    @keyframes node-pulse {
+      0% { box-shadow: 0 0 0 var(--accent-glow); }
+      50% { box-shadow: 0 0 12px var(--accent-glow); }
+      100% { box-shadow: 0 0 0 var(--accent-glow); }
+    }
+    .footer {
+      margin-top: 30px;
+      display: flex;
+      gap: 20px;
+    }
+    .footer a {
+      background-color: var(--brand-red);
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 40px;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      border: 1px solid var(--brand-red);
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
+    .footer a:hover {
+      background-color: #b51c10;
+      box-shadow: 0 0 20px rgba(218,41,28,0.6);
+    }
+    .value a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    @media (max-width: 950px) {
+      body { height: auto; overflow-y: auto; padding: 20px 15px; }
+      .menu-container { grid-template-columns: 1fr; row-gap: 30px; }
+      .brand-title { font-size: 50px; }
+      .pubkey-block { min-width: 0; width: 100%; }
+      .pubkey { white-space: normal; word-break: break-all; }
+    }
   </style>
 </head>
 <body>
@@ -55,7 +291,9 @@
       <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
       <div class="sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</div>
     </div>
+
     <div class="routing-title">ROUTING MENU</div>
+
     <div class="menu-container">
       <div class="menu-track">
         <div class="section">
@@ -65,6 +303,7 @@
           <div class="row"><span class="label">MINIMUM ORDER</span><span class="fill"></span><span class="value">3M SATS</span></div>
           <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
         </div>
+
         <div class="section">
           <div class="section-title"><span>[ KITCHEN EQUIPMENT ]</span><span>SPEC</span></div>
           <div class="row"><span class="label">RECIPE BOOK (RAM)</span><span class="fill"></span><span class="value highlight">64GB</span></div>
@@ -73,6 +312,7 @@
           <div class="row"><span class="label">STORE HOURS</span><span class="fill"></span><span class="value">99.9%</span></div>
         </div>
       </div>
+
       <div class="menu-track">
         <div class="section">
           <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEE</span></div>
@@ -81,6 +321,7 @@
           <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">SPICY</span></div>
           <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value highlight">DYNAMIC</span></div>
         </div>
+
         <div class="section">
           <div class="section-title"><span>[ CONTACT / INFO ]</span><span>COMMS</span></div>
           <div class="row"><span class="label">EMAIL</span><span class="fill"></span><span class="value"><a href="#" id="email">lospolloshermanosltd@proton.me</a></span></div>
@@ -89,16 +330,23 @@
           <div class="row"><span class="label">TELEGRAM</span><span class="fill"></span><span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank">@lospolloshermanosltd</a></span></div>
         </div>
       </div>
+
       <div class="secure-channel-container">
         <div class="secure-channel">
           <div class="packet-layer"><span class="packet p1"></span><span class="packet p2"></span></div>
           <div class="pubkey-wrap">
-            <div class="pubkey-block"><div class="pubkey" id="pk">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div></div>
-            <div class="status-strip"><span class="live-dot"></span><span id="tick">INITIALIZING KITCHEN...</span></div>
+            <div class="pubkey-block">
+              <div class="pubkey" id="pk">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div>
+            </div>
+            <div class="status-strip">
+              <span class="live-dot"></span>
+              <span id="tick">INITIALIZING KITCHEN...</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
     <div class="footer">
       <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">AMBOSS</a>
       <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">MEMPOOL</a>
@@ -107,38 +355,125 @@
 
   <script>
     const P = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
-    
-    async function update() {
-      const c = document.getElementById('cap'), h = document.getElementById('chan'), t = document.getElementById('tick');
-      
-      // 1. 멤풀 서버 리스트 (캐시 방지 쿼리 포함)
-      const endpoints = [
-        `https://mempool.space/api/v1/lightning/nodes/${P}?t=${Date.now()}`,
-        `https://mempool.emzy.de/api/v1/lightning/nodes/${P}?t=${Date.now()}`
+    const API = `https://mempool.space/api/v1/lightning/nodes/${P}`;
+
+    // stale 허용 한도: 12시간
+    const MAX_STALE_MS = 12 * 60 * 60 * 1000;
+
+    // 마지막으로 정상 반영한 값 보관
+    let lastGood = {
+      cap: null,
+      chan: null,
+      updatedAt: null
+    };
+
+    function extractTimestampMs(d) {
+      const candidates = [
+        d?.updated_at,
+        d?.last_update,
+        d?.updatedAt,
+        d?.lastUpdate,
+        d?.timestamp
       ];
 
-      for (let url of endpoints) {
-        try {
-          const r = await fetch(url);
-          if (!r.ok) continue;
-          const d = await r.json();
-          
-          const capSats = d.capacity || d.total_capacity || 0;
-          const chanCount = d.active_channel_count || d.num_channels || 0;
-          
-          if (capSats > 0) {
-            const btc = (capSats / 1e8).toFixed(2);
-            c.innerText = btc + ' BTC';
-            h.innerText = chanCount;
-            
-            // 멤풀이 아직 3.0 미만 소리하면 'SYNCING' 띄우기
-            const statusLabel = btc < 3.0 ? "SYNCING..." : "ONLINE";
-            t.innerText = `${statusLabel} / MAIN SYNC / ${btc} BTC`;
-            
-            // 만약 제대로 된 데이터(3.0 이상)를 잡았다면 더 이상 시도 안 함
-            if (btc >= 3.0) return;
+      for (const v of candidates) {
+        if (v == null) continue;
+
+        // epoch seconds
+        if (typeof v === 'number' && v > 1000000000 && v < 1000000000000) {
+          return v * 1000;
+        }
+
+        // epoch milliseconds
+        if (typeof v === 'number' && v >= 1000000000000) {
+          return v;
+        }
+
+        // ISO string
+        if (typeof v === 'string') {
+          const parsed = Date.parse(v);
+          if (!Number.isNaN(parsed)) return parsed;
+        }
+      }
+
+      return null;
+    }
+
+    async function fetchData(url) {
+      const noCacheUrl = `${url}?t=${Date.now()}&r=${Math.random().toString(36).slice(2)}`;
+
+      const res = await fetch(noCacheUrl, {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+          'Accept': 'application/json',
+          'Cache-Control': 'no-cache, no-store, max-age=0',
+          'Pragma': 'no-cache'
+        }
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    }
+
+    function applyDisplay(cap, chan, statusText) {
+      document.getElementById('cap').innerText = `${(cap / 1e8).toFixed(2)} BTC`;
+      document.getElementById('chan').innerText = String(chan);
+      document.getElementById('tick').innerText = statusText;
+    }
+
+    async function update() {
+      const tick = document.getElementById('tick');
+
+      try {
+        const d = await fetchData(API);
+
+        const cap = d.capacity || d.total_capacity || 0;
+        const chan = d.active_channel_count || d.num_channels || d.channel_count || 0;
+        const ts = extractTimestampMs(d);
+        const now = Date.now();
+
+        // 값 자체가 비정상이면 폐기
+        if (!cap || cap <= 0) {
+          throw new Error('Invalid capacity');
+        }
+
+        // timestamp가 있으면 stale 검사
+        if (ts && (now - ts > MAX_STALE_MS)) {
+          if (lastGood.cap !== null) {
+            applyDisplay(
+              lastGood.cap,
+              lastGood.chan,
+              `ONLINE / STALE SOURCE IGNORED / LAST GOOD ${(lastGood.cap / 1e8).toFixed(2)} BTC`
+            );
+            return;
+          } else {
+            tick.innerText = 'ONLINE / STALE SOURCE / WAITING FOR FRESH DATA';
+            return;
           }
-        } catch (e) { console.error("Fetch error"); }
+        }
+
+        // 정상값 반영
+        lastGood = {
+          cap,
+          chan,
+          updatedAt: ts || now
+        };
+
+        applyDisplay(cap, chan, `ONLINE / MAIN SYNC / ${(cap / 1e8).toFixed(2)} BTC`);
+      } catch (err) {
+        // 실패해도 마지막 정상값 유지
+        if (lastGood.cap !== null) {
+          applyDisplay(
+            lastGood.cap,
+            lastGood.chan,
+            `ONLINE / HOLDING LAST GOOD / ${(lastGood.cap / 1e8).toFixed(2)} BTC`
+          );
+        } else {
+          tick.innerText = 'RETRIEVING DATA...';
+        }
+
+        console.error('Update failed:', err);
       }
     }
 
@@ -146,19 +481,26 @@
       const el = document.getElementById(id);
       try {
         await navigator.clipboard.writeText(txt);
-        const old = el.innerText; el.innerText = msg;
-        setTimeout(() => el.innerText = old, 1500);
-      } catch(e) {}
+        const old = el.innerText;
+        el.innerText = msg;
+        setTimeout(() => { el.innerText = old; }, 1500);
+      } catch (e) {
+        console.error('Copy failed:', e);
+      }
     }
 
     document.getElementById('pk').onclick = () => copy('pk', P, '[ COPIED ]');
-    document.getElementById('email').onclick = (e) => { e.preventDefault(); copy('email', 'lospolloshermanosltd@proton.me', '[ COPIED ]'); };
+    document.getElementById('email').onclick = (e) => {
+      e.preventDefault();
+      copy('email', 'lospolloshermanosltd@proton.me', '[ COPIED ]');
+    };
 
     update();
     setInterval(update, 60000);
+
     setInterval(() => {
-      document.documentElement.style.setProperty('--flow-duration', (1.6+Math.random()*0.4).toFixed(2)+'s');
-      document.documentElement.style.setProperty('--packet-duration', (2.2+Math.random()*0.4).toFixed(2)+'s');
+      document.documentElement.style.setProperty('--flow-duration', (1.6 + Math.random() * 0.4).toFixed(2) + 's');
+      document.documentElement.style.setProperty('--packet-duration', (2.2 + Math.random() * 0.4).toFixed(2) + 's');
     }, 3000);
   </script>
 </body>
