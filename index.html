@@ -28,10 +28,7 @@
       --accent-glow: rgba(243, 216, 13, 0.3);
       --line-glow: rgba(31, 78, 121, 0.4);
 
-      --terminal-green: #7CFC00;
-      --terminal-green-dim: rgba(124, 252, 0, 0.72);
-      --terminal-glow: rgba(124, 252, 0, 0.22);
-
+      /* Final tuned timing */
       --flow-duration: 1.8s;
       --packet-duration: 2.4s;
     }
@@ -115,7 +112,9 @@
       border-radius: 2px;
     }
 
-    .section { margin-bottom: 40px; }
+    .section {
+      margin-bottom: 40px;
+    }
     .section:last-child { margin-bottom: 0; }
 
     .section-title {
@@ -180,6 +179,7 @@
       overflow: hidden;
     }
 
+    /* Base dashed routing line */
     .secure-channel::before {
       content: '';
       position: absolute;
@@ -212,90 +212,67 @@
       margin-top: -2px;
       border-radius: 50%;
       background: var(--accent);
-      box-shadow: 0 0 6px var(--accent-glow), 0 0 12px var(--accent-glow);
+      box-shadow:
+        0 0 6px var(--accent-glow),
+        0 0 12px var(--accent-glow);
       opacity: 0;
       animation: packet-travel var(--packet-duration) linear infinite;
     }
 
-    .packet.p2 { animation-delay: 1.2s; }
+    .packet.p2 {
+      animation-delay: 1.2s;
+    }
 
     @keyframes routing-flow {
-      0%   { background-position: 0 0; }
+      0% { background-position: 0 0; }
       100% { background-position: 15px 0; }
     }
 
     @keyframes packet-travel {
-      0%   { left: -24px; opacity: 0; transform: scale(0.85); }
-      12%  { opacity: 1; transform: scale(1); }
-      82%  { opacity: 1; transform: scale(1); }
-      100% { left: calc(100% + 24px); opacity: 0; transform: scale(0.85); }
+      0% {
+        left: -24px;
+        opacity: 0;
+        transform: scale(0.85);
+      }
+      12% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      82% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        left: calc(100% + 24px);
+        opacity: 0;
+        transform: scale(0.85);
+      }
     }
 
-    .pubkey-block {
-      display: inline-flex;
-      flex-direction: column;
-      font-family: 'IBM Plex Mono', monospace;
-      border: 1px solid var(--line);
-      background: rgba(0,0,0,0.52);
-      box-shadow: 0 0 12px rgba(31, 78, 121, 0.2);
-      overflow: hidden;
-      animation: node-pulse 2.5s infinite;
-      min-width: 760px;
-      max-width: 100%;
+    .pubkey-label {
+      font-size: 11px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      letter-spacing: 0.15em;
     }
 
     .pubkey {
-      font-size: 11px;
-      line-height: 1.2;
-      color: rgba(230, 230, 230, 0.62);
-      padding: 9px 15px 8px;
-      white-space: nowrap;
-      border-bottom: 1px solid rgba(31, 78, 121, 0.45);
-      transition: color 0.2s ease, background-color 0.2s ease;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .pubkey:hover {
-      color: var(--accent);
-      background: rgba(243, 216, 13, 0.05);
-      text-shadow: 0 0 6px var(--accent-glow);
-    }
-
-    .ticker {
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      color: var(--terminal-green-dim);
-      padding: 8px 15px 9px;
-      white-space: nowrap;
-      text-align: left;
-      min-height: 32px;
-      display: flex;
-      align-items: center;
-      text-shadow: 0 0 6px var(--terminal-glow);
-      text-transform: uppercase;
-    }
-
-    .ticker.waiting::after {
-      content: '';
-      width: 8px;
-      height: 12px;
-      margin-left: 8px;
-      background: var(--terminal-green);
-      box-shadow: 0 0 8px var(--terminal-glow);
-      animation: cursor-blink 1s steps(1, end) infinite;
+      font-size: 12px;
+      color: var(--fg-dim);
+      background: rgba(0,0,0,0.5);
+      padding: 8px 15px;
+      border: 1px solid var(--line);
       display: inline-block;
-      vertical-align: middle;
-    }
-
-    @keyframes cursor-blink {
-      0%, 49% { opacity: 1; }
-      50%, 100% { opacity: 0; }
+      font-family: 'IBM Plex Mono', monospace;
+      animation: node-pulse 2.5s infinite;
     }
 
     @keyframes node-pulse {
-      0%   { box-shadow: 0 0 0 var(--accent-glow); }
-      50%  { box-shadow: 0 0 12px var(--accent-glow); border-color: rgba(31,78,121,0.85); }
+      0% { box-shadow: 0 0 0 var(--accent-glow); }
+      50% {
+        box-shadow: 0 0 10px var(--accent-glow);
+        border-color: rgba(31, 78, 121, 0.8);
+      }
       100% { box-shadow: 0 0 0 var(--accent-glow); }
     }
 
@@ -315,14 +292,14 @@
       font-weight: 900;
       letter-spacing: 0.15em;
       border: 1px solid var(--brand-red);
-      box-shadow: 0 0 15px rgba(218,41,28,0.3);
+      box-shadow: 0 0 15px rgba(218, 41, 28, 0.3);
       text-transform: uppercase;
       transition: all 0.2s ease;
     }
 
     .footer a:hover {
       background-color: #b51c10;
-      box-shadow: 0 0 20px rgba(218,41,28,0.6);
+      box-shadow: 0 0 20px rgba(218, 41, 28, 0.6);
     }
 
     .value a {
@@ -336,7 +313,9 @@
       color: #fff;
     }
 
-    .clickable { cursor: pointer; }
+    .clickable {
+      cursor: pointer;
+    }
 
     @media (max-width: 950px) {
       body {
@@ -352,17 +331,6 @@
 
       .brand-title {
         font-size: 50px;
-      }
-
-      .pubkey-block {
-        min-width: 0;
-        width: 100%;
-      }
-
-      .pubkey,
-      .ticker {
-        white-space: normal;
-        word-break: break-all;
       }
     }
   </style>
@@ -407,16 +375,24 @@
         <div class="section">
           <div class="section-title"><span>[ CONTACT / INFO ]</span><span>COMMS</span></div>
           <div class="row">
-            <span class="label">EMAIL</span><span class="fill"></span>
+            <span class="label">EMAIL</span>
+            <span class="fill"></span>
             <span class="value">
-              <a href="#" class="clickable" onclick="copyEmail(event,'lospolloshermanosltd@proton.me')">lospolloshermanosltd@proton.me</a>
+              <a href="#" class="clickable" onclick="copyEmail(event, 'lospolloshermanosltd@proton.me')">
+                lospolloshermanosltd@proton.me
+              </a>
             </span>
           </div>
           <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
           <div class="row"><span class="label">LNURL</span><span class="fill"></span><span class="value">order@oksu.su</span></div>
           <div class="row">
-            <span class="label">TELEGRAM</span><span class="fill"></span>
-            <span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank">@lospolloshermanosltd</a></span>
+            <span class="label">TELEGRAM</span>
+            <span class="fill"></span>
+            <span class="value">
+              <a href="https://t.me/lospolloshermanosltd" target="_blank">
+                @lospolloshermanosltd
+              </a>
+            </span>
           </div>
         </div>
       </div>
@@ -427,17 +403,8 @@
             <span class="packet p1"></span>
             <span class="packet p2"></span>
           </div>
-
-          <div class="pubkey-block">
-            <div
-              class="pubkey"
-              id="pubkeyValue"
-              title="Click to copy pubkey"
-            >
-              033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
-            </div>
-            <div class="ticker waiting" id="tickerValue">[ NODE STATUS ] QUERYING MEMPOOL API</div>
-          </div>
+          <div class="pubkey-label">>> SECURE DELIVERY ROUTE (PUBKEY) <<</div>
+          <div class="pubkey">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div>
         </div>
       </div>
     </div>
@@ -454,120 +421,55 @@
     async function loadNode() {
       try {
         const res = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
         const data = await res.json();
 
         document.getElementById('capacityValue').textContent =
-          `${(data.capacity / 100_000_000).toFixed(2)} BTC`;
+          `${(data.capacity / 100000000).toFixed(2)} BTC`;
 
         document.getElementById('channelsValue').textContent =
-          Number(data.active_channel_count || 0).toLocaleString();
-
-        return data;
+          data.active_channel_count.toLocaleString();
       } catch (e) {
         document.getElementById('capacityValue').textContent = 'OFFLINE';
         document.getElementById('channelsValue').textContent = 'OFFLINE';
-        return null;
       }
     }
 
-    function formatRelativeTime(unixSeconds) {
-      if (!unixSeconds) return 'UNKNOWN';
-      const now = Math.floor(Date.now() / 1000);
-      const diff = Math.max(0, now - unixSeconds);
-
-      if (diff < 60) return `${diff}S AGO`;
-      if (diff < 3600) return `${Math.floor(diff / 60)}M AGO`;
-      if (diff < 86400) return `${Math.floor(diff / 3600)}H AGO`;
-      return `${Math.floor(diff / 86400)}D AGO`;
-    }
-
-    function setTicker(text, waiting = false) {
-      const el = document.getElementById('tickerValue');
-      el.textContent = text;
-      el.classList.toggle('waiting', waiting);
-    }
-
-    async function loadTerminalStatus(nodeData) {
-      if (nodeData) {
-        const alias = (nodeData.alias || 'UNKNOWN').toUpperCase();
-        const updated = formatRelativeTime(nodeData.updated_at);
-        const channels = Number(nodeData.active_channel_count || 0).toLocaleString();
-        const capacity = (Number(nodeData.capacity || 0) / 100_000_000).toFixed(2);
-
-        setTicker(
-          `[ NODE STATUS ] ${alias} / ${channels} CH / ${capacity} BTC / UPDATED ${updated}`,
-          false
-        );
-        return;
-      }
-
-      let dots = 1;
-      setTicker('[ NODE STATUS ] API LINK PENDING .', true);
-
-      setInterval(() => {
-        const suffix = '.'.repeat(dots);
-        setTicker(`[ NODE STATUS ] API LINK PENDING ${suffix}`, true);
-        dots = dots === 3 ? 1 : dots + 1;
-      }, 700);
-    }
+    loadNode();
 
     function randomizeFlow() {
       const root = document.documentElement;
-      const flow = (1.8 * (0.92 + Math.random() * 0.16)).toFixed(2);
-      const packet = (2.4 * (0.92 + Math.random() * 0.16)).toFixed(2);
+
+      // Base values chosen for calm-but-alive motion
+      const baseFlow = 1.8;
+      const basePacket = 2.4;
+
+      // ±12% variation
+      const flow = (baseFlow * (0.88 + Math.random() * 0.24)).toFixed(2);
+      const packet = (basePacket * (0.88 + Math.random() * 0.24)).toFixed(2);
+
       root.style.setProperty('--flow-duration', `${flow}s`);
       root.style.setProperty('--packet-duration', `${packet}s`);
     }
 
-    function copyEmail(e, addr) {
+    randomizeFlow();
+    setInterval(randomizeFlow, 2400);
+
+    function copyEmail(e, emailAddress) {
       e.preventDefault();
-      navigator.clipboard.writeText(addr).then(() => {
-        const t = e.target;
-        const orig = t.innerText;
-        t.innerText = '[ COPIED! ]';
-        t.style.color = '#fff';
+      navigator.clipboard.writeText(emailAddress).then(() => {
+        const target = e.target;
+        const originalText = target.innerText;
+        target.innerText = '[ COPIED! ]';
+        target.style.color = '#fff';
+
         setTimeout(() => {
-          t.innerText = orig;
-          t.style.color = 'var(--accent)';
+          target.innerText = originalText;
+          target.style.color = 'var(--accent)';
         }, 1500);
+      }).catch(err => {
+        console.error('복사 실패:', err);
       });
     }
-
-    function bindPubkeyCopy() {
-      const el = document.getElementById('pubkeyValue');
-      const original = el.textContent;
-
-      el.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(PUBKEY);
-          el.textContent = '[ PUBKEY COPIED ]';
-          el.style.color = 'var(--accent)';
-          setTimeout(() => {
-            el.textContent = original;
-            el.style.color = '';
-          }, 1400);
-        } catch (e) {
-          el.textContent = '[ COPY FAILED ]';
-          setTimeout(() => {
-            el.textContent = original;
-          }, 1400);
-        }
-      });
-    }
-
-    async function init() {
-      randomizeFlow();
-      setInterval(randomizeFlow, 2400);
-
-      bindPubkeyCopy();
-
-      const nodeData = await loadNode();
-      await loadTerminalStatus(nodeData);
-    }
-
-    init();
   </script>
 </body>
 </html>
