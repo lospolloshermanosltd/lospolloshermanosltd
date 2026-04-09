@@ -559,9 +559,11 @@
       try {
         const res = await fetch(url, {
           method: 'GET',
-          cache: 'no-store',
+          cache: 'no-store', // 브라우저 캐시 무시
           headers: {
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Cache-Control': 'no-cache', // 강력한 캐시 방지 헤더 추가
+            'Pragma': 'no-cache'
           },
           signal: controller.signal
         });
@@ -584,10 +586,10 @@
 
         const capacity = Number(data?.capacity || 0);
 
-        // 네가 기대한 44에 맞추려면 opened_channel_count 우선
+        // 현재 실제로 열려있는 채널 수(active_channel_count)를 최우선으로 가져오도록 순서 변경
         const channelCount =
-          data?.opened_channel_count ??
           data?.active_channel_count ??
+          data?.opened_channel_count ??
           0;
 
         document.getElementById('capacityValue').textContent = formatBTCFromSats(capacity);
@@ -629,8 +631,9 @@
           throw new Error('empty channel list');
         }
 
+        // 핵심 수정 사항: Mempool이 예전 채널을 보내더라도 상태가 'open'이 아닌 것은 여기서 강제로 잘라냅니다.
         const lines = list
-          .filter(ch => ch?.node?.public_key)
+          .filter(ch => ch?.node?.public_key && ch?.status === 'open') 
           .map(buildPeerTickerLine)
           .filter(Boolean);
 
