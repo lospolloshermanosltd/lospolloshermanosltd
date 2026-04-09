@@ -37,7 +37,7 @@
       color: var(--fg);
       font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
       -webkit-font-smoothing: antialiased;
-      overflow: hidden; /* 스크롤 절대 방지 */
+      overflow: hidden; /* 스크롤 절대 박멸 */
     }
 
     body {
@@ -49,18 +49,21 @@
 
     .page {
       width: 100%;
-      max-width: 1250px; 
-      padding: 40px 20px; /* [요청사항] 상하 여백 40px로 완벽 대칭 통일 */
+      max-width: 1100px; /* 전체 폭 축소로 시선 집중 */
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .brand {
       text-align: center;
-      margin-bottom: 25px; 
+      margin-bottom: 35px; /* 공간 확보 */
     }
 
     .brand-title {
       font-family: 'JI Burrito', 'Ranchers', sans-serif;
-      font-size: 60px; /* [해결] 물결무늬 회복을 위해 60px로 원복 */
+      font-size: 60px; /* 물결을 위한 60px 유지 */
       color: var(--accent);
       margin: 0;
       line-height: 1.1;
@@ -70,55 +73,54 @@
     .brand .sub {
       margin-top: 4px;
       color: var(--fg-dim);
-      font-size: 10px; /* 미세 축소 */
+      font-size: 10px;
       letter-spacing: 0.28em;
       text-transform: uppercase;
     }
 
-    .terminal {
-      border: 3px solid var(--line); 
-      background: #0a0a0a;
-      padding: 30px 40px 15px; /* 공간 확보를 위해 내부 여백 축소 */
-      position: relative;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
-
-    .terminal-head {
-      position: absolute;
-      top: -21px; 
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 4px 28px;
-      background: var(--bg);
-      border: 3px solid var(--line);
+    /* ROUTING MENU: 두 박스 중앙 상단에 배치 */
+    .routing-title {
       color: var(--accent);
-      font-size: 24px; 
+      font-size: 20px; 
       font-weight: bold;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      box-shadow: 0 0 15px var(--line-glow);
       text-shadow: 0 0 5px var(--accent-glow);
-      white-space: nowrap;
+      margin-bottom: 20px; /* 두 박스와의 간격 */
+      position: relative;
     }
-
     .blink { animation: blinker 1s step-end infinite; }
     @keyframes blinker { 50% { opacity: 0; } }
 
-    .menu-board {
+    /* 투 트랙 레이아웃 */
+    .menu-container {
       display: grid;
-      grid-template-columns: 1fr 1fr; 
-      column-gap: 150px; /* 완벽 비율 150 */
-      row-gap: 0; 
-      justify-content: center;
+      grid-template-columns: 1fr 1fr; /* 독립된 두 개의 열 */
+      column-gap: 80px; /* 두 박스 사이 간격 최적화 */
+      width: 100%;
     }
+
+    /* 독립된 각 메뉴판 스타일 */
+    .menu-track {
+      border: 3px solid var(--line); /* 묵직한 3px 선 */
+      background: #0a0a0a;
+      padding: 30px; /* 내부 여백 시원하게 */
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      border-radius: 4px; /* 미세하게 둥글려 세련미 추가 */
+    }
+
+    .section {
+      margin-bottom: 40px; /* 섹션 사이 간격 통일 */
+    }
+    .section:last-child { margin-bottom: 0; }
 
     .section-title {
       color: #fff;
-      font-size: 14px; 
+      font-size: 15px; 
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 10px; /* 축소 */
-      padding-bottom: 4px; /* 축소 */
+      margin-bottom: 12px; 
+      padding-bottom: 5px;
       border-bottom: 1px dotted var(--line); 
       display: flex;
       justify-content: space-between;
@@ -128,8 +130,8 @@
       display: flex;
       justify-content: space-between;
       align-items: end;
-      margin-bottom: 6px; /* 행간 대폭 축소로 높이 확보 */
-      font-size: 14px; /* 본문 폰트 미세 축소 */
+      margin-bottom: 8px; 
+      font-size: 15px; 
       color: var(--fg-soft);
     }
 
@@ -139,39 +141,47 @@
 
     .value.highlight { background: var(--accent); color: #000; padding: 0 6px; text-shadow: none; }
 
-    .section-spacer {
-      margin-top: 75px; /* 완벽 비율 75 (150의 절반) */
-    }
-
-    .secure-channel {
-      grid-column: 1 / -1;
-      margin-top: 20px; /* 축소 */
-      padding-top: 10px; /* 축소 */
-      border-top: 1px dashed var(--line);
+    /* 하단 통합 섹션 (두 박스 아래 걸침) */
+    .secure-channel-container {
+      grid-column: 1 / -1; /* 두 박스 전체 너비 사용 */
+      margin-top: 30px; 
       text-align: center;
     }
 
+    .secure-channel {
+      border-top: 1px dashed var(--line);
+      padding-top: 15px;
+      display: inline-block;
+      width: 100%;
+    }
+
     .pubkey-label {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--accent);
       text-transform: uppercase;
-      margin-bottom: 4px; /* 축소 */
+      margin-bottom: 8px;
       letter-spacing: 0.15em;
     }
 
     .pubkey {
-      font-size: 11px; /* 축소 */
+      font-size: 13px;
       color: var(--fg-dim);
       cursor: pointer;
       background: rgba(0,0,0,0.5);
-      padding: 4px 10px; /* 축소 */
+      padding: 8px 15px;
       border: 1px solid var(--line);
       display: inline-block;
       word-break: break-all;
     }
 
+    .pubkey:hover { 
+      color: var(--accent); 
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
     .footer {
-      margin-top: 20px; /* 축소 */
+      margin-top: 35px; 
       display: flex;
       justify-content: center;
       gap: 20px; 
@@ -181,8 +191,8 @@
       background-color: var(--brand-red);
       color: #fff;
       text-decoration: none;
-      padding: 8px 30px; /* 버튼 크기 축소 */
-      font-size: 12px; /* 축소 */
+      padding: 12px 40px; 
+      font-size: 14px;
       font-weight: 900;
       letter-spacing: 0.15em;
       border: 1px solid var(--brand-red);
@@ -192,8 +202,9 @@
 
     @media (max-width: 950px) {
       body { height: auto; overflow-y: auto; padding: 20px 15px; }
-      .menu-board { grid-template-columns: 1fr; column-gap: 0; row-gap: 25px; }
-      .section-spacer { margin-top: 0; }
+      .menu-container { grid-template-columns: 1fr; column-gap: 0; row-gap: 30px; }
+      .brand-title { font-size: 42px; }
+      .section { margin-bottom: 30px; }
     }
   </style>
 </head>
@@ -204,39 +215,42 @@
       <div class="sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</div>
     </div>
 
-    <div class="terminal">
-      <div class="terminal-head">ROUTING MENU<span class="blink">_</span></div>
-      <div class="menu-board">
-        <div class="column">
-          <div class="section">
-            <div class="section-title"><span>[ TODAY'S INGREDIENTS ]</span><span>SIZE</span></div>
-            <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">-- BTC</span></div>
-            <div class="row"><span class="label">ACTIVE FRANCHISES</span><span class="fill"></span><span class="value highlight" id="channelsValue">--</span></div>
-            <div class="row"><span class="label">MINIMUM ORDER</span><span class="fill"></span><span class="value">3M SATS</span></div>
-            <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
-          </div>
-          <div class="section section-spacer">
-            <div class="section-title"><span>[ KITCHEN EQUIPMENT ]</span><span>SPEC</span></div>
-            <div class="row"><span class="label">RECIPE BOOK (RAM)</span><span class="fill"></span><span class="value highlight">64GB</span></div>
-            <div class="row"><span class="label">FREEZER (STORAGE)</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
-            <div class="row"><span class="label">BACKUP GEN</span><span class="fill"></span><span class="value">UPS</span></div>
-            <div class="row"><span class="label">STORE HOURS</span><span class="fill"></span><span class="value">99.9%</span></div>
-          </div>
+    <div class="routing-title">ROUTING MENU<span class="blink">_</span></div>
+
+    <div class="menu-container">
+      <div class="menu-track">
+        <div class="section">
+          <div class="section-title"><span>[ TODAY'S INGREDIENTS ]</span><span>SIZE</span></div>
+          <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">-- BTC</span></div>
+          <div class="row"><span class="label">ACTIVE FRANCHISES</span><span class="fill"></span><span class="value highlight" id="channelsValue">--</span></div>
+          <div class="row"><span class="label">MINIMUM ORDER</span><span class="fill"></span><span class="value">3M SATS</span></div>
+          <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
         </div>
-        <div class="column">
-          <div class="section">
-            <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEE</span></div>
-            <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">MILD</span></div>
-            <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">CLASSIC</span></div>
-            <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">SPICY</span></div>
-            <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value highlight">DYNAMIC</span></div>
-          </div>
-          <div class="section section-spacer">
-            <div class="section-title"><span>[ CONTACT / INFO ]</span><span>COMMS</span></div>
-            <div class="row"><span class="label">DIRECT LINE</span><span class="fill"></span><span class="value">PROTON</span></div>
-            <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
-          </div>
+        <div class="section">
+          <div class="section-title"><span>[ KITCHEN EQUIPMENT ]</span><span>SPEC</span></div>
+          <div class="row"><span class="label">RECIPE BOOK (RAM)</span><span class="fill"></span><span class="value highlight">64GB</span></div>
+          <div class="row"><span class="label">FREEZER (STORAGE)</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
+          <div class="row"><span class="label">BACKUP GEN</span><span class="fill"></span><span class="value">UPS</span></div>
+          <div class="row"><span class="label">STORE HOURS</span><span class="fill"></span><span class="value">99.9%</span></div>
         </div>
+      </div>
+
+      <div class="menu-track">
+        <div class="section">
+          <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEE</span></div>
+          <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">MILD</span></div>
+          <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">CLASSIC</span></div>
+          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">SPICY</span></div>
+          <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value highlight">DYNAMIC</span></div>
+        </div>
+        <div class="section">
+          <div class="section-title"><span>[ CONTACT / INFO ]</span><span>COMMS</span></div>
+          <div class="row"><span class="label">DIRECT LINE</span><span class="fill"></span><span class="value">PROTON</span></div>
+          <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
+        </div>
+      </div>
+
+      <div class="secure-channel-container">
         <div class="secure-channel">
           <div class="pubkey-label">>> SECURE DELIVERY ROUTE (PUBKEY) <<</div>
           <div class="pubkey" id="pubkeyText">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div>
