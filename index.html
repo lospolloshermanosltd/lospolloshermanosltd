@@ -522,7 +522,7 @@
       try {
         const res = await fetch(url, {
           method: 'GET',
-          cache: 'no-store',
+          cache: 'no-store', // 이미 여기서 캐시를 무시하라는 명령이 들어갑니다.
           headers: {
             'Accept': 'application/json'
           },
@@ -546,8 +546,8 @@
       try {
         setTickerText('QUERYING MEMPOOL NODE SUMMARY...');
 
-        const cacheBust = `t=${Date.now()}`;
-        const url = `${API_BASE}/nodes/${PUBKEY}?${cacheBust}`;
+        // 캐시 무효화 꼼수 제거! 깔끔한 URL로만 요청합니다.
+        const url = `${API_BASE}/nodes/${PUBKEY}`;
         const data = await fetchJson(url);
 
         const capacityValue =
