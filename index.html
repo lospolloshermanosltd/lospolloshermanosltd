@@ -403,25 +403,25 @@
     <div class="menu-container">
       <div class="menu-track">
         <div class="section">
-          <div class="section-title"><span>[ TODAY'S INGREDIENTS ]</span><span>SIZE</span></div>
-          <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">LOADING</span></div>
-          <div class="row"><span class="label">ACTIVE FRANCHISES</span><span class="fill"></span><span class="value highlight" id="channelsValue">LOADING</span></div>
-          <div class="row"><span class="label">MINIMUM ORDER</span><span class="fill"></span><span class="value">3M SATS</span></div>
-          <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
+          <div class="section-title"><span>[ STATUS ]</span><span>SIZE</span></div>
+          <div class="row"><span class="label">CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">LOADING</span></div>
+          <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value highlight" id="channelsValue">LOADING</span></div>
+          <div class="row"><span class="label">MIN CHANNEL SIZE</span><span class="fill"></span><span class="value">3M SATS</span></div>
+          <div class="row"><span class="label">REBALANCING</span><span class="fill"></span><span class="value">AUTO</span></div>
         </div>
 
         <div class="section">
-          <div class="section-title"><span>[ KITCHEN EQUIPMENT ]</span><span>SPEC</span></div>
-          <div class="row"><span class="label">RECIPE BOOK (RAM)</span><span class="fill"></span><span class="value highlight">64GB</span></div>
-          <div class="row"><span class="label">FREEZER (STORAGE)</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
-          <div class="row"><span class="label">BACKUP GEN</span><span class="fill"></span><span class="value">UPS</span></div>
-          <div class="row"><span class="label">STORE HOURS</span><span class="fill"></span><span class="value">99.9%</span></div>
+          <div class="section-title"><span>[ HARDWARE ]</span><span>SPEC</span></div>
+          <div class="row"><span class="label">RAM</span><span class="fill"></span><span class="value highlight">64GB</span></div>
+          <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
+          <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS</span></div>
+          <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value">99.9%</span></div>
         </div>
       </div>
 
       <div class="menu-track">
         <div class="section">
-          <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEE</span></div>
+          <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEES</span></div>
           <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">MILD</span></div>
           <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">CLASSIC</span></div>
           <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value highlight">SPICY</span></div>
@@ -429,7 +429,7 @@
         </div>
 
         <div class="section">
-          <div class="section-title"><span>[ CONTACT / INFO ]</span><span>COMMS</span></div>
+          <div class="section-title"><span>[ INFO ]</span><span>INFO</span></div>
           <div class="row">
             <span class="label">EMAIL</span><span class="fill"></span>
             <span class="value">
@@ -584,7 +584,6 @@
 
         const capacity = Number(data?.capacity || 0);
 
-        // 네가 기대한 44에 맞추려면 opened_channel_count 우선
         const channelCount =
           data?.opened_channel_count ??
           data?.active_channel_count ??
