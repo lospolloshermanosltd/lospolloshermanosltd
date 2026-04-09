@@ -29,8 +29,8 @@
       --line-glow: rgba(31, 78, 121, 0.4);
 
       --terminal-green: #7CFC00;
-      --terminal-green-dim: rgba(124, 252, 0, 0.72);
-      --terminal-glow: rgba(124, 252, 0, 0.22);
+      --terminal-green-dim: rgba(124, 252, 0, 0.82);
+      --terminal-glow: rgba(124, 252, 0, 0.30);
 
       --flow-duration: 1.8s;
       --packet-duration: 2.4s;
@@ -254,6 +254,7 @@
       transition: color 0.2s ease, background-color 0.2s ease;
       cursor: pointer;
       user-select: none;
+      text-align: center;
     }
 
     .pubkey:hover {
@@ -264,33 +265,37 @@
 
     .ticker {
       font-size: 10px;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
       color: var(--terminal-green-dim);
-      padding: 8px 15px 9px;
+      padding: 9px 15px 10px;
       white-space: nowrap;
       text-align: left;
-      min-height: 32px;
+      min-height: 34px;
       display: flex;
       align-items: center;
+      gap: 9px;
       text-shadow: 0 0 6px var(--terminal-glow);
       text-transform: uppercase;
     }
 
-    .ticker.waiting::after {
-      content: '';
-      width: 8px;
-      height: 12px;
-      margin-left: 8px;
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      min-width: 6px;
+      border-radius: 50%;
       background: var(--terminal-green);
-      box-shadow: 0 0 8px var(--terminal-glow);
-      animation: cursor-blink 1s steps(1, end) infinite;
-      display: inline-block;
-      vertical-align: middle;
+      box-shadow: 0 0 6px rgba(124,252,0,0.55), 0 0 12px rgba(124,252,0,0.18);
+      animation: live-pulse 1.6s ease-in-out infinite;
     }
 
-    @keyframes cursor-blink {
-      0%, 49% { opacity: 1; }
-      50%, 100% { opacity: 0; }
+    .ticker-text {
+      display: inline-block;
+    }
+
+    @keyframes live-pulse {
+      0%   { opacity: 0.45; transform: scale(0.92); }
+      50%  { opacity: 1;    transform: scale(1.10); }
+      100% { opacity: 0.45; transform: scale(0.92); }
     }
 
     @keyframes node-pulse {
@@ -364,6 +369,10 @@
         white-space: normal;
         word-break: break-all;
       }
+
+      .ticker {
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
@@ -436,7 +445,11 @@
             >
               033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
             </div>
-            <div class="ticker waiting" id="tickerValue">[ NODE STATUS ] QUERYING MEMPOOL API</div>
+
+            <div class="ticker" id="tickerValue">
+              <span class="live-dot"></span>
+              <span class="ticker-text" id="tickerText">QUERYING ACTIVE PEERS...</span>
+            </div>
           </div>
         </div>
       </div>
@@ -451,6 +464,14 @@
   <script>
     const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
 
+    function formatSats(value) {
+      return Math.round(Number(value || 0)).toLocaleString('en-US') + ' SATS';
+    }
+
+    function shortKey(key) {
+      return key.slice(0, 8) + '...' + key.slice(-4);
+    }
+
     async function loadNode() {
       try {
         const res = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`);
@@ -459,7 +480,7 @@
         const data = await res.json();
 
         document.getElementById('capacityValue').textContent =
-          `${(data.capacity / 100_000_000).toFixed(2)} BTC`;
+          `${(Number(data.capacity || 0) / 100_000_000).toFixed(2)} BTC`;
 
         document.getElementById('channelsValue').textContent =
           Number(data.active_channel_count || 0).toLocaleString();
@@ -472,45 +493,52 @@
       }
     }
 
-    function formatRelativeTime(unixSeconds) {
-      if (!unixSeconds) return 'UNKNOWN';
-      const now = Math.floor(Date.now() / 1000);
-      const diff = Math.max(0, now - unixSeconds);
-
-      if (diff < 60) return `${diff}S AGO`;
-      if (diff < 3600) return `${Math.floor(diff / 60)}M AGO`;
-      if (diff < 86400) return `${Math.floor(diff / 3600)}H AGO`;
-      return `${Math.floor(diff / 86400)}D AGO`;
+    function setTickerText(text) {
+      document.getElementById('tickerText').textContent = text;
     }
 
-    function setTicker(text, waiting = false) {
-      const el = document.getElementById('tickerValue');
-      el.textContent = text;
-      el.classList.toggle('waiting', waiting);
-    }
+    function rotateTicker(lines, interval = 3000) {
+      if (!Array.isArray(lines) || !lines.length) return;
 
-    async function loadTerminalStatus(nodeData) {
-      if (nodeData) {
-        const alias = (nodeData.alias || 'UNKNOWN').toUpperCase();
-        const updated = formatRelativeTime(nodeData.updated_at);
-        const channels = Number(nodeData.active_channel_count || 0).toLocaleString();
-        const capacity = (Number(nodeData.capacity || 0) / 100_000_000).toFixed(2);
+      let i = 0;
+      setTickerText(lines[0]);
 
-        setTicker(
-          `[ NODE STATUS ] ${alias} / ${channels} CH / ${capacity} BTC / UPDATED ${updated}`,
-          false
-        );
-        return;
-      }
-
-      let dots = 1;
-      setTicker('[ NODE STATUS ] API LINK PENDING .', true);
+      if (lines.length === 1) return;
 
       setInterval(() => {
-        const suffix = '.'.repeat(dots);
-        setTicker(`[ NODE STATUS ] API LINK PENDING ${suffix}`, true);
-        dots = dots === 3 ? 1 : dots + 1;
-      }, 700);
+        i = (i + 1) % lines.length;
+        setTickerText(lines[i]);
+      }, interval);
+    }
+
+    async function loadPeerTicker() {
+      try {
+        const res = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}/channels?status=active&limit=100`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const data = await res.json();
+        const list = Array.isArray(data) ? data : (data.channels || []);
+
+        if (!list.length) throw new Error('empty');
+
+        const lines = list.map(ch => {
+          const peerKey = ch.node1_public_key === PUBKEY
+            ? ch.node2_public_key
+            : ch.node1_public_key;
+
+          return `PEER ${shortKey(peerKey)} / ${formatSats(ch.capacity)}`;
+        });
+
+        rotateTicker(lines, 3200);
+      } catch (e) {
+        let dots = 1;
+        setTickerText('LINK WAITING.');
+
+        setInterval(() => {
+          dots = dots === 3 ? 1 : dots + 1;
+          setTickerText(`LINK WAITING${'.'.repeat(dots)}`);
+        }, 700);
+      }
     }
 
     function randomizeFlow() {
@@ -563,8 +591,8 @@
 
       bindPubkeyCopy();
 
-      const nodeData = await loadNode();
-      await loadTerminalStatus(nodeData);
+      await loadNode();
+      await loadPeerTicker();
     }
 
     init();
