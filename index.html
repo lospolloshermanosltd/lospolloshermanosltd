@@ -19,8 +19,8 @@
     :root {
       --bg: #050505;
       --fg: #d9e3e1;
-      --fg-soft: rgba(217, 227, 225, 0.82);
-      --fg-dim: rgba(217, 227, 225, 0.48);
+      --fg-soft: #E6E6E6; /* 요청하신 선명한 무채색 회색 */
+      --fg-dim: rgba(230, 230, 230, 0.5); 
       --line: #1F4E79;        
       --accent: #F3D80D;      
       --brand-red: #DA291C;   
@@ -35,32 +35,33 @@
       padding: 0;
       background: var(--bg);
       color: var(--fg);
+      /* 본문과 동일한 폰트 시스템 */
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      overflow: hidden; /* 스크롤 완전 박멸 */
     }
 
     body {
       display: flex;
       justify-content: center;
       align-items: center; 
-      min-height: 100vh; 
-      padding: 35px 20px; 
+      height: 100vh; /* min-height 대신 height 고정으로 스크롤 방지 */
     }
 
     .page {
       width: 100%;
-      max-width: 1280px; 
+      max-width: 1200px; /* 맥북 해상도 고려하여 살짝 축소 */
+      padding: 0 20px;
     }
 
     .brand {
       text-align: center;
-      margin-bottom: 50px; /* 헤더 크기 조정으로 여백 추가 */
+      margin-bottom: 35px; /* 여백 줄여서 전체 높이 확보 */
     }
 
     .brand-title {
       font-family: 'JI Burrito', 'Ranchers', sans-serif;
-      font-size: 64px;
+      font-size: 60px; /* 살짝 축소 */
       color: var(--accent);
       margin: 0;
       line-height: 1.1;
@@ -70,7 +71,7 @@
     }
 
     .brand .sub {
-      margin-top: 8px;
+      margin-top: 6px;
       color: var(--fg-dim);
       font-size: 11px;
       letter-spacing: 0.28em;
@@ -78,27 +79,28 @@
     }
 
     .terminal {
-      border: 3px solid var(--line); /* 선 두께를 3px로 키워 투박함 강조 */
+      border: 3px solid var(--line); /* 3px의 묵직함 유지 */
       background: #0a0a0a;
       padding: 35px 35px 25px; 
       position: relative;
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
 
-    /* 상단 헤더 박스 수정 (핵심 포인트) */
+    /* ROUTING MENU: 본문 폰트와 동일하게 설정 */
     .terminal-head {
       position: absolute;
-      top: -22px; /* 폰트 크기 조정으로 위치 조정 */
+      top: -18px; 
       left: 50%;
       transform: translateX(-50%);
-      padding: 4px 25px; /* 내부 여백 최적화 */
+      padding: 3px 20px;
       background: var(--bg);
-      border: 3px solid var(--line); /* 헤더 선 두께도 통일 */
+      border: 3px solid var(--line);
       color: var(--accent);
-      font-family: 'JI Burrito', sans-serif; /* 메뉴판 폰트로 변경 */
-      font-size: 26px; /* 크기 키움 */
-      font-weight: normal;
-      letter-spacing: 0.1em;
+      /* 브리또 폰트 제거, 본문 폰트 시스템 적용 */
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 16px; 
+      font-weight: bold;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       box-shadow: 0 0 15px var(--line-glow);
       text-shadow: 0 0 5px var(--accent-glow);
@@ -107,23 +109,21 @@
 
     .blink {
       animation: blinker 1s step-end infinite;
-      font-family: monospace; /* 커서는 고정폭으로 */
     }
     @keyframes blinker { 50% { opacity: 0; } }
 
     .menu-board {
       display: grid;
-      grid-template-columns: minmax(auto, 420px) minmax(auto, 420px); 
-      column-gap: 140px; 
+      grid-template-columns: 1fr 1fr; 
+      column-gap: 80px; /* 간격 최적화 */
       row-gap: 0; 
       justify-content: center;
-      margin-top: 15px; /* 상단 헤더가 커진 만큼 여백 추가 */
     }
 
     .section-title {
       color: #fff;
-      font-size: 13px;
-      letter-spacing: 0.1em;
+      font-size: 15px; /* 요청하신 15px */
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       margin-bottom: 15px; 
       padding-bottom: 6px;
@@ -137,7 +137,7 @@
       justify-content: space-between;
       align-items: end;
       margin-bottom: 10px; 
-      font-size: 14px;
+      font-size: 16px; /* 요청하신 16px */
       color: var(--fg-soft);
     }
 
@@ -157,7 +157,7 @@
     .row .value {
       color: var(--accent);
       font-weight: 700;
-      padding-left: 8px;
+      padding-left: 10px;
       text-shadow: 0 0 4px var(--accent-glow);
       white-space: nowrap;
     }
@@ -170,23 +170,23 @@
     }
 
     .section-spacer {
-      margin-top: 70px; 
+      margin-top: 45px; /* 스크롤 방지를 위해 간격 미세 조정 */
     }
 
     .secure-channel {
       grid-column: 1 / -1;
-      margin-top: 40px; 
+      margin-top: 30px; 
       padding-top: 20px;
       border-top: 1px dashed var(--line);
       text-align: center;
     }
 
     .pubkey-label {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--accent);
       text-transform: uppercase;
       margin-bottom: 8px;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.15em;
     }
 
     .pubkey {
@@ -195,7 +195,7 @@
       cursor: pointer;
       word-break: break-all;
       background: rgba(0,0,0,0.5);
-      padding: 10px 16px;
+      padding: 8px 15px;
       border: 1px solid var(--line);
       display: inline-block;
       transition: all 0.2s;
@@ -204,21 +204,22 @@
     .pubkey:hover { 
       color: var(--accent); 
       border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
     }
 
     .footer {
       margin-top: 35px; 
       display: flex;
       justify-content: center;
-      gap: 25px; 
+      gap: 20px; 
     }
 
     .footer a {
       background-color: var(--brand-red);
       color: #fff;
       text-decoration: none;
-      padding: 14px 45px; 
-      font-size: 13px;
+      padding: 12px 40px; 
+      font-size: 14px;
       font-weight: 900;
       letter-spacing: 0.15em;
       border: 1px solid var(--brand-red);
@@ -233,14 +234,14 @@
     }
 
     @media (max-width: 950px) {
-      body { padding: 20px 15px; height: auto; }
+      body { height: auto; overflow-y: auto; padding: 20px 15px; }
       .menu-board {
         grid-template-columns: 1fr;
         column-gap: 0;
-        row-gap: 40px; 
+        row-gap: 30px; 
       }
-      .brand-title { font-size: 48px; }
-      .terminal { padding: 30px 20px 20px; }
+      .brand-title { font-size: 42px; }
+      .terminal { padding: 35px 20px 20px; }
       .section-spacer { margin-top: 0; }
     }
   </style>
