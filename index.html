@@ -28,7 +28,6 @@
       --accent-glow: rgba(243, 216, 13, 0.3);
       --line-glow: rgba(31, 78, 121, 0.4);
 
-      /* Final tuned timing */
       --flow-duration: 1.8s;
       --packet-duration: 2.4s;
     }
@@ -179,7 +178,6 @@
       overflow: hidden;
     }
 
-    /* Base dashed routing line */
     .secure-channel::before {
       content: '';
       position: absolute;
@@ -249,13 +247,6 @@
       }
     }
 
-    .pubkey-label {
-      font-size: 11px;
-      color: var(--accent);
-      margin-bottom: 8px;
-      letter-spacing: 0.15em;
-    }
-
     .pubkey {
       font-size: 12px;
       color: var(--fg-dim);
@@ -265,6 +256,25 @@
       display: inline-block;
       font-family: 'IBM Plex Mono', monospace;
       animation: node-pulse 2.5s infinite;
+    }
+
+    .ticker {
+      font-size: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--accent);
+      background: rgba(0,0,0,0.5);
+      padding: 8px 15px;
+      border: 1px solid var(--line);
+      border-top: none;
+      display: inline-block;
+      min-width: 340px;
+      text-align: left;
+      text-shadow: 0 0 4px var(--accent-glow);
+      transition: opacity 0.3s ease;
+    }
+
+    .ticker.fade {
+      opacity: 0;
     }
 
     @keyframes node-pulse {
@@ -403,8 +413,8 @@
             <span class="packet p1"></span>
             <span class="packet p2"></span>
           </div>
-          <div class="pubkey-label">>> SECURE DELIVERY ROUTE (PUBKEY) <<</div>
-          <div class="pubkey">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div>
+          <div class="pubkey">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div><br>
+          <div class="ticker" id="tickerValue">>> LOADING PEERS...</div>
         </div>
       </div>
     </div>
@@ -434,19 +444,52 @@
       }
     }
 
+    async function loadChannelTicker() {
+      try {
+        const res = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}/channels?status=active`);
+        const data = await res.json();
+
+        const peers = data.channels
+          .map(ch => {
+            const peer = ch.node1_public_key === PUBKEY ? ch.node2_public_key : ch.node1_public_key;
+            const alias = (ch.node1_public_key === PUBKEY ? ch.node2_alias : ch.node1_alias) || peer.slice(0, 16);
+            const cap = (ch.capacity / 100000000).toFixed(4);
+            return { alias, cap };
+          })
+          .filter(p => p.alias);
+
+        if (!peers.length) return;
+
+        let i = 0;
+        const el = document.getElementById('tickerValue');
+
+        function rotate() {
+          el.classList.add('fade');
+          setTimeout(() => {
+            const p = peers[i % peers.length];
+            el.textContent = `>> PEER ${String(i % peers.length + 1).padStart(2, '0')}/${peers.length}  ${p.alias.toUpperCase().padEnd(20)}  ${p.cap} BTC`;
+            el.classList.remove('fade');
+            i++;
+          }, 300);
+        }
+
+        rotate();
+        setInterval(rotate, 2800);
+
+      } catch (e) {
+        document.getElementById('tickerValue').textContent = '>> PEER DATA UNAVAILABLE';
+      }
+    }
+
     loadNode();
+    loadChannelTicker();
 
     function randomizeFlow() {
       const root = document.documentElement;
-
-      // Base values chosen for calm-but-alive motion
       const baseFlow = 1.8;
       const basePacket = 2.4;
-
-      // ±12% variation
       const flow = (baseFlow * (0.88 + Math.random() * 0.24)).toFixed(2);
       const packet = (basePacket * (0.88 + Math.random() * 0.24)).toFixed(2);
-
       root.style.setProperty('--flow-duration', `${flow}s`);
       root.style.setProperty('--packet-duration', `${packet}s`);
     }
@@ -461,7 +504,6 @@
         const originalText = target.innerText;
         target.innerText = '[ COPIED! ]';
         target.style.color = '#fff';
-
         setTimeout(() => {
           target.innerText = originalText;
           target.style.color = 'var(--accent)';
