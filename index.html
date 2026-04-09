@@ -220,41 +220,44 @@
       100% { left: calc(100% + 24px); opacity: 0; transform: scale(0.85); }
     }
 
-    /* wrapper makes pubkey and ticker share the exact same width */
+    /* pubkey + ticker unified panel */
     .pubkey-block {
       display: inline-flex;
       flex-direction: column;
       font-family: 'IBM Plex Mono', monospace;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.5);
+      box-shadow: 0 0 12px rgba(31, 78, 121, 0.22);
+      overflow: hidden;
+      animation: node-pulse 2.5s infinite;
     }
 
     .pubkey {
       font-size: 12px;
       color: var(--fg-dim);
-      background: rgba(0,0,0,0.5);
       padding: 8px 15px;
-      border: 1px solid var(--line);
       white-space: nowrap;
-      animation: node-pulse 2.5s infinite;
+      border-bottom: 1px solid rgba(31, 78, 121, 0.45);
     }
 
     .ticker {
       font-size: 12px;
       color: var(--accent);
-      background: rgba(0,0,0,0.5);
       padding: 8px 15px;
-      border: 1px solid var(--line);
-      border-top: none;
       white-space: nowrap;
       text-align: left;
       text-shadow: 0 0 4px var(--accent-glow);
       transition: opacity 0.25s ease;
+      min-height: 34px;
+      display: flex;
+      align-items: center;
     }
 
     .ticker.fade { opacity: 0; }
 
     @keyframes node-pulse {
       0%   { box-shadow: 0 0 0 var(--accent-glow); }
-      50%  { box-shadow: 0 0 10px var(--accent-glow); border-color: rgba(31,78,121,0.8); }
+      50%  { box-shadow: 0 0 12px var(--accent-glow); border-color: rgba(31,78,121,0.85); }
       100% { box-shadow: 0 0 0 var(--accent-glow); }
     }
 
@@ -384,41 +387,49 @@
       }
     }
 
-    async function loadChannelTicker() {
+    function startTickerRotation(lines, interval = 2800) {
       const el = document.getElementById('tickerValue');
+      let i = 0;
+
+      function rotate() {
+        el.classList.add('fade');
+        setTimeout(() => {
+          el.textContent = lines[i % lines.length];
+          el.classList.remove('fade');
+          i++;
+        }, 250);
+      }
+
+      rotate();
+      setInterval(rotate, interval);
+    }
+
+    async function loadChannelTicker() {
       try {
         const res  = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}/channels?status=active&limit=100`);
         const data = await res.json();
 
-        // mempool returns either a raw array or { channels: [...] }
         const list = Array.isArray(data) ? data : (data.channels || []);
         if (!list.length) throw new Error('empty');
 
-        const peers = list.map(ch => {
+        const peers = list.map((ch, idx) => {
           const peerKey = ch.node1_public_key === PUBKEY
             ? ch.node2_public_key
             : ch.node1_public_key;
           const short = peerKey.slice(0, 8) + '...' + peerKey.slice(-8);
           const cap   = (ch.capacity / 100_000_000).toFixed(4);
-          return { short, cap };
+          const num   = String(idx + 1).padStart(2, '0');
+          return `>> CH ${num}/${list.length}  ${short}  ${cap} BTC`;
         });
 
-        let i = 0;
-        function rotate() {
-          el.classList.add('fade');
-          setTimeout(() => {
-            const p   = peers[i % peers.length];
-            const num = String((i % peers.length) + 1).padStart(2, '0');
-            el.textContent = `>> CH ${num}/${peers.length}  ${p.short}  ${p.cap} BTC`;
-            el.classList.remove('fade');
-            i++;
-          }, 250);
-        }
-        rotate();
-        setInterval(rotate, 2800);
+        startTickerRotation(peers, 2800);
 
       } catch (e) {
-        el.textContent = '>> PEER DATA UNAVAILABLE';
+        startTickerRotation([
+          '>> GOSSIP SYNC IN PROGRESS',
+          '>> QUERYING ROUTE HINTS',
+          '>> ROUTING TABLE BUILDING'
+        ], 2200);
       }
     }
 
