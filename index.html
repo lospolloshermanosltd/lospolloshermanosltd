@@ -401,8 +401,8 @@
       <div class="menu-track">
         <div class="section">
           <div class="section-title"><span>[ TODAY'S INGREDIENTS ]</span><span>SIZE</span></div>
-          <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">LOADING</span></div>
-          <div class="row"><span class="label">ACTIVE FRANCHISES</span><span class="fill"></span><span class="value highlight" id="channelsValue">LOADING</span></div>
+          <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">-- BTC</span></div>
+          <div class="row"><span class="label">ACTIVE FRANCHISES</span><span class="fill"></span><span class="value highlight" id="channelsValue">--</span></div>
           <div class="row"><span class="label">MINIMUM ORDER</span><span class="fill"></span><span class="value">3M SATS</span></div>
           <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
         </div>
@@ -430,35 +430,31 @@
           <div class="row">
             <span class="label">EMAIL</span><span class="fill"></span>
             <span class="value">
-              <a href="#" id="emailValue" class="clickable" title="Click to copy email">lospolloshermanosltd@proton.me</a>
+              <a href="#" id="emailValue" class="clickable">lospolloshermanosltd@proton.me</a>
             </span>
           </div>
           <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
           <div class="row"><span class="label">LNURL</span><span class="fill"></span><span class="value">order@oksu.su</span></div>
           <div class="row">
             <span class="label">TELEGRAM</span><span class="fill"></span>
-            <span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank" rel="noopener noreferrer">@lospolloshermanosltd</a></span>
+            <span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank">@lospolloshermanosltd</a></span>
           </div>
         </div>
       </div>
 
       <div class="secure-channel-container">
         <div class="secure-channel">
-          <div class="packet-layer" aria-hidden="true">
+          <div class="packet-layer">
             <span class="packet p1"></span>
             <span class="packet p2"></span>
           </div>
-
           <div class="pubkey-wrap">
             <div class="pubkey-block">
-              <div class="pubkey" id="pubkeyValue" title="Click to copy pubkey">
-                033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
-              </div>
+              <div class="pubkey" id="pubkeyValue">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div>
             </div>
-
             <div class="status-strip">
               <span class="live-dot"></span>
-              <span class="ticker-text" id="tickerText">QUERYING MEMPOOL NODE SUMMARY...</span>
+              <span class="ticker-text" id="tickerText">READY</span>
             </div>
           </div>
         </div>
@@ -466,21 +462,15 @@
     </div>
 
     <div class="footer">
-      <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">AMBOSS</a>
-      <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">MEMPOOL</a>
+      <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">AMBOSS</a>
+      <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">MEMPOOL</a>
     </div>
   </div>
 
   <script>
     const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
     const EMAIL = 'lospolloshermanosltd@proton.me';
-
-    const API_BASE = 'https://mempool.space/api/v1/lightning';
-    const NODE_REFRESH_MS = 60_000;
-    const FLOW_REFRESH_MS = 2_400;
-
-    let nodeRefreshInterval = null;
-    let flowInterval = null;
+    const API_URL = `https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`;
 
     function toNumber(value) {
       if (typeof value === 'number' && Number.isFinite(value)) return value;
@@ -491,147 +481,79 @@
       return null;
     }
 
-    function formatBTCFromSats(value) {
-      const n = toNumber(value);
-      if (n === null) return 'OFFLINE';
-      return `${(n / 100000000).toFixed(2)} BTC`;
+    function formatBTC(sats) {
+      const n = toNumber(sats);
+      return n !== null ? `${(n / 100000000).toFixed(2)} BTC` : '-- BTC';
     }
 
-    function formatInt(value) {
-      const n = toNumber(value);
-      if (n === null) return 'OFFLINE';
-      return new Intl.NumberFormat('en-US').format(n);
-    }
-
-    function setTickerText(text) {
-      document.getElementById('tickerText').textContent = text;
-    }
-
-    function randomizeFlow() {
-      const root = document.documentElement;
-      const flow = (1.8 * (0.92 + Math.random() * 0.16)).toFixed(2);
-      const packet = (2.4 * (0.92 + Math.random() * 0.16)).toFixed(2);
-      root.style.setProperty('--flow-duration', `${flow}s`);
-      root.style.setProperty('--packet-duration', `${packet}s`);
-    }
-
-    async function fetchJson(url, timeoutMs = 12000) {
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), timeoutMs);
-
-      try {
-        const res = await fetch(url, {
-          method: 'GET',
-          cache: 'no-store', // 이미 여기서 캐시를 무시하라는 명령이 들어갑니다.
-          headers: {
-            'Accept': 'application/json'
-          },
-          signal: controller.signal
-        });
-
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
-        }
-
-        return await res.json();
-      } finally {
-        clearTimeout(timer);
-      }
+    function formatInt(val) {
+      const n = toNumber(val);
+      return n !== null ? new Intl.NumberFormat('en-US').format(n) : '--';
     }
 
     async function loadNode() {
-      const capacityEl = document.getElementById('capacityValue');
-      const channelsEl = document.getElementById('channelsValue');
+      const capEl = document.getElementById('capacityValue');
+      const chanEl = document.getElementById('channelsValue');
+      const tickEl = document.getElementById('tickerText');
 
       try {
-        setTickerText('QUERYING MEMPOOL NODE SUMMARY...');
+        tickEl.textContent = "SYNCING WITH MEMPOOL...";
+        
+        // 옛날 방식 그대로: 헤더 최소화, cache: no-store 사용
+        const response = await fetch(API_URL, { 
+          method: 'GET',
+          cache: 'no-store',
+          headers: { 'Accept': 'application/json' }
+        });
 
-        // 캐시 무효화 꼼수 제거! 깔끔한 URL로만 요청합니다.
-        const url = `${API_BASE}/nodes/${PUBKEY}`;
-        const data = await fetchJson(url);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
 
-        const capacityValue =
-          data?.capacity ??
-          data?.total_capacity ??
-          data?.capacity_sat ??
-          null;
+        // 멤풀 응답값 우선순위 (가장 최신 데이터 필드부터 확인)
+        const capacity = data.capacity ?? data.total_capacity ?? data.capacity_sat ?? null;
+        const channels = data.active_channel_count ?? data.channels ?? data.num_channels ?? data.channel_count ?? null;
 
-        const channelsValue =
-          data?.active_channel_count ??
-          data?.channels ??
-          data?.num_channels ??
-          data?.channel_count ??
-          data?.open_channel_count ??
-          data?.opened_channel_count ??
-          null;
+        capEl.textContent = formatBTC(capacity);
+        chanEl.textContent = formatInt(channels);
+        tickEl.textContent = `NODE ONLINE / ${chanEl.textContent} CHANNELS / ${capEl.textContent}`;
 
-        capacityEl.textContent = formatBTCFromSats(capacityValue);
-        channelsEl.textContent = formatInt(channelsValue);
-
-        setTickerText(`MEMPOOL NODE SUMMARY / ${channelsEl.textContent} CHANNELS / ${capacityEl.textContent}`);
       } catch (err) {
-        console.error('loadNode failed:', err);
-        capacityEl.textContent = 'OFFLINE';
-        channelsEl.textContent = 'OFFLINE';
-        setTickerText('MEMPOOL NODE SUMMARY OFFLINE');
+        console.error(err);
+        tickEl.textContent = "MEMPOOL API SYNC ERROR";
+        if(capEl.textContent === '-- BTC') capEl.textContent = 'OFFLINE';
       }
     }
 
-    async function flashCopyText(el, textToCopy, copiedLabel) {
-      const original = el.dataset.originalText || el.textContent.trim();
-
+    // 복사 기능
+    async function copy(el, text, msg) {
       try {
-        await navigator.clipboard.writeText(textToCopy);
-        el.textContent = copiedLabel;
-        el.style.color = 'var(--accent)';
-
-        setTimeout(() => {
-          el.textContent = original;
-          el.style.color = '';
-        }, 1400);
-      } catch (err) {
-        console.error('copy failed:', err);
-        el.textContent = '[ COPY FAILED ]';
-
-        setTimeout(() => {
-          el.textContent = original;
-          el.style.color = '';
-        }, 1400);
-      }
+        await navigator.clipboard.writeText(text);
+        const original = el.textContent;
+        el.textContent = msg;
+        setTimeout(() => { el.textContent = original; }, 1500);
+      } catch(e) {}
     }
 
-    function bindPubkeyCopy() {
-      const el = document.getElementById('pubkeyValue');
-      el.dataset.originalText = PUBKEY;
-      el.addEventListener('click', async () => {
-        await flashCopyText(el, PUBKEY, '[ PUBKEY COPIED ]');
-      });
+    document.getElementById('pubkeyValue').addEventListener('click', function() {
+      copy(this, PUBKEY, '[ PUBKEY COPIED ]');
+    });
+
+    document.getElementById('emailValue').addEventListener('click', function(e) {
+      e.preventDefault();
+      copy(this, EMAIL, '[ EMAIL COPIED ]');
+    });
+
+    // 애니메이션 제어
+    function randomizeFlow() {
+      const root = document.documentElement;
+      root.style.setProperty('--flow-duration', `${(1.6 + Math.random() * 0.4).toFixed(2)}s`);
+      root.style.setProperty('--packet-duration', `${(2.2 + Math.random() * 0.4).toFixed(2)}s`);
     }
 
-    function bindEmailCopy() {
-      const el = document.getElementById('emailValue');
-      el.dataset.originalText = EMAIL;
-      el.addEventListener('click', async (e) => {
-        e.preventDefault();
-        await flashCopyText(el, EMAIL, '[ EMAIL COPIED ]');
-      });
-    }
-
-    async function init() {
-      bindPubkeyCopy();
-      bindEmailCopy();
-
-      randomizeFlow();
-      flowInterval = setInterval(randomizeFlow, FLOW_REFRESH_MS);
-
-      await loadNode();
-
-      nodeRefreshInterval = setInterval(() => {
-        loadNode().catch(err => console.error(err));
-      }, NODE_REFRESH_MS);
-    }
-
-    init();
+    // 초기 실행
+    loadNode();
+    setInterval(loadNode, 60000); // 1분마다 갱신
+    setInterval(randomizeFlow, 3000);
   </script>
 </body>
 </html>
