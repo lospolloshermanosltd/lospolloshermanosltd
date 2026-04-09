@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Ranchers&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     @font-face { font-family: 'JI Burrito'; src: url('JI Burrito.ttf') format('truetype'); font-display: swap; }
+
     :root {
       --bg: #050505;
       --fg: #d9e3e1;
@@ -24,7 +25,9 @@
       --flow-duration: 1.8s;
       --packet-duration: 2.4s;
     }
+
     * { box-sizing: border-box; }
+
     html, body {
       margin: 0;
       padding: 0;
@@ -34,6 +37,7 @@
       -webkit-font-smoothing: none;
       overflow: hidden;
     }
+
     body {
       display: flex;
       justify-content: center;
@@ -42,6 +46,7 @@
       padding-top: 5vh;
       padding-bottom: 2vh;
     }
+
     .page {
       width: 100%;
       max-width: 1100px;
@@ -49,10 +54,12 @@
       flex-direction: column;
       align-items: center;
     }
+
     .brand {
       text-align: center;
       margin-bottom: 25px;
     }
+
     .brand-title {
       font-family: 'JI Burrito', 'Ranchers', sans-serif;
       font-size: 80px;
@@ -63,6 +70,7 @@
       font-weight: 400;
       letter-spacing: -1px;
     }
+
     .brand .sub {
       margin-top: 6px;
       color: var(--fg-dim);
@@ -70,6 +78,7 @@
       letter-spacing: 0.35em;
       text-transform: uppercase;
     }
+
     .routing-title {
       color: var(--accent);
       font-size: 19px;
@@ -79,12 +88,14 @@
       margin-bottom: 20px;
       text-shadow: 0 0 5px var(--accent-glow);
     }
+
     .menu-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
       column-gap: 80px;
       width: 100%;
     }
+
     .menu-track {
       border: 3px solid var(--line);
       background: #0a0a0a;
@@ -92,7 +103,11 @@
       box-shadow: 0 0 25px rgba(0,0,0,0.6);
       border-radius: 2px;
     }
-    .section { margin-bottom: 40px; }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
     .section-title {
       color: #fff;
       font-size: 14px;
@@ -104,6 +119,7 @@
       display: flex;
       justify-content: space-between;
     }
+
     .row {
       display: flex;
       justify-content: space-between;
@@ -111,18 +127,21 @@
       margin-bottom: 8px;
       font-size: 14px;
     }
+
     .row .label {
       text-transform: uppercase;
       white-space: nowrap;
       padding-right: 8px;
       color: var(--fg-soft);
     }
+
     .row .fill {
       flex-grow: 1;
       border-bottom: 1px dotted rgba(31, 78, 121, 0.3);
       position: relative;
       top: -4px;
     }
+
     .row .value {
       color: var(--accent);
       font-weight: 700;
@@ -130,23 +149,27 @@
       text-shadow: 0 0 4px var(--accent-glow);
       white-space: nowrap;
     }
+
     .value.highlight {
       background: var(--accent);
       color: #000;
       padding: 0 6px;
       text-shadow: none;
     }
+
     .secure-channel-container {
       grid-column: 1 / -1;
       margin-top: 30px;
       text-align: center;
     }
+
     .secure-channel {
       position: relative;
       padding-top: 22px;
       width: 100%;
       overflow: hidden;
     }
+
     .secure-channel::before {
       content: '';
       position: absolute;
@@ -159,6 +182,7 @@
       animation: routing-flow var(--flow-duration) linear infinite;
       opacity: 0.95;
     }
+
     .packet-layer {
       position: absolute;
       top: -4px;
@@ -168,6 +192,7 @@
       pointer-events: none;
       overflow: hidden;
     }
+
     .packet {
       position: absolute;
       top: 50%;
@@ -181,17 +206,23 @@
       opacity: 0;
       animation: packet-travel var(--packet-duration) linear infinite;
     }
-    .packet.p2 { animation-delay: 1.2s; }
+
+    .packet.p2 {
+      animation-delay: 1.2s;
+    }
+
     @keyframes routing-flow {
       0% { background-position: 0 0; }
       100% { background-position: 15px 0; }
     }
+
     @keyframes packet-travel {
       0% { left: -24px; opacity: 0; transform: scale(0.85); }
       12% { opacity: 1; transform: scale(1); }
       82% { opacity: 1; transform: scale(1); }
       100% { left: calc(100% + 24px); opacity: 0; transform: scale(0.85); }
     }
+
     .pubkey-wrap {
       display: inline-flex;
       flex-direction: column;
@@ -200,6 +231,7 @@
       max-width: 100%;
       margin-top: 2px;
     }
+
     .pubkey-block {
       display: inline-flex;
       flex-direction: column;
@@ -212,6 +244,7 @@
       min-width: 760px;
       max-width: 100%;
     }
+
     .pubkey {
       font-size: 11px;
       line-height: 1.2;
@@ -222,6 +255,7 @@
       cursor: pointer;
       text-align: center;
     }
+
     .status-strip {
       width: 100%;
       display: flex;
@@ -234,6 +268,7 @@
       color: var(--terminal-green-dim);
       text-transform: uppercase;
     }
+
     .live-dot {
       width: 7px;
       height: 7px;
@@ -241,21 +276,25 @@
       background: var(--terminal-green);
       animation: live-pulse 1.6s ease-in-out infinite;
     }
+
     @keyframes live-pulse {
       0% { opacity: 0.45; transform: scale(0.92); }
       50% { opacity: 1; transform: scale(1.10); }
       100% { opacity: 0.45; transform: scale(0.92); }
     }
+
     @keyframes node-pulse {
       0% { box-shadow: 0 0 0 var(--accent-glow); }
       50% { box-shadow: 0 0 12px var(--accent-glow); }
       100% { box-shadow: 0 0 0 var(--accent-glow); }
     }
+
     .footer {
       margin-top: 30px;
       display: flex;
       gap: 20px;
     }
+
     .footer a {
       background-color: var(--brand-red);
       color: #fff;
@@ -268,20 +307,42 @@
       text-transform: uppercase;
       transition: all 0.2s ease;
     }
+
     .footer a:hover {
       background-color: #b51c10;
       box-shadow: 0 0 20px rgba(218,41,28,0.6);
     }
+
     .value a {
       color: var(--accent);
       text-decoration: none;
     }
+
     @media (max-width: 950px) {
-      body { height: auto; overflow-y: auto; padding: 20px 15px; }
-      .menu-container { grid-template-columns: 1fr; row-gap: 30px; }
-      .brand-title { font-size: 50px; }
-      .pubkey-block { min-width: 0; width: 100%; }
-      .pubkey { white-space: normal; word-break: break-all; }
+      body {
+        height: auto;
+        overflow-y: auto;
+        padding: 20px 15px;
+      }
+
+      .menu-container {
+        grid-template-columns: 1fr;
+        row-gap: 30px;
+      }
+
+      .brand-title {
+        font-size: 50px;
+      }
+
+      .pubkey-block {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .pubkey {
+        white-space: normal;
+        word-break: break-all;
+      }
     }
   </style>
 </head>
@@ -356,11 +417,8 @@
   <script>
     const P = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
     const API = `https://mempool.space/api/v1/lightning/nodes/${P}`;
-
-    // stale 허용 한도: 12시간
     const MAX_STALE_MS = 12 * 60 * 60 * 1000;
 
-    // 마지막으로 정상 반영한 값 보관
     let lastGood = {
       cap: null,
       chan: null,
@@ -379,17 +437,14 @@
       for (const v of candidates) {
         if (v == null) continue;
 
-        // epoch seconds
         if (typeof v === 'number' && v > 1000000000 && v < 1000000000000) {
           return v * 1000;
         }
 
-        // epoch milliseconds
         if (typeof v === 'number' && v >= 1000000000000) {
           return v;
         }
 
-        // ISO string
         if (typeof v === 'string') {
           const parsed = Date.parse(v);
           if (!Number.isNaN(parsed)) return parsed;
@@ -404,15 +459,13 @@
 
       const res = await fetch(noCacheUrl, {
         method: 'GET',
-        cache: 'no-store',
-        headers: {
-          'Accept': 'application/json',
-          'Cache-Control': 'no-cache, no-store, max-age=0',
-          'Pragma': 'no-cache'
-        }
+        cache: 'no-store'
       });
 
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+
       return res.json();
     }
 
@@ -433,12 +486,10 @@
         const ts = extractTimestampMs(d);
         const now = Date.now();
 
-        // 값 자체가 비정상이면 폐기
         if (!cap || cap <= 0) {
           throw new Error('Invalid capacity');
         }
 
-        // timestamp가 있으면 stale 검사
         if (ts && (now - ts > MAX_STALE_MS)) {
           if (lastGood.cap !== null) {
             applyDisplay(
@@ -453,7 +504,6 @@
           }
         }
 
-        // 정상값 반영
         lastGood = {
           cap,
           chan,
@@ -462,7 +512,6 @@
 
         applyDisplay(cap, chan, `ONLINE / MAIN SYNC / ${(cap / 1e8).toFixed(2)} BTC`);
       } catch (err) {
-        // 실패해도 마지막 정상값 유지
         if (lastGood.cap !== null) {
           applyDisplay(
             lastGood.cap,
@@ -479,11 +528,14 @@
 
     async function copy(id, txt, msg) {
       const el = document.getElementById(id);
+
       try {
         await navigator.clipboard.writeText(txt);
         const old = el.innerText;
         el.innerText = msg;
-        setTimeout(() => { el.innerText = old; }, 1500);
+        setTimeout(() => {
+          el.innerText = old;
+        }, 1500);
       } catch (e) {
         console.error('Copy failed:', e);
       }
