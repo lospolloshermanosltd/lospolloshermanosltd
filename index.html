@@ -28,6 +28,10 @@
       --accent-glow: rgba(243, 216, 13, 0.3);
       --line-glow: rgba(31, 78, 121, 0.4);
 
+      --terminal-green: #7CFC00;
+      --terminal-green-dim: rgba(124, 252, 0, 0.72);
+      --terminal-glow: rgba(124, 252, 0, 0.22);
+
       --flow-duration: 1.8s;
       --packet-duration: 2.4s;
     }
@@ -179,8 +183,10 @@
     .secure-channel::before {
       content: '';
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 1px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
       background: linear-gradient(90deg, var(--line) 50%, transparent 50%);
       background-size: 15px 1px;
       animation: routing-flow var(--flow-duration) linear infinite;
@@ -189,16 +195,20 @@
 
     .packet-layer {
       position: absolute;
-      top: -4px; left: 0;
-      width: 100%; height: 10px;
+      top: -4px;
+      left: 0;
+      width: 100%;
+      height: 10px;
       pointer-events: none;
       overflow: hidden;
     }
 
     .packet {
       position: absolute;
-      top: 50%; left: -24px;
-      width: 4px; height: 4px;
+      top: 50%;
+      left: -24px;
+      width: 4px;
+      height: 4px;
       margin-top: -2px;
       border-radius: 50%;
       background: var(--accent);
@@ -206,6 +216,7 @@
       opacity: 0;
       animation: packet-travel var(--packet-duration) linear infinite;
     }
+
     .packet.p2 { animation-delay: 1.2s; }
 
     @keyframes routing-flow {
@@ -214,46 +225,73 @@
     }
 
     @keyframes packet-travel {
-      0%   { left: -24px;              opacity: 0; transform: scale(0.85); }
-      12%  {                           opacity: 1; transform: scale(1); }
-      82%  {                           opacity: 1; transform: scale(1); }
+      0%   { left: -24px; opacity: 0; transform: scale(0.85); }
+      12%  { opacity: 1; transform: scale(1); }
+      82%  { opacity: 1; transform: scale(1); }
       100% { left: calc(100% + 24px); opacity: 0; transform: scale(0.85); }
     }
 
-    /* pubkey + ticker unified panel */
     .pubkey-block {
       display: inline-flex;
       flex-direction: column;
       font-family: 'IBM Plex Mono', monospace;
       border: 1px solid var(--line);
-      background: rgba(0,0,0,0.5);
-      box-shadow: 0 0 12px rgba(31, 78, 121, 0.22);
+      background: rgba(0,0,0,0.52);
+      box-shadow: 0 0 12px rgba(31, 78, 121, 0.2);
       overflow: hidden;
       animation: node-pulse 2.5s infinite;
+      min-width: 760px;
+      max-width: 100%;
     }
 
     .pubkey {
-      font-size: 12px;
-      color: var(--fg-dim);
-      padding: 8px 15px;
+      font-size: 11px;
+      line-height: 1.2;
+      color: rgba(230, 230, 230, 0.62);
+      padding: 9px 15px 8px;
       white-space: nowrap;
       border-bottom: 1px solid rgba(31, 78, 121, 0.45);
+      transition: color 0.2s ease, background-color 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .pubkey:hover {
+      color: var(--accent);
+      background: rgba(243, 216, 13, 0.05);
+      text-shadow: 0 0 6px var(--accent-glow);
     }
 
     .ticker {
-      font-size: 12px;
-      color: var(--accent);
-      padding: 8px 15px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--terminal-green-dim);
+      padding: 8px 15px 9px;
       white-space: nowrap;
       text-align: left;
-      text-shadow: 0 0 4px var(--accent-glow);
-      transition: opacity 0.25s ease;
-      min-height: 34px;
+      min-height: 32px;
       display: flex;
       align-items: center;
+      text-shadow: 0 0 6px var(--terminal-glow);
+      text-transform: uppercase;
     }
 
-    .ticker.fade { opacity: 0; }
+    .ticker.waiting::after {
+      content: '';
+      width: 8px;
+      height: 12px;
+      margin-left: 8px;
+      background: var(--terminal-green);
+      box-shadow: 0 0 8px var(--terminal-glow);
+      animation: cursor-blink 1s steps(1, end) infinite;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    @keyframes cursor-blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
 
     @keyframes node-pulse {
       0%   { box-shadow: 0 0 0 var(--accent-glow); }
@@ -287,14 +325,45 @@
       box-shadow: 0 0 20px rgba(218,41,28,0.6);
     }
 
-    .value a { color: var(--accent); text-decoration: none; transition: color 0.2s ease; }
-    .value a:hover { text-decoration: underline; color: #fff; }
+    .value a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .value a:hover {
+      text-decoration: underline;
+      color: #fff;
+    }
+
     .clickable { cursor: pointer; }
 
     @media (max-width: 950px) {
-      body { height: auto; overflow-y: auto; padding: 20px 15px; }
-      .menu-container { grid-template-columns: 1fr; row-gap: 30px; }
-      .brand-title { font-size: 50px; }
+      body {
+        height: auto;
+        overflow-y: auto;
+        padding: 20px 15px;
+      }
+
+      .menu-container {
+        grid-template-columns: 1fr;
+        row-gap: 30px;
+      }
+
+      .brand-title {
+        font-size: 50px;
+      }
+
+      .pubkey-block {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .pubkey,
+      .ticker {
+        white-space: normal;
+        word-break: break-all;
+      }
     }
   </style>
 </head>
@@ -316,6 +385,7 @@
           <div class="row"><span class="label">MINIMUM ORDER</span><span class="fill"></span><span class="value">3M SATS</span></div>
           <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
         </div>
+
         <div class="section">
           <div class="section-title"><span>[ KITCHEN EQUIPMENT ]</span><span>SPEC</span></div>
           <div class="row"><span class="label">RECIPE BOOK (RAM)</span><span class="fill"></span><span class="value highlight">64GB</span></div>
@@ -333,6 +403,7 @@
           <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value highlight">SPICY</span></div>
           <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value">DYNAMIC</span></div>
         </div>
+
         <div class="section">
           <div class="section-title"><span>[ CONTACT / INFO ]</span><span>COMMS</span></div>
           <div class="row">
@@ -356,9 +427,16 @@
             <span class="packet p1"></span>
             <span class="packet p2"></span>
           </div>
+
           <div class="pubkey-block">
-            <div class="pubkey">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div>
-            <div class="ticker" id="tickerValue">>> SCANNING PEERS...</div>
+            <div
+              class="pubkey"
+              id="pubkeyValue"
+              title="Click to copy pubkey"
+            >
+              033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
+            </div>
+            <div class="ticker waiting" id="tickerValue">[ NODE STATUS ] QUERYING MEMPOOL API</div>
           </div>
         </div>
       </div>
@@ -375,86 +453,121 @@
 
     async function loadNode() {
       try {
-        const res  = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`);
+        const res = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
         const data = await res.json();
+
         document.getElementById('capacityValue').textContent =
           `${(data.capacity / 100_000_000).toFixed(2)} BTC`;
+
         document.getElementById('channelsValue').textContent =
-          data.active_channel_count.toLocaleString();
+          Number(data.active_channel_count || 0).toLocaleString();
+
+        return data;
       } catch (e) {
         document.getElementById('capacityValue').textContent = 'OFFLINE';
         document.getElementById('channelsValue').textContent = 'OFFLINE';
+        return null;
       }
     }
 
-    function startTickerRotation(lines, interval = 2800) {
+    function formatRelativeTime(unixSeconds) {
+      if (!unixSeconds) return 'UNKNOWN';
+      const now = Math.floor(Date.now() / 1000);
+      const diff = Math.max(0, now - unixSeconds);
+
+      if (diff < 60) return `${diff}S AGO`;
+      if (diff < 3600) return `${Math.floor(diff / 60)}M AGO`;
+      if (diff < 86400) return `${Math.floor(diff / 3600)}H AGO`;
+      return `${Math.floor(diff / 86400)}D AGO`;
+    }
+
+    function setTicker(text, waiting = false) {
       const el = document.getElementById('tickerValue');
-      let i = 0;
-
-      function rotate() {
-        el.classList.add('fade');
-        setTimeout(() => {
-          el.textContent = lines[i % lines.length];
-          el.classList.remove('fade');
-          i++;
-        }, 250);
-      }
-
-      rotate();
-      setInterval(rotate, interval);
+      el.textContent = text;
+      el.classList.toggle('waiting', waiting);
     }
 
-    async function loadChannelTicker() {
-      try {
-        const res  = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}/channels?status=active&limit=100`);
-        const data = await res.json();
+    async function loadTerminalStatus(nodeData) {
+      if (nodeData) {
+        const alias = (nodeData.alias || 'UNKNOWN').toUpperCase();
+        const updated = formatRelativeTime(nodeData.updated_at);
+        const channels = Number(nodeData.active_channel_count || 0).toLocaleString();
+        const capacity = (Number(nodeData.capacity || 0) / 100_000_000).toFixed(2);
 
-        const list = Array.isArray(data) ? data : (data.channels || []);
-        if (!list.length) throw new Error('empty');
-
-        const peers = list.map((ch, idx) => {
-          const peerKey = ch.node1_public_key === PUBKEY
-            ? ch.node2_public_key
-            : ch.node1_public_key;
-          const short = peerKey.slice(0, 8) + '...' + peerKey.slice(-8);
-          const cap   = (ch.capacity / 100_000_000).toFixed(4);
-          const num   = String(idx + 1).padStart(2, '0');
-          return `>> CH ${num}/${list.length}  ${short}  ${cap} BTC`;
-        });
-
-        startTickerRotation(peers, 2800);
-
-      } catch (e) {
-        startTickerRotation([
-          '>> GOSSIP SYNC IN PROGRESS',
-          '>> QUERYING ROUTE HINTS',
-          '>> ROUTING TABLE BUILDING'
-        ], 2200);
+        setTicker(
+          `[ NODE STATUS ] ${alias} / ${channels} CH / ${capacity} BTC / UPDATED ${updated}`,
+          false
+        );
+        return;
       }
-    }
 
-    loadNode();
-    loadChannelTicker();
+      let dots = 1;
+      setTicker('[ NODE STATUS ] API LINK PENDING .', true);
+
+      setInterval(() => {
+        const suffix = '.'.repeat(dots);
+        setTicker(`[ NODE STATUS ] API LINK PENDING ${suffix}`, true);
+        dots = dots === 3 ? 1 : dots + 1;
+      }, 700);
+    }
 
     function randomizeFlow() {
-      const root   = document.documentElement;
-      const flow   = (1.8 * (0.88 + Math.random() * 0.24)).toFixed(2);
-      const packet = (2.4 * (0.88 + Math.random() * 0.24)).toFixed(2);
-      root.style.setProperty('--flow-duration',   `${flow}s`);
+      const root = document.documentElement;
+      const flow = (1.8 * (0.92 + Math.random() * 0.16)).toFixed(2);
+      const packet = (2.4 * (0.92 + Math.random() * 0.16)).toFixed(2);
+      root.style.setProperty('--flow-duration', `${flow}s`);
       root.style.setProperty('--packet-duration', `${packet}s`);
     }
-    randomizeFlow();
-    setInterval(randomizeFlow, 2400);
 
     function copyEmail(e, addr) {
       e.preventDefault();
       navigator.clipboard.writeText(addr).then(() => {
-        const t = e.target, orig = t.innerText;
+        const t = e.target;
+        const orig = t.innerText;
         t.innerText = '[ COPIED! ]';
         t.style.color = '#fff';
-        setTimeout(() => { t.innerText = orig; t.style.color = 'var(--accent)'; }, 1500);
+        setTimeout(() => {
+          t.innerText = orig;
+          t.style.color = 'var(--accent)';
+        }, 1500);
       });
     }
+
+    function bindPubkeyCopy() {
+      const el = document.getElementById('pubkeyValue');
+      const original = el.textContent;
+
+      el.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(PUBKEY);
+          el.textContent = '[ PUBKEY COPIED ]';
+          el.style.color = 'var(--accent)';
+          setTimeout(() => {
+            el.textContent = original;
+            el.style.color = '';
+          }, 1400);
+        } catch (e) {
+          el.textContent = '[ COPY FAILED ]';
+          setTimeout(() => {
+            el.textContent = original;
+          }, 1400);
+        }
+      });
+    }
+
+    async function init() {
+      randomizeFlow();
+      setInterval(randomizeFlow, 2400);
+
+      bindPubkeyCopy();
+
+      const nodeData = await loadNode();
+      await loadTerminalStatus(nodeData);
+    }
+
+    init();
   </script>
 </body>
 </html>
