@@ -29,7 +29,6 @@
       --brand-red: #DA291C;   
       --accent-glow: rgba(243, 216, 13, 0.3);
       --line-glow: rgba(31, 78, 121, 0.4);
-      --success: #2ECC71; /* New: Success color for logs */
     }
 
     * { box-sizing: border-box; }
@@ -50,7 +49,7 @@
       justify-content: center;
       align-items: center; 
       height: 100vh; 
-      padding-top: 2vh; /* Adjusted for terminal header */
+      padding-top: 5vh;
       padding-bottom: 2vh; 
     }
 
@@ -65,28 +64,6 @@
     .brand {
       text-align: center;
       margin-bottom: 25px; 
-      position: relative; /* For terminal positioning */
-    }
-
-    /* New: Terminal Scan Log Style */
-    .terminal-scan-log {
-      position: absolute;
-      top: -30px;
-      left: 0;
-      width: 100%;
-      text-align: left;
-      font-size: 9px;
-      color: var(--fg-dim);
-      font-family: 'IBM Plex Mono', monospace;
-      opacity: 0.7;
-      overflow: hidden;
-      white-space: nowrap;
-      height: 12px;
-    }
-
-    .terminal-scan-log .log-prefix {
-      color: var(--success);
-      margin-right: 5px;
     }
 
     .brand-title {
@@ -167,35 +144,20 @@
 
     .value.highlight { background: var(--accent); color: #000; padding: 0 6px; text-shadow: none; }
 
-    /* New: Spicy Neon Flicker Style */
-    .value.spicy-flicker {
-      animation: spicy-flicker 4s linear infinite;
-    }
-
-    @keyframes spicy-flicker {
-      0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
-        opacity: 1;
-        text-shadow: 0 0 4px var(--accent-glow);
-      }
-      20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
-        opacity: 0.4;
-        text-shadow: none;
-      }
-    }
-
     .secure-channel-container {
       grid-column: 1 / -1; 
       margin-top: 30px; 
       text-align: center;
     }
 
+    /* 라우팅 효과를 위한 CSS 수정 구역 */
     .secure-channel {
       position: relative;
       padding-top: 15px;
       width: 100%;
     }
 
-    /* Routing Flow Animation */
+    /* 라우팅 흐름 애니메이션 (데이터 패킷 이동 효과) */
     .secure-channel::before {
       content: '';
       position: absolute;
@@ -228,6 +190,7 @@
       border: 1px solid var(--line);
       display: inline-block;
       font-family: 'IBM Plex Mono', monospace; 
+      /* 노드가 숨쉬는 듯한 맥박 효과 추가 */
       animation: node-pulse 2.5s infinite;
     }
 
@@ -274,6 +237,7 @@
       color: #fff;
     }
 
+    /* 이메일 복사용 클릭 효과 스타일 */
     .clickable {
       cursor: pointer;
     }
@@ -282,16 +246,12 @@
       body { height: auto; overflow-y: auto; padding: 20px 15px; }
       .menu-container { grid-template-columns: 1fr; row-gap: 30px; }
       .brand-title { font-size: 50px; }
-      .terminal-scan-log { top: -20px; font-size: 8px; }
     }
   </style>
 </head>
 <body>
   <div class="page">
     <div class="brand">
-      <div class="terminal-scan-log" id="terminalLog">
-        <span class="log-prefix">[SYS]</span> Initializing...
-      </div>
       <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
       <div class="sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</div>
     </div>
@@ -321,7 +281,7 @@
           <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEE</span></div>
           <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">MILD</span></div>
           <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">CLASSIC</span></div>
-          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value highlight spicy-flicker">SPICY</span></div>
+          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value highlight">SPICY</span></div>
           <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value">DYNAMIC</span></div>
         </div>
 
@@ -366,37 +326,6 @@
 
   <script>
     const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
-    const logElement = document.getElementById('terminalLog');
-
-    // Terminal Log Messages
-    const logMessages = [
-      { prefix: 'SYS', msg: 'Booting LPH Daemon v1.0.1...' },
-      { prefix: 'NET', msg: 'Connecting to Bitcoin P2P network...' },
-      { prefix: 'OK', msg: 'Chain sync 100% complete.' },
-      { prefix: 'LN', msg: 'Peer 02ab3c... connected.' },
-      { prefix: 'INFO', msg: 'Scanning for optimal routing paths...' },
-      { prefix: 'FEE', msg: 'Dynamic fee adjustment applied.' },
-      { prefix: 'OK', msg: 'Channel 033667... active & balanced.' },
-      { prefix: 'SYS', msg: 'Kitchen is open. Ready for orders.' },
-      { prefix: 'LN', msg: 'Htlc intercepted. Routing payment...' },
-      { prefix: 'OK', msg: 'Payment routed successfully.' },
-      { prefix: 'WARN', msg: 'High traffic detected on channel 02df4a...' }
-    ];
-
-    let logIndex = 0;
-
-    // Function to update Terminal Log
-    function updateLog() {
-      const log = logMessages[logIndex];
-      logElement.innerHTML = `<span class="log-prefix">[${log.prefix}]</span> ${log.msg}`;
-      
-      // 랜덤한 시간 간격으로 로그 업데이트 (진짜처럼 보이게)
-      const nextDelay = Math.random() * 2000 + 1000; // 1~3초 사이 랜덤
-      
-      logIndex = (logIndex + 1) % logMessages.length;
-      setTimeout(updateLog, nextDelay);
-    }
-
     async function loadNode() {
       try {
         const res = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`);
@@ -408,19 +337,18 @@
         document.getElementById('channelsValue').textContent = 'OFFLINE';
       }
     }
-
-    // Initialize
     loadNode();
-    setTimeout(updateLog, 1500); // Start logs after a short delay
 
+    // 이메일 클립보드 복사 함수
     function copyEmail(e, emailAddress) {
-      e.preventDefault();
+      e.preventDefault(); // 페이지 맨 위로 올라가는 기본 동작 방지
       navigator.clipboard.writeText(emailAddress).then(() => {
         const target = e.target;
         const originalText = target.innerText;
         target.innerText = '[ COPIED! ]';
         target.style.color = '#fff';
         
+        // 1.5초 뒤에 원래 텍스트로 복구
         setTimeout(() => {
           target.innerText = originalText;
           target.style.color = 'var(--accent)';
