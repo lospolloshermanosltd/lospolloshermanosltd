@@ -14,51 +14,86 @@
       font-family: 'JI Burrito';
       src: url('JI Burrito.ttf') format('truetype');
       font-display: swap;
-      /* 폰트 자체의 무게를 건드리지 않도록 고정 */
-      font-weight: normal;
+      font-weight: 400;
       font-style: normal;
     }
 
     :root {
       --bg: #050505;
       --panel-bg: #0a0a0a;
+
       --fg: #d9e3e1;
       --fg-soft: #e6e6e6;
-      --fg-dim: rgba(230, 230, 230, 0.50);
-      --line: #1F4E79;
-      --line-faint: rgba(31, 78, 121, 0.18);
-      --accent: #F3D80D;
-      --accent-glow: rgba(243, 216, 13, 0.35);
-      --brand-red: #DA291C;
-      --brand-red-glow: rgba(218, 41, 28, 0.4);
+      --fg-dim: rgba(230, 230, 230, 0.52);
 
-      --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
-      --s-5: 24px; --s-6: 32px; --s-7: 40px; --s-8: 48px;
+      --line: #1F4E79;
+      --line-soft: rgba(31, 78, 121, 0.28);
+      --line-faint: rgba(31, 78, 121, 0.18);
+
+      --accent: #F3D80D;
+      --accent-glow: rgba(243, 216, 13, 0.34);
+
+      --brand-red: #DA291C;
+      --brand-red-glow: rgba(218, 41, 28, 0.34);
+
+      --shadow-panel: 0 0 26px rgba(0, 0, 0, 0.64);
+
+      /* 4 / 8 기반 scale */
+      --s-1: 4px;
+      --s-2: 8px;
+      --s-3: 12px;
+      --s-4: 16px;
+      --s-5: 24px;
+      --s-6: 32px;
+      --s-7: 40px;
+      --s-8: 48px;
 
       --page-max: 1100px;
-      --panel-gap: 60px;
-      --panel-pad: 28px;
+
+      --title-size: 80px;      /* 고정 요구사항 유지 */
+      --sub-size: 11px;
+      --routing-size: 18px;
+      --section-title-size: 15px;
+      --row-size: 13px;
+      --meta-size: 11px;
+      --pubkey-size: 11px;
+
+      --panel-gap: 64px;
+      --panel-pad-x: 28px;
+      --panel-pad-y: 26px;
+
+      --body-pad-top: 4vh;
+      --body-pad-bottom: 3vh;
+      --body-pad-x: 18px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     html, body {
-      width: 100%; height: 100%; margin: 0; padding: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
       background: var(--bg);
       color: var(--fg);
       overflow: hidden;
-      font-family: ui-monospace, 'Consolas', monospace;
-      
-      /* [전역 설정] 브라우저의 모든 부드러운 보정 기능을 끔 */
-      -webkit-font-smoothing: none;
-      -moz-osx-font-smoothing: unset;
-      font-smooth: never;
-      text-rendering: optimizeSpeed; /* 정밀도 대신 거친 속도 위주 렌더링 */
+      font-family: ui-monospace, SFMono-Regular, Consolas, Monaco, "Liberation Mono", monospace;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: geometricPrecision;
     }
 
     body {
-      display: flex; justify-content: center; align-items: center;
-      padding-top: 5vh; padding-bottom: 3vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100svh;
+      padding:
+        var(--body-pad-top)
+        var(--body-pad-x)
+        var(--body-pad-bottom);
     }
 
     .page {
@@ -69,154 +104,299 @@
       align-items: start;
     }
 
-    /* ========= Brand (물결무늬 소생 구역) ========= */
-    .brand { text-align: center; display: grid; row-gap: 4px; }
+    /* ========= Brand ========= */
+
+    .brand {
+      display: grid;
+      row-gap: var(--s-1);
+      text-align: center;
+    }
 
     .brand-title {
       margin: 0;
       font-family: 'JI Burrito', 'Ranchers', sans-serif;
-      
-      /* 물결이 보이기 시작하는 임계값 80px */
-      font-size: 80px; 
+      font-size: var(--title-size);
       line-height: 0.95;
+      letter-spacing: -1.35px;
       color: var(--accent);
-      letter-spacing: -1.5px; /* 글자를 살짝 붙여야 물결이 더 다닥다닥 잘 보임 */
-      
-      /* 개별 요소에서도 보정 강제 해제 */
-      -webkit-font-smoothing: none;
-      font-smooth: never;
-      text-rendering: optimizeSpeed;
-      
-      /* 픽셀 단위로 끊어서 그리기 */
-      image-rendering: pixelated; 
-      image-rendering: crisp-edges;
+      font-weight: 400;
+      text-shadow:
+        2px 2px 0 rgba(0, 0, 0, 0.95),
+        0 0 8px var(--accent-glow);
 
-      /* 그림자가 너무 넓으면 물결 외곽선을 잡아먹으므로 아주 얇게 설정 */
-      text-shadow: 
-        2px 2px 0px rgba(0,0,0,1), 
-        0px 0px 8px var(--accent-glow);
-        
-      /* 중요: 폰트 두께가 변하면 물결이 뭉개짐 */
-      font-weight: 400 !important;
+      /* 타이틀에만 공격적으로 적용 */
+      -webkit-font-smoothing: none;
+      -moz-osx-font-smoothing: auto;
+      text-rendering: optimizeSpeed;
+      font-smooth: never;
     }
 
     .brand-sub {
-      font-size: 11px;
-      letter-spacing: 0.42em;
+      margin: 0;
+      font-size: var(--sub-size);
+      line-height: 1.15;
+      letter-spacing: 0.34em;
       color: var(--fg-dim);
       text-transform: uppercase;
-      -webkit-font-smoothing: auto; /* 서브 텍스트는 가독성을 위해 자동 */
+      white-space: nowrap;
     }
 
     .routing-title {
       text-align: center;
       color: var(--accent);
-      font-size: 18px;
-      font-weight: 900;
-      letter-spacing: 0.2em;
+      font-size: var(--routing-size);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      text-shadow: 0 0 8px var(--accent-glow);
+      text-shadow: 0 0 6px var(--accent-glow);
     }
 
-    .blink { animation: blinker 1s step-end infinite; }
-    @keyframes blinker { 50% { opacity: 0; } }
+    .blink {
+      animation: blinker 1s step-end infinite;
+    }
+
+    @keyframes blinker {
+      50% { opacity: 0; }
+    }
 
     /* ========= Panels ========= */
+
     .menu-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: var(--panel-gap);
+      min-height: 0;
+      align-items: stretch;
     }
 
     .menu-track {
       background: var(--panel-bg);
       border: 2px solid var(--line);
-      padding: var(--panel-pad);
-      box-shadow: 0 0 30px rgba(0,0,0,0.7);
+      padding: var(--panel-pad-y) var(--panel-pad-x);
+      box-shadow: var(--shadow-panel);
       display: grid;
       align-content: start;
       row-gap: var(--s-7);
+      min-width: 0;
     }
 
-    .section { display: grid; row-gap: var(--s-2); }
+    .section {
+      display: grid;
+      row-gap: var(--s-2);
+      min-width: 0;
+    }
 
     .section-title {
-      display: flex; justify-content: space-between;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--s-3);
       border-bottom: 1px dotted var(--line);
-      padding-bottom: var(--s-1);
-      font-size: 15px;
+      padding-bottom: 5px;
+      font-size: var(--section-title-size);
+      line-height: 1.2;
       color: #fff;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      min-width: 0;
+    }
+
+    .section-title span:first-child {
+      min-width: 0;
+      white-space: nowrap;
     }
 
     .row {
       display: grid;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: auto minmax(12px, 1fr) auto;
       align-items: end;
-      font-size: 14px;
-      line-height: 1.4;
+      font-size: var(--row-size);
+      line-height: 1.32;
+      min-width: 0;
+    }
+
+    .label {
+      min-width: 0;
+      color: var(--fg-soft);
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding-right: var(--s-2);
     }
 
     .fill {
+      min-width: 12px;
       border-bottom: 1px dotted var(--line-faint);
-      margin: 0 var(--s-2) 4px var(--s-2);
+      margin: 0 var(--s-2) 3px 0;
     }
 
-    .value { color: var(--accent); font-weight: 700; text-shadow: 0 0 5px var(--accent-glow); }
+    .value {
+      color: var(--accent);
+      font-weight: 700;
+      white-space: nowrap;
+      text-shadow: 0 0 4px var(--accent-glow);
+      justify-self: end;
+    }
+
     .value.highlight {
       background: var(--accent);
       color: #000;
-      padding: 0 6px;
+      padding: 1px 6px 0;
+      line-height: 1.05;
       text-shadow: none;
+      display: inline-block;
     }
 
     /* ========= Secure Delivery ========= */
+
     .secure-channel {
       text-align: center;
       border-top: 1px dashed var(--line);
       padding-top: var(--s-4);
+      display: grid;
+      row-gap: var(--s-2);
     }
 
     .pubkey-label {
       color: var(--accent);
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      margin-bottom: var(--s-2);
+      font-size: var(--meta-size);
+      line-height: 1.15;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin: 0;
     }
 
     .pubkey {
       display: inline-block;
-      font-size: 11px;
+      max-width: 100%;
+      margin-inline: auto;
+      font-size: var(--pubkey-size);
+      line-height: 1.2;
       color: var(--fg-dim);
-      padding: 10px 15px;
-      background: rgba(0,0,0,0.5);
+      padding: 9px 14px;
+      background: rgba(0, 0, 0, 0.5);
       border: 1px solid var(--line);
-      letter-spacing: 0.05em;
-      word-break: break-all;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: ui-monospace, SFMono-Regular, Consolas, Monaco, monospace;
     }
 
     /* ========= Footer ========= */
-    .footer { display: flex; justify-content: center; gap: 20px; }
+
+    .footer {
+      display: flex;
+      justify-content: center;
+      gap: var(--s-3);
+      flex-wrap: nowrap;
+    }
+
     .footer a {
-      min-width: 130px;
-      height: 42px;
-      display: flex; align-items: center; justify-content: center;
+      min-width: 126px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 28px;
       background: var(--brand-red);
       color: #fff;
       text-decoration: none;
+      text-transform: uppercase;
       font-weight: 900;
       font-size: 13px;
-      letter-spacing: 0.12em;
-      box-shadow: 0 0 15px var(--brand-red-glow);
-      transition: all 0.1s ease;
+      line-height: 1;
+      letter-spacing: 0.13em;
+      border: 1px solid var(--brand-red);
+      box-shadow: 0 0 12px var(--brand-red-glow);
+      transition:
+        transform 120ms ease,
+        box-shadow 120ms ease,
+        filter 120ms ease;
     }
 
-    .footer a:hover { transform: scale(1.02); filter: brightness(1.1); }
+    .footer a:hover,
+    .footer a:focus-visible {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+      box-shadow: 0 0 16px rgba(218, 41, 28, 0.40);
+      outline: none;
+    }
 
-    @media (max-width: 900px) {
-      body { overflow-y: auto; height: auto; padding: 40px 20px; }
-      .menu-container { grid-template-columns: 1fr; }
-      .brand-title { font-size: 60px; }
+    /* ========= Height tuning ========= */
+
+    @media (max-height: 860px) {
+      :root {
+        --panel-gap: 56px;
+        --panel-pad-x: 24px;
+        --panel-pad-y: 22px;
+        --row-size: 12px;
+        --section-title-size: 14px;
+        --routing-size: 17px;
+      }
+
+      .page {
+        row-gap: 20px;
+      }
+
+      .menu-track {
+        row-gap: 32px;
+      }
+
+      .footer a {
+        height: 38px;
+        min-width: 118px;
+        padding: 0 24px;
+        font-size: 12px;
+      }
+
+      .pubkey {
+        padding: 8px 12px;
+        font-size: 10px;
+      }
+    }
+
+    /* ========= Width fallback ========= */
+
+    @media (max-width: 920px) {
+      html, body {
+        overflow: auto;
+      }
+
+      body {
+        height: auto;
+        min-height: 100%;
+        align-items: start;
+        padding: 24px 16px;
+      }
+
+      .page {
+        row-gap: 20px;
+      }
+
+      .brand-title {
+        font-size: 60px;
+      }
+
+      .brand-sub {
+        white-space: normal;
+        letter-spacing: 0.24em;
+      }
+
+      .menu-container {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .pubkey {
+        white-space: normal;
+        word-break: break-all;
+        text-overflow: clip;
+      }
+
+      .footer {
+        flex-wrap: wrap;
+      }
     }
   </style>
 </head>
@@ -229,65 +409,195 @@
 
     <div class="routing-title">ROUTING MENU<span class="blink">_</span></div>
 
-    <section class="menu-container">
+    <section class="menu-container" aria-label="Node overview">
       <div class="menu-track">
         <div class="section">
-          <div class="section-title"><span>[ TODAY'S INGREDIENTS ]</span><span>SIZE</span></div>
-          <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value highlight" id="cap">-- BTC</span></div>
-          <div class="row"><span class="label">ACTIVE FRANCHISES</span><span class="fill"></span><span class="value highlight" id="chan">--</span></div>
-          <div class="row"><span class="label">MINIMUM ORDER</span><span class="fill"></span><span class="value">3M SATS</span></div>
-          <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
+          <div class="section-title">
+            <span>[ TODAY'S INGREDIENTS ]</span>
+            <span>SIZE</span>
+          </div>
+
+          <div class="row">
+            <span class="label">DEEP FRYER CAPACITY</span>
+            <span class="fill"></span>
+            <span class="value highlight" id="cap">-- BTC</span>
+          </div>
+
+          <div class="row">
+            <span class="label">ACTIVE FRANCHISES</span>
+            <span class="fill"></span>
+            <span class="value highlight" id="chan">--</span>
+          </div>
+
+          <div class="row">
+            <span class="label">MINIMUM ORDER</span>
+            <span class="fill"></span>
+            <span class="value">3M SATS</span>
+          </div>
+
+          <div class="row">
+            <span class="label">RESTOCKING (REBAL)</span>
+            <span class="fill"></span>
+            <span class="value">ACTIVE</span>
+          </div>
         </div>
+
         <div class="section">
-          <div class="section-title"><span>[ KITCHEN EQUIPMENT ]</span><span>SPEC</span></div>
-          <div class="row"><span class="label">RECIPE BOOK (RAM)</span><span class="fill"></span><span class="value highlight">64GB</span></div>
-          <div class="row"><span class="label">FREEZER (STORAGE)</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
-          <div class="row"><span class="label">BACKUP GEN</span><span class="fill"></span><span class="value">UPS</span></div>
+          <div class="section-title">
+            <span>[ KITCHEN EQUIPMENT ]</span>
+            <span>SPEC</span>
+          </div>
+
+          <div class="row">
+            <span class="label">RECIPE BOOK (RAM)</span>
+            <span class="fill"></span>
+            <span class="value highlight">64GB</span>
+          </div>
+
+          <div class="row">
+            <span class="label">FREEZER (STORAGE)</span>
+            <span class="fill"></span>
+            <span class="value highlight">4TB NVMe</span>
+          </div>
+
+          <div class="row">
+            <span class="label">BACKUP GEN</span>
+            <span class="fill"></span>
+            <span class="value">UPS</span>
+          </div>
+
+          <div class="row">
+            <span class="label">STORE HOURS</span>
+            <span class="fill"></span>
+            <span class="value">99.9%</span>
+          </div>
         </div>
       </div>
 
       <div class="menu-track">
         <div class="section">
-          <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEE</span></div>
-          <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">MILD</span></div>
-          <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">CLASSIC</span></div>
-          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value highlight">SPICY</span></div>
-          <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value">DYNAMIC</span></div>
+          <div class="section-title">
+            <span>[ ROUTING SPICE LEVELS ]</span>
+            <span>FEE</span>
+          </div>
+
+          <div class="row">
+            <span class="label">OUTBOUND HEAVY</span>
+            <span class="fill"></span>
+            <span class="value">MILD</span>
+          </div>
+
+          <div class="row">
+            <span class="label">BALANCED</span>
+            <span class="fill"></span>
+            <span class="value">CLASSIC</span>
+          </div>
+
+          <div class="row">
+            <span class="label">INBOUND HEAVY</span>
+            <span class="fill"></span>
+            <span class="value highlight">SPICY</span>
+          </div>
+
+          <div class="row">
+            <span class="label">FEE ADJUSTMENT</span>
+            <span class="fill"></span>
+            <span class="value">DYNAMIC</span>
+          </div>
         </div>
+
         <div class="section">
-          <div class="section-title"><span>[ CONTACT / INFO ]</span><span>COMMS</span></div>
-          <div class="row"><span class="label">DIRECT LINE</span><span class="fill"></span><span class="value">PROTON</span></div>
-          <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
-          <div class="row"><span class="label">STORE HOURS</span><span class="fill"></span><span class="value">99.9%</span></div>
+          <div class="section-title">
+            <span>[ CONTACT / INFO ]</span>
+            <span>COMMS</span>
+          </div>
+
+          <div class="row">
+            <span class="label">DIRECT LINE</span>
+            <span class="fill"></span>
+            <span class="value">PROTON</span>
+          </div>
+
+          <div class="row">
+            <span class="label">NOSTR</span>
+            <span class="fill"></span>
+            <span class="value">PENDING</span>
+          </div>
+
+          <div class="row">
+            <span class="label">STORE HOURS</span>
+            <span class="fill"></span>
+            <span class="value">99.9%</span>
+          </div>
+
+          <div class="row">
+            <span class="label">FEE POLICY</span>
+            <span class="fill"></span>
+            <span class="value">LIVE</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="secure-channel">
-      <div class="pubkey-label">>> SECURE DELIVERY ROUTE (PUBKEY) <<</div>
-      <div class="pubkey">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div>
+    <section class="secure-channel" aria-label="Secure delivery route">
+      <p class="pubkey-label">&gt;&gt; SECURE DELIVERY ROUTE (PUBKEY) &lt;&lt;</p>
+      <div class="pubkey" title="033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28">
+        033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
+      </div>
     </section>
 
     <footer class="footer">
-      <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">AMBOSS</a>
-      <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">MEMPOOL</a>
+      <a
+        href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        AMBOSS
+      </a>
+
+      <a
+        href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        MEMPOOL
+      </a>
     </footer>
   </main>
 
   <script>
     const PK = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
-    async function update() {
+
+    async function updateNodeStats() {
+      const capEl = document.getElementById('cap');
+      const chanEl = document.getElementById('chan');
+
       try {
-        const r = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PK}`);
-        const d = await r.json();
-        document.getElementById('cap').textContent = (d.capacity/1e8).toFixed(2) + ' BTC';
-        document.getElementById('chan').textContent = d.active_channel_count.toLocaleString();
-      } catch(e) { 
-        document.getElementById('cap').textContent = 'OFFLINE';
-        document.getElementById('chan').textContent = 'OFFLINE';
+        const res = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PK}`);
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        const capacity = typeof data.capacity === 'number'
+          ? `${(data.capacity / 1e8).toFixed(2)} BTC`
+          : 'OFFLINE';
+
+        const channels = typeof data.active_channel_count === 'number'
+          ? data.active_channel_count.toLocaleString()
+          : 'OFFLINE';
+
+        capEl.textContent = capacity;
+        chanEl.textContent = channels;
+      } catch (error) {
+        capEl.textContent = 'OFFLINE';
+        chanEl.textContent = 'OFFLINE';
       }
     }
-    update();
+
+    updateNodeStats();
   </script>
 </body>
 </html>
