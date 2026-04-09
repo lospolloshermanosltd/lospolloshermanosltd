@@ -26,12 +26,9 @@
       --accent: #F3D80D;
       --brand-red: #DA291C;
       --accent-glow: rgba(243, 216, 13, 0.3);
-      --line-glow: rgba(31, 78, 121, 0.4);
-
       --terminal-green: #7CFC00;
       --terminal-green-dim: rgba(124, 252, 0, 0.84);
       --terminal-glow: rgba(124, 252, 0, 0.28);
-
       --flow-duration: 1.8s;
       --packet-duration: 2.4s;
     }
@@ -305,7 +302,7 @@
 
     @keyframes live-pulse {
       0%   { opacity: 0.45; transform: scale(0.92); }
-      50%  { opacity: 1;    transform: scale(1.10); }
+      50%  { opacity: 1; transform: scale(1.10); }
       100% { opacity: 0.45; transform: scale(0.92); }
     }
 
@@ -433,12 +430,7 @@
           <div class="row">
             <span class="label">EMAIL</span><span class="fill"></span>
             <span class="value">
-              <a
-                href="#"
-                id="emailValue"
-                class="clickable"
-                title="Click to copy email"
-              >lospolloshermanosltd@proton.me</a>
+              <a href="#" id="emailValue" class="clickable" title="Click to copy email">lospolloshermanosltd@proton.me</a>
             </span>
           </div>
           <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
@@ -451,7 +443,7 @@
       </div>
 
       <div class="secure-channel-container">
-        <div class="secure-channel" id="secureChannel">
+        <div class="secure-channel">
           <div class="packet-layer" aria-hidden="true">
             <span class="packet p1"></span>
             <span class="packet p2"></span>
@@ -466,7 +458,7 @@
 
             <div class="status-strip">
               <span class="live-dot"></span>
-              <span class="ticker-text" id="tickerText">BOOTING ROUTING TABLE...</span>
+              <span class="ticker-text" id="tickerText">QUERYING MEMPOOL NODE SUMMARY...</span>
             </div>
           </div>
         </div>
@@ -485,79 +477,42 @@
 
     const API_BASE = 'https://mempool.space/api/v1/lightning';
     const NODE_REFRESH_MS = 60_000;
-    const PEER_REFRESH_MS = 120_000;
     const FLOW_REFRESH_MS = 2_400;
-    const CHANNEL_PAGE_SIZE = 10;
 
-    let tickerRotateInterval = null;
-    let waitingInterval = null;
     let nodeRefreshInterval = null;
-    let peerRefreshInterval = null;
     let flowInterval = null;
 
+    function toNumber(value) {
+      if (typeof value === 'number' && Number.isFinite(value)) return value;
+      if (typeof value === 'string') {
+        const parsed = Number(value.replace(/,/g, '').trim());
+        return Number.isFinite(parsed) ? parsed : null;
+      }
+      return null;
+    }
+
     function formatBTCFromSats(value) {
-      return `${(Number(value || 0) / 100_000_000).toFixed(2)} BTC`;
+      const n = toNumber(value);
+      if (n === null) return 'OFFLINE';
+      return `${(n / 100000000).toFixed(2)} BTC`;
     }
 
-    function formatSats(value) {
-      return `${Math.round(Number(value || 0)).toLocaleString('en-US')} SATS`;
-    }
-
-    function shortKey(key) {
-      if (!key || typeof key !== 'string') return 'UNKNOWN';
-      if (key.length <= 14) return key;
-      return `${key.slice(0, 8)}...${key.slice(-4)}`;
+    function formatInt(value) {
+      const n = toNumber(value);
+      if (n === null) return 'OFFLINE';
+      return new Intl.NumberFormat('en-US').format(n);
     }
 
     function setTickerText(text) {
       document.getElementById('tickerText').textContent = text;
     }
 
-    function stopTickerRotation() {
-      if (tickerRotateInterval) {
-        clearInterval(tickerRotateInterval);
-        tickerRotateInterval = null;
-      }
-    }
-
-    function stopWaitingTicker() {
-      if (waitingInterval) {
-        clearInterval(waitingInterval);
-        waitingInterval = null;
-      }
-    }
-
-    function startWaitingTicker(base = 'LINK WAITING') {
-      stopTickerRotation();
-      stopWaitingTicker();
-
-      let dots = 1;
-      setTickerText(`${base}.`);
-
-      waitingInterval = setInterval(() => {
-        dots = dots === 3 ? 1 : dots + 1;
-        setTickerText(`${base}${'.'.repeat(dots)}`);
-      }, 700);
-    }
-
-    function rotateTicker(lines, interval = 3200) {
-      if (!Array.isArray(lines) || !lines.length) {
-        startWaitingTicker('NO LIVE LINKS');
-        return;
-      }
-
-      stopWaitingTicker();
-      stopTickerRotation();
-
-      let i = 0;
-      setTickerText(lines[0]);
-
-      if (lines.length === 1) return;
-
-      tickerRotateInterval = setInterval(() => {
-        i = (i + 1) % lines.length;
-        setTickerText(lines[i]);
-      }, interval);
+    function randomizeFlow() {
+      const root = document.documentElement;
+      const flow = (1.8 * (0.92 + Math.random() * 0.16)).toFixed(2);
+      const packet = (2.4 * (0.92 + Math.random() * 0.16)).toFixed(2);
+      root.style.setProperty('--flow-duration', `${flow}s`);
+      root.style.setProperty('--packet-duration', `${packet}s`);
     }
 
     async function fetchJson(url, timeoutMs = 12000) {
@@ -584,114 +539,42 @@
       }
     }
 
-    function normalizeChannelList(data) {
-      if (Array.isArray(data)) return data;
-      if (Array.isArray(data?.channels)) return data.channels;
-      return [];
-    }
+    async function loadNode() {
+      const capacityEl = document.getElementById('capacityValue');
+      const channelsEl = document.getElementById('channelsValue');
 
-    async function fetchAllOpenChannels() {
-      const all = [];
-      let index = 0;
-
-      while (true) {
-        const cacheBust = `t=${Date.now()}_${index}`;
-        const url =
-          `${API_BASE}/channels?public_key=${encodeURIComponent(PUBKEY)}&status=open&index=${index}&${cacheBust}`;
-
-        const data = await fetchJson(url);
-        const batch = normalizeChannelList(data);
-
-        if (!batch.length) break;
-
-        all.push(...batch);
-
-        if (batch.length < CHANNEL_PAGE_SIZE) break;
-        index += batch.length;
-      }
-
-      return all;
-    }
-
-    function buildPeerTickerLine(channel) {
-      const peerKey = channel?.node?.public_key;
-      const aliasRaw = channel?.node?.alias;
-      const alias = typeof aliasRaw === 'string' && aliasRaw.trim()
-        ? aliasRaw.trim().toUpperCase()
-        : shortKey(peerKey);
-
-      const cap = formatSats(channel?.capacity);
-      return `PEER ${alias} / ${cap}`;
-    }
-
-    function updateNodeMetricsFromChannels(channels) {
-      const openChannels = Array.isArray(channels) ? channels : [];
-
-      const totalCapacitySats = openChannels.reduce((sum, ch) => {
-        return sum + Number(ch?.capacity || 0);
-      }, 0);
-
-      document.getElementById('capacityValue').textContent = formatBTCFromSats(totalCapacitySats);
-      document.getElementById('channelsValue').textContent = openChannels.length.toLocaleString('en-US');
-    }
-
-    async function loadNodeFallback() {
       try {
+        setTickerText('QUERYING MEMPOOL NODE SUMMARY...');
+
         const cacheBust = `t=${Date.now()}`;
         const url = `${API_BASE}/nodes/${PUBKEY}?${cacheBust}`;
         const data = await fetchJson(url);
 
-        const capacity = Number(data?.capacity || 0);
-        const channelCount =
-          Number(data?.opened_channel_count ?? data?.active_channel_count ?? 0);
+        const capacityValue =
+          data?.capacity ??
+          data?.total_capacity ??
+          data?.capacity_sat ??
+          null;
 
-        document.getElementById('capacityValue').textContent = formatBTCFromSats(capacity);
-        document.getElementById('channelsValue').textContent = channelCount.toLocaleString('en-US');
+        const channelsValue =
+          data?.active_channel_count ??
+          data?.channels ??
+          data?.num_channels ??
+          data?.channel_count ??
+          data?.open_channel_count ??
+          data?.opened_channel_count ??
+          null;
 
-        return data;
+        capacityEl.textContent = formatBTCFromSats(capacityValue);
+        channelsEl.textContent = formatInt(channelsValue);
+
+        setTickerText(`MEMPOOL NODE SUMMARY / ${channelsEl.textContent} CHANNELS / ${capacityEl.textContent}`);
       } catch (err) {
-        console.error('loadNodeFallback failed:', err);
-        document.getElementById('capacityValue').textContent = 'OFFLINE';
-        document.getElementById('channelsValue').textContent = 'OFFLINE';
-        return null;
+        console.error('loadNode failed:', err);
+        capacityEl.textContent = 'OFFLINE';
+        channelsEl.textContent = 'OFFLINE';
+        setTickerText('MEMPOOL NODE SUMMARY OFFLINE');
       }
-    }
-
-    async function loadLiveOpenChannelData() {
-      try {
-        const channels = await fetchAllOpenChannels();
-
-        if (!channels.length) {
-          throw new Error('empty open channel list');
-        }
-
-        updateNodeMetricsFromChannels(channels);
-
-        const lines = channels
-          .filter(ch => ch?.node?.public_key)
-          .map(buildPeerTickerLine)
-          .filter(Boolean);
-
-        if (!lines.length) {
-          throw new Error('no valid peer entries');
-        }
-
-        rotateTicker(lines, 3200);
-        return channels;
-      } catch (err) {
-        console.error('loadLiveOpenChannelData failed:', err);
-        startWaitingTicker('LINK WAITING');
-        await loadNodeFallback();
-        return [];
-      }
-    }
-
-    function randomizeFlow() {
-      const root = document.documentElement;
-      const flow = (1.8 * (0.92 + Math.random() * 0.16)).toFixed(2);
-      const packet = (2.4 * (0.92 + Math.random() * 0.16)).toFixed(2);
-      root.style.setProperty('--flow-duration', `${flow}s`);
-      root.style.setProperty('--packet-duration', `${packet}s`);
     }
 
     async function flashCopyText(el, textToCopy, copiedLabel) {
@@ -717,27 +600,21 @@
       }
     }
 
-    function bindEmailCopy() {
-      const el = document.getElementById('emailValue');
-      el.dataset.originalText = EMAIL;
-
-      el.addEventListener('click', async (e) => {
-        e.preventDefault();
-        await flashCopyText(el, EMAIL, '[ EMAIL COPIED ]');
-      });
-    }
-
     function bindPubkeyCopy() {
       const el = document.getElementById('pubkeyValue');
       el.dataset.originalText = PUBKEY;
-
       el.addEventListener('click', async () => {
         await flashCopyText(el, PUBKEY, '[ PUBKEY COPIED ]');
       });
     }
 
-    async function refreshAll() {
-      await loadLiveOpenChannelData();
+    function bindEmailCopy() {
+      const el = document.getElementById('emailValue');
+      el.dataset.originalText = EMAIL;
+      el.addEventListener('click', async (e) => {
+        e.preventDefault();
+        await flashCopyText(el, EMAIL, '[ EMAIL COPIED ]');
+      });
     }
 
     async function init() {
@@ -747,17 +624,11 @@
       randomizeFlow();
       flowInterval = setInterval(randomizeFlow, FLOW_REFRESH_MS);
 
-      setTickerText('QUERYING ACTIVE PEERS...');
-
-      await refreshAll();
+      await loadNode();
 
       nodeRefreshInterval = setInterval(() => {
-        loadLiveOpenChannelData().catch(err => console.error(err));
+        loadNode().catch(err => console.error(err));
       }, NODE_REFRESH_MS);
-
-      peerRefreshInterval = setInterval(() => {
-        loadLiveOpenChannelData().catch(err => console.error(err));
-      }, PEER_REFRESH_MS);
     }
 
     init();
