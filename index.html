@@ -424,16 +424,16 @@
           <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEES</span></div>
           <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">MILD</span></div>
           <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">CLASSIC</span></div>
-          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value highlight">SPICY</span></div>
-          <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value">DYNAMIC</span></div>
+          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">SPICY</span></div>
+          <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value highlight">DYNAMIC</span></div>
         </div>
 
         <div class="section">
-          <div class="section-title"><span>[ INFO ]</span><span>INFO</span></div>
+          <div class="section-title"><span>[ INFO ]</span><span>LINKS</span></div>
           <div class="row">
             <span class="label">EMAIL</span><span class="fill"></span>
             <span class="value">
-              <a href="#" class="clickable" onclick="copyEmail(event,'lospolloshermanosltd@proton.me')">lospolloshermanosltd@proton.me</a>
+              <a href="#" class="clickable" id="emailValue" title="Click to copy email">lospolloshermanosltd@proton.me</a>
             </span>
           </div>
           <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
@@ -476,6 +476,7 @@
 
   <script>
     const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
+    const EMAIL = 'lospolloshermanosltd@proton.me';
     const API_BASE = 'https://mempool.space/api/v1/lightning';
     const NODE_REFRESH_MS = 60_000;
     const PEER_REFRESH_MS = 120_000;
@@ -654,21 +655,31 @@
       root.style.setProperty('--packet-duration', `${packet}s`);
     }
 
-    function copyEmail(e, addr) {
-      e.preventDefault();
+    function bindEmailCopy() {
+      const el = document.getElementById('emailValue');
+      const original = el.textContent.trim();
 
-      navigator.clipboard.writeText(addr).then(() => {
-        const t = e.target;
-        const orig = t.innerText;
-        t.innerText = '[ COPIED! ]';
-        t.style.color = '#fff';
+      el.addEventListener('click', async (e) => {
+        e.preventDefault();
 
-        setTimeout(() => {
-          t.innerText = orig;
-          t.style.color = 'var(--accent)';
-        }, 1500);
-      }).catch(err => {
-        console.error('copyEmail failed:', err);
+        try {
+          await navigator.clipboard.writeText(EMAIL);
+          el.textContent = '[ EMAIL COPIED ]';
+          el.style.color = 'var(--accent)';
+
+          setTimeout(() => {
+            el.textContent = original;
+            el.style.color = '';
+          }, 1400);
+        } catch (err) {
+          console.error('email copy failed:', err);
+          el.textContent = '[ COPY FAILED ]';
+
+          setTimeout(() => {
+            el.textContent = original;
+            el.style.color = '';
+          }, 1400);
+        }
       });
     }
 
@@ -704,6 +715,7 @@
     }
 
     async function init() {
+      bindEmailCopy();
       bindPubkeyCopy();
 
       randomizeFlow();
