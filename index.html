@@ -231,7 +231,6 @@
       100% { left: calc(100% + 24px); opacity: 0; transform: scale(0.85); }
     }
 
-    /* pubkey box only */
     .pubkey-wrap {
       display: inline-flex;
       flex-direction: column;
@@ -272,7 +271,6 @@
       text-shadow: 0 0 6px var(--accent-glow);
     }
 
-    /* status/log line outside blue border */
     .status-strip {
       width: 100%;
       display: flex;
@@ -405,7 +403,7 @@
     <div class="menu-container">
       <div class="menu-track">
         <div class="section">
-          <div class="section-title"><span>[ TODAY'S INGREDIENTS ]</span><span>SIZE</span></div>
+          <div class="section-title"><span>[ TODAY'S INGREDIENTS ]</span><span>METRICS</span></div>
           <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">-- BTC</span></div>
           <div class="row"><span class="label">ACTIVE FRANCHISES</span><span class="fill"></span><span class="value highlight" id="channelsValue">--</span></div>
           <div class="row"><span class="label">MINIMUM ORDER</span><span class="fill"></span><span class="value">3M SATS</span></div>
@@ -423,7 +421,7 @@
 
       <div class="menu-track">
         <div class="section">
-          <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEE</span></div>
+          <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEES</span></div>
           <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">MILD</span></div>
           <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">CLASSIC</span></div>
           <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value highlight">SPICY</span></div>
@@ -431,7 +429,7 @@
         </div>
 
         <div class="section">
-          <div class="section-title"><span>[ CONTACT / INFO ]</span><span>COMMS</span></div>
+          <div class="section-title"><span>[ CONTACT / INFO ]</span><span>CHANNELS</span></div>
           <div class="row">
             <span class="label">EMAIL</span><span class="fill"></span>
             <span class="value">
@@ -484,6 +482,7 @@
     }
 
     function shortKey(key) {
+      if (!key || typeof key !== 'string') return 'UNKNOWN';
       return key.slice(0, 8) + '...' + key.slice(-4);
     }
 
@@ -528,10 +527,7 @@
 
     async function loadPeerTicker() {
       try {
-        /* fixed endpoint:
-           GET /api/v1/lightning/channels?public_key=:pubKey&status=:channelStatus
-        */
-        const url = `https://mempool.space/api/v1/lightning/channels?public_key=${PUBKEY}&status=open`;
+        const url = `https://mempool.space/api/v1/lightning/channels?public_key=${PUBKEY}&status=open&index=-1`;
         const res = await fetch(url);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
@@ -541,11 +537,12 @@
         if (!list.length) throw new Error('empty');
 
         const lines = list.map(ch => {
-          const peerKey = ch.node1_public_key === PUBKEY
-            ? ch.node2_public_key
-            : ch.node1_public_key;
+          const peerKey = ch?.node?.public_key || '';
+          const peerAlias = ch?.node?.alias?.trim() || shortKey(peerKey);
+          const capacity = formatSats(ch?.capacity || 0);
+          const feeRate = Number.isFinite(Number(ch?.fee_rate)) ? `${Number(ch.fee_rate)} PPM` : 'N/A';
 
-          return `PEER ${shortKey(peerKey)} / ${formatSats(ch.capacity)}`;
+          return `PEER ${peerAlias} / ${capacity} / ${feeRate}`;
         });
 
         rotateTicker(lines, 3200);
