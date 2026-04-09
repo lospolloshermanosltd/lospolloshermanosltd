@@ -231,7 +231,6 @@
       100% { left: calc(100% + 24px); opacity: 0; transform: scale(0.85); }
     }
 
-    /* pubkey box only */
     .pubkey-wrap {
       display: inline-flex;
       flex-direction: column;
@@ -272,7 +271,6 @@
       text-shadow: 0 0 6px var(--accent-glow);
     }
 
-    /* status/log line outside blue border */
     .status-strip {
       width: 100%;
       display: flex;
@@ -406,8 +404,8 @@
       <div class="menu-track">
         <div class="section">
           <div class="section-title"><span>[ TODAY'S INGREDIENTS ]</span><span>SIZE</span></div>
-          <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">-- BTC</span></div>
-          <div class="row"><span class="label">ACTIVE FRANCHISES</span><span class="fill"></span><span class="value highlight" id="channelsValue">--</span></div>
+          <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">LOADING</span></div>
+          <div class="row"><span class="label">ACTIVE FRANCHISES</span><span class="fill"></span><span class="value highlight" id="channelsValue">LOADING</span></div>
           <div class="row"><span class="label">MINIMUM ORDER</span><span class="fill"></span><span class="value">3M SATS</span></div>
           <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
         </div>
@@ -442,7 +440,7 @@
           <div class="row"><span class="label">LNURL</span><span class="fill"></span><span class="value">order@oksu.su</span></div>
           <div class="row">
             <span class="label">TELEGRAM</span><span class="fill"></span>
-            <span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank">@lospolloshermanosltd</a></span>
+            <span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank" rel="noopener noreferrer">@lospolloshermanosltd</a></span>
           </div>
         </div>
       </div>
@@ -463,7 +461,7 @@
 
             <div class="status-strip">
               <span class="live-dot"></span>
-              <span class="ticker-text" id="tickerText">QUERYING ACTIVE PEERS...</span>
+              <span class="ticker-text" id="tickerText">BOOTING ROUTING TABLE...</span>
             </div>
           </div>
         </div>
@@ -471,92 +469,181 @@
     </div>
 
     <div class="footer">
-      <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">AMBOSS</a>
-      <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">MEMPOOL</a>
+      <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">AMBOSS</a>
+      <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">MEMPOOL</a>
     </div>
   </div>
 
   <script>
     const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
+    const API_BASE = 'https://mempool.space/api/v1/lightning';
+    const NODE_REFRESH_MS = 60_000;
+    const PEER_REFRESH_MS = 120_000;
+    const FLOW_REFRESH_MS = 2_400;
+
+    let tickerRotateInterval = null;
+    let waitingInterval = null;
+    let nodeRefreshInterval = null;
+    let peerRefreshInterval = null;
+    let flowInterval = null;
+
+    function formatBTCFromSats(value) {
+      return `${(Number(value || 0) / 100_000_000).toFixed(2)} BTC`;
+    }
 
     function formatSats(value) {
-      return Math.round(Number(value || 0)).toLocaleString('en-US') + ' SATS';
+      return `${Math.round(Number(value || 0)).toLocaleString('en-US')} SATS`;
     }
 
     function shortKey(key) {
-      return key.slice(0, 8) + '...' + key.slice(-4);
+      if (!key || typeof key !== 'string') return 'UNKNOWN';
+      if (key.length <= 14) return key;
+      return `${key.slice(0, 8)}...${key.slice(-4)}`;
     }
 
     function setTickerText(text) {
       document.getElementById('tickerText').textContent = text;
     }
 
+    function stopTickerRotation() {
+      if (tickerRotateInterval) {
+        clearInterval(tickerRotateInterval);
+        tickerRotateInterval = null;
+      }
+    }
+
+    function stopWaitingTicker() {
+      if (waitingInterval) {
+        clearInterval(waitingInterval);
+        waitingInterval = null;
+      }
+    }
+
+    function startWaitingTicker(base = 'LINK WAITING') {
+      stopTickerRotation();
+      stopWaitingTicker();
+
+      let dots = 1;
+      setTickerText(`${base}.`);
+
+      waitingInterval = setInterval(() => {
+        dots = dots === 3 ? 1 : dots + 1;
+        setTickerText(`${base}${'.'.repeat(dots)}`);
+      }, 700);
+    }
+
     function rotateTicker(lines, interval = 3200) {
-      if (!Array.isArray(lines) || !lines.length) return;
+      if (!Array.isArray(lines) || !lines.length) {
+        startWaitingTicker('NO LIVE LINKS');
+        return;
+      }
+
+      stopWaitingTicker();
+      stopTickerRotation();
 
       let i = 0;
       setTickerText(lines[0]);
 
       if (lines.length === 1) return;
 
-      setInterval(() => {
+      tickerRotateInterval = setInterval(() => {
         i = (i + 1) % lines.length;
         setTickerText(lines[i]);
       }, interval);
     }
 
+    async function fetchJson(url, timeoutMs = 12000) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+      try {
+        const res = await fetch(url, {
+          method: 'GET',
+          cache: 'no-store',
+          headers: {
+            'Accept': 'application/json'
+          },
+          signal: controller.signal
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        return await res.json();
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
     async function loadNode() {
       try {
-        const res = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const cacheBust = `t=${Date.now()}`;
+        const url = `${API_BASE}/nodes/${PUBKEY}?${cacheBust}`;
+        const data = await fetchJson(url);
 
-        const data = await res.json();
+        const capacity = Number(data?.capacity || 0);
 
-        document.getElementById('capacityValue').textContent =
-          `${(Number(data.capacity || 0) / 100_000_000).toFixed(2)} BTC`;
+        // 네가 기대한 44에 맞추려면 opened_channel_count 우선
+        const channelCount =
+          data?.opened_channel_count ??
+          data?.active_channel_count ??
+          0;
 
-        document.getElementById('channelsValue').textContent =
-          Number(data.active_channel_count || 0).toLocaleString();
+        document.getElementById('capacityValue').textContent = formatBTCFromSats(capacity);
+        document.getElementById('channelsValue').textContent = Number(channelCount).toLocaleString('en-US');
 
         return data;
-      } catch (e) {
+      } catch (err) {
+        console.error('loadNode failed:', err);
         document.getElementById('capacityValue').textContent = 'OFFLINE';
         document.getElementById('channelsValue').textContent = 'OFFLINE';
         return null;
       }
     }
 
+    function buildPeerTickerLine(channel) {
+      const peerKey = channel?.node?.public_key;
+      const aliasRaw = channel?.node?.alias;
+      const alias = typeof aliasRaw === 'string' && aliasRaw.trim()
+        ? aliasRaw.trim().toUpperCase()
+        : shortKey(peerKey);
+
+      const cap = formatSats(channel?.capacity);
+      return `PEER ${alias} / ${cap}`;
+    }
+
     async function loadPeerTicker() {
       try {
-        /* fixed endpoint:
-           GET /api/v1/lightning/channels?public_key=:pubKey&status=:channelStatus
-        */
-        const url = `https://mempool.space/api/v1/lightning/channels?public_key=${PUBKEY}&status=open`;
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const cacheBust = `t=${Date.now()}`;
+        const url = `${API_BASE}/channels?public_key=${encodeURIComponent(PUBKEY)}&status=open&index=-1&${cacheBust}`;
+        const data = await fetchJson(url);
 
-        const data = await res.json();
-        const list = Array.isArray(data) ? data : (data.channels || []);
+        const list = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.channels)
+            ? data.channels
+            : [];
 
-        if (!list.length) throw new Error('empty');
+        if (!list.length) {
+          throw new Error('empty channel list');
+        }
 
-        const lines = list.map(ch => {
-          const peerKey = ch.node1_public_key === PUBKEY
-            ? ch.node2_public_key
-            : ch.node1_public_key;
+        const lines = list
+          .filter(ch => ch?.node?.public_key)
+          .map(buildPeerTickerLine)
+          .filter(Boolean);
 
-          return `PEER ${shortKey(peerKey)} / ${formatSats(ch.capacity)}`;
-        });
+        if (!lines.length) {
+          throw new Error('no valid peer entries');
+        }
 
         rotateTicker(lines, 3200);
-      } catch (e) {
-        let dots = 1;
-        setTickerText('LINK WAITING.');
-
-        setInterval(() => {
-          dots = dots === 3 ? 1 : dots + 1;
-          setTickerText(`LINK WAITING${'.'.repeat(dots)}`);
-        }, 700);
+        return list;
+      } catch (err) {
+        console.error('loadPeerTicker failed:', err);
+        startWaitingTicker('LINK WAITING');
+        return [];
       }
     }
 
@@ -570,48 +657,70 @@
 
     function copyEmail(e, addr) {
       e.preventDefault();
+
       navigator.clipboard.writeText(addr).then(() => {
         const t = e.target;
         const orig = t.innerText;
         t.innerText = '[ COPIED! ]';
         t.style.color = '#fff';
+
         setTimeout(() => {
           t.innerText = orig;
           t.style.color = 'var(--accent)';
         }, 1500);
+      }).catch(err => {
+        console.error('copyEmail failed:', err);
       });
     }
 
     function bindPubkeyCopy() {
       const el = document.getElementById('pubkeyValue');
-      const original = el.textContent;
+      const original = el.textContent.trim();
 
       el.addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(PUBKEY);
           el.textContent = '[ PUBKEY COPIED ]';
           el.style.color = 'var(--accent)';
+
           setTimeout(() => {
             el.textContent = original;
             el.style.color = '';
           }, 1400);
-        } catch (e) {
+        } catch (err) {
+          console.error('pubkey copy failed:', err);
           el.textContent = '[ COPY FAILED ]';
+
           setTimeout(() => {
             el.textContent = original;
+            el.style.color = '';
           }, 1400);
         }
       });
     }
 
-    async function init() {
-      randomizeFlow();
-      setInterval(randomizeFlow, 2400);
-
-      bindPubkeyCopy();
-
+    async function refreshAll() {
       await loadNode();
       await loadPeerTicker();
+    }
+
+    async function init() {
+      bindPubkeyCopy();
+
+      randomizeFlow();
+      flowInterval = setInterval(randomizeFlow, FLOW_REFRESH_MS);
+
+      setTickerText('QUERYING ACTIVE PEERS...');
+
+      await refreshAll();
+
+      nodeRefreshInterval = setInterval(() => {
+        loadNode().catch(err => console.error(err));
+      }, NODE_REFRESH_MS);
+
+      peerRefreshInterval = setInterval(() => {
+        loadPeerTicker().catch(err => console.error(err));
+      }, PEER_REFRESH_MS);
     }
 
     init();
