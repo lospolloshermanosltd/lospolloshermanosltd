@@ -424,8 +424,8 @@
           <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEE</span></div>
           <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">MILD</span></div>
           <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">CLASSIC</span></div>
-          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value highlight">SPICY</span></div>
-          <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value">DYNAMIC</span></div>
+          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">SPICY</span></div>
+          <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value highlight">DYNAMIC</span></div>
         </div>
 
         <div class="section">
@@ -433,7 +433,12 @@
           <div class="row">
             <span class="label">EMAIL</span><span class="fill"></span>
             <span class="value">
-              <a href="#" class="clickable" onclick="copyEmail(event,'lospolloshermanosltd@proton.me')">lospolloshermanosltd@proton.me</a>
+              <a
+                href="#"
+                id="emailValue"
+                class="clickable"
+                title="Click to copy email"
+              >lospolloshermanosltd@proton.me</a>
             </span>
           </div>
           <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
@@ -476,10 +481,13 @@
 
   <script>
     const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
+    const EMAIL = 'lospolloshermanosltd@proton.me';
+
     const API_BASE = 'https://mempool.space/api/v1/lightning';
     const NODE_REFRESH_MS = 60_000;
     const PEER_REFRESH_MS = 120_000;
     const FLOW_REFRESH_MS = 2_400;
+    const CHANNEL_PAGE_SIZE = 10;
 
     let tickerRotateInterval = null;
     let waitingInterval = null;
@@ -559,11 +567,9 @@
       try {
         const res = await fetch(url, {
           method: 'GET',
-          cache: 'no-store', // 브라우저 캐시 무시
+          cache: 'no-store',
           headers: {
-            'Accept': 'application/json',
-            'Cache-Control': 'no-cache', // 강력한 캐시 방지 헤더 추가
-            'Pragma': 'no-cache'
+            'Accept': 'application/json'
           },
           signal: controller.signal
         });
@@ -578,30 +584,33 @@
       }
     }
 
-    async function loadNode() {
-      try {
-        const cacheBust = `t=${Date.now()}`;
-        const url = `${API_BASE}/nodes/${PUBKEY}?${cacheBust}`;
+    function normalizeChannelList(data) {
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data?.channels)) return data.channels;
+      return [];
+    }
+
+    async function fetchAllOpenChannels() {
+      const all = [];
+      let index = 0;
+
+      while (true) {
+        const cacheBust = `t=${Date.now()}_${index}`;
+        const url =
+          `${API_BASE}/channels?public_key=${encodeURIComponent(PUBKEY)}&status=open&index=${index}&${cacheBust}`;
+
         const data = await fetchJson(url);
+        const batch = normalizeChannelList(data);
 
-        const capacity = Number(data?.capacity || 0);
+        if (!batch.length) break;
 
-        // 현재 실제로 열려있는 채널 수(active_channel_count)를 최우선으로 가져오도록 순서 변경
-        const channelCount =
-          data?.active_channel_count ??
-          data?.opened_channel_count ??
-          0;
+        all.push(...batch);
 
-        document.getElementById('capacityValue').textContent = formatBTCFromSats(capacity);
-        document.getElementById('channelsValue').textContent = Number(channelCount).toLocaleString('en-US');
-
-        return data;
-      } catch (err) {
-        console.error('loadNode failed:', err);
-        document.getElementById('capacityValue').textContent = 'OFFLINE';
-        document.getElementById('channelsValue').textContent = 'OFFLINE';
-        return null;
+        if (batch.length < CHANNEL_PAGE_SIZE) break;
+        index += batch.length;
       }
+
+      return all;
     }
 
     function buildPeerTickerLine(channel) {
@@ -615,25 +624,51 @@
       return `PEER ${alias} / ${cap}`;
     }
 
-    async function loadPeerTicker() {
+    function updateNodeMetricsFromChannels(channels) {
+      const openChannels = Array.isArray(channels) ? channels : [];
+
+      const totalCapacitySats = openChannels.reduce((sum, ch) => {
+        return sum + Number(ch?.capacity || 0);
+      }, 0);
+
+      document.getElementById('capacityValue').textContent = formatBTCFromSats(totalCapacitySats);
+      document.getElementById('channelsValue').textContent = openChannels.length.toLocaleString('en-US');
+    }
+
+    async function loadNodeFallback() {
       try {
         const cacheBust = `t=${Date.now()}`;
-        const url = `${API_BASE}/channels?public_key=${encodeURIComponent(PUBKEY)}&status=open&index=-1&${cacheBust}`;
+        const url = `${API_BASE}/nodes/${PUBKEY}?${cacheBust}`;
         const data = await fetchJson(url);
 
-        const list = Array.isArray(data)
-          ? data
-          : Array.isArray(data?.channels)
-            ? data.channels
-            : [];
+        const capacity = Number(data?.capacity || 0);
+        const channelCount =
+          Number(data?.opened_channel_count ?? data?.active_channel_count ?? 0);
 
-        if (!list.length) {
-          throw new Error('empty channel list');
+        document.getElementById('capacityValue').textContent = formatBTCFromSats(capacity);
+        document.getElementById('channelsValue').textContent = channelCount.toLocaleString('en-US');
+
+        return data;
+      } catch (err) {
+        console.error('loadNodeFallback failed:', err);
+        document.getElementById('capacityValue').textContent = 'OFFLINE';
+        document.getElementById('channelsValue').textContent = 'OFFLINE';
+        return null;
+      }
+    }
+
+    async function loadLiveOpenChannelData() {
+      try {
+        const channels = await fetchAllOpenChannels();
+
+        if (!channels.length) {
+          throw new Error('empty open channel list');
         }
 
-        // 핵심 수정 사항: Mempool이 예전 채널을 보내더라도 상태가 'open'이 아닌 것은 여기서 강제로 잘라냅니다.
-        const lines = list
-          .filter(ch => ch?.node?.public_key && ch?.status === 'open') 
+        updateNodeMetricsFromChannels(channels);
+
+        const lines = channels
+          .filter(ch => ch?.node?.public_key)
           .map(buildPeerTickerLine)
           .filter(Boolean);
 
@@ -642,10 +677,11 @@
         }
 
         rotateTicker(lines, 3200);
-        return list;
+        return channels;
       } catch (err) {
-        console.error('loadPeerTicker failed:', err);
+        console.error('loadLiveOpenChannelData failed:', err);
         startWaitingTicker('LINK WAITING');
+        await loadNodeFallback();
         return [];
       }
     }
@@ -658,57 +694,55 @@
       root.style.setProperty('--packet-duration', `${packet}s`);
     }
 
-    function copyEmail(e, addr) {
-      e.preventDefault();
+    async function flashCopyText(el, textToCopy, copiedLabel) {
+      const original = el.dataset.originalText || el.textContent.trim();
 
-      navigator.clipboard.writeText(addr).then(() => {
-        const t = e.target;
-        const orig = t.innerText;
-        t.innerText = '[ COPIED! ]';
-        t.style.color = '#fff';
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        el.textContent = copiedLabel;
+        el.style.color = 'var(--accent)';
 
         setTimeout(() => {
-          t.innerText = orig;
-          t.style.color = 'var(--accent)';
-        }, 1500);
-      }).catch(err => {
-        console.error('copyEmail failed:', err);
+          el.textContent = original;
+          el.style.color = '';
+        }, 1400);
+      } catch (err) {
+        console.error('copy failed:', err);
+        el.textContent = '[ COPY FAILED ]';
+
+        setTimeout(() => {
+          el.textContent = original;
+          el.style.color = '';
+        }, 1400);
+      }
+    }
+
+    function bindEmailCopy() {
+      const el = document.getElementById('emailValue');
+      el.dataset.originalText = EMAIL;
+
+      el.addEventListener('click', async (e) => {
+        e.preventDefault();
+        await flashCopyText(el, EMAIL, '[ EMAIL COPIED ]');
       });
     }
 
     function bindPubkeyCopy() {
       const el = document.getElementById('pubkeyValue');
-      const original = el.textContent.trim();
+      el.dataset.originalText = PUBKEY;
 
       el.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(PUBKEY);
-          el.textContent = '[ PUBKEY COPIED ]';
-          el.style.color = 'var(--accent)';
-
-          setTimeout(() => {
-            el.textContent = original;
-            el.style.color = '';
-          }, 1400);
-        } catch (err) {
-          console.error('pubkey copy failed:', err);
-          el.textContent = '[ COPY FAILED ]';
-
-          setTimeout(() => {
-            el.textContent = original;
-            el.style.color = '';
-          }, 1400);
-        }
+        await flashCopyText(el, PUBKEY, '[ PUBKEY COPIED ]');
       });
     }
 
     async function refreshAll() {
-      await loadNode();
-      await loadPeerTicker();
+      await loadLiveOpenChannelData();
     }
 
     async function init() {
       bindPubkeyCopy();
+      bindEmailCopy();
 
       randomizeFlow();
       flowInterval = setInterval(randomizeFlow, FLOW_REFRESH_MS);
@@ -718,11 +752,11 @@
       await refreshAll();
 
       nodeRefreshInterval = setInterval(() => {
-        loadNode().catch(err => console.error(err));
+        loadLiveOpenChannelData().catch(err => console.error(err));
       }, NODE_REFRESH_MS);
 
       peerRefreshInterval = setInterval(() => {
-        loadPeerTicker().catch(err => console.error(err));
+        loadLiveOpenChannelData().catch(err => console.error(err));
       }, PEER_REFRESH_MS);
     }
 
