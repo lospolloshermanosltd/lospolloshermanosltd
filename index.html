@@ -19,8 +19,8 @@
     :root {
       --bg: #050505;
       --fg: #d9e3e1;
-      --fg-soft: #E6E6E6; /* 요청하신 선명한 무채색 회색 */
-      --fg-dim: rgba(230, 230, 230, 0.5); /* 본문색에 맞춘 흐린 회색 */
+      --fg-soft: rgba(217, 227, 225, 0.82);
+      --fg-dim: rgba(217, 227, 225, 0.48);
       --line: #1F4E79;        
       --accent: #F3D80D;      
       --brand-red: #DA291C;   
@@ -55,7 +55,7 @@
 
     .brand {
       text-align: center;
-      margin-bottom: 45px; /* 헤더가 커진 만큼 여백 살짝 추가 */
+      margin-bottom: 50px; /* 헤더 크기 조정으로 여백 추가 */
     }
 
     .brand-title {
@@ -78,25 +78,25 @@
     }
 
     .terminal {
-      border: 2px solid var(--line);
+      border: 3px solid var(--line); /* 선 두께를 3px로 키워 투박함 강조 */
       background: #0a0a0a;
-      padding: 40px 35px 30px; /* 내부 여백 최적화 */
+      padding: 35px 35px 25px; 
       position: relative;
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
 
-    /* 상단 헤더 박스 수정 */
+    /* 상단 헤더 박스 수정 (핵심 포인트) */
     .terminal-head {
       position: absolute;
-      top: -24px; /* 폰트가 커진 만큼 위치 조정 */
+      top: -22px; /* 폰트 크기 조정으로 위치 조정 */
       left: 50%;
       transform: translateX(-50%);
-      padding: 4px 25px;
+      padding: 4px 25px; /* 내부 여백 최적화 */
       background: var(--bg);
-      border: 2px solid var(--line);
+      border: 3px solid var(--line); /* 헤더 선 두께도 통일 */
       color: var(--accent);
-      font-family: 'JI Burrito', sans-serif; /* 브리또 폰트 적용 */
-      font-size: 24px; /* 요청하신 24px */
+      font-family: 'JI Burrito', sans-serif; /* 메뉴판 폰트로 변경 */
+      font-size: 26px; /* 크기 키움 */
       font-weight: normal;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -117,16 +117,16 @@
       column-gap: 140px; 
       row-gap: 0; 
       justify-content: center;
-      margin-top: 10px; 
+      margin-top: 15px; /* 상단 헤더가 커진 만큼 여백 추가 */
     }
 
     .section-title {
       color: #fff;
-      font-size: 15px; /* 요청하신 15px */
-      letter-spacing: 0.12em;
+      font-size: 13px;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-bottom: 18px; 
-      padding-bottom: 8px;
+      margin-bottom: 15px; 
+      padding-bottom: 6px;
       border-bottom: 1px dotted var(--line); 
       display: flex;
       justify-content: space-between;
@@ -136,8 +136,8 @@
       display: flex;
       justify-content: space-between;
       align-items: end;
-      margin-bottom: 12px; 
-      font-size: 16px; /* 요청하신 16px */
+      margin-bottom: 10px; 
+      font-size: 14px;
       color: var(--fg-soft);
     }
 
@@ -157,7 +157,7 @@
     .row .value {
       color: var(--accent);
       font-weight: 700;
-      padding-left: 10px;
+      padding-left: 8px;
       text-shadow: 0 0 4px var(--accent-glow);
       white-space: nowrap;
     }
@@ -170,32 +170,32 @@
     }
 
     .section-spacer {
-      margin-top: 60px; 
+      margin-top: 70px; 
     }
 
     .secure-channel {
       grid-column: 1 / -1;
       margin-top: 40px; 
-      padding-top: 25px;
+      padding-top: 20px;
       border-top: 1px dashed var(--line);
       text-align: center;
     }
 
     .pubkey-label {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--accent);
       text-transform: uppercase;
-      margin-bottom: 10px;
-      letter-spacing: 0.15em;
+      margin-bottom: 8px;
+      letter-spacing: 0.1em;
     }
 
     .pubkey {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--fg-dim);
       cursor: pointer;
       word-break: break-all;
       background: rgba(0,0,0,0.5);
-      padding: 12px 20px;
+      padding: 10px 16px;
       border: 1px solid var(--line);
       display: inline-block;
       transition: all 0.2s;
@@ -204,11 +204,10 @@
     .pubkey:hover { 
       color: var(--accent); 
       border-color: var(--accent);
-      box-shadow: 0 0 10px var(--accent-glow);
     }
 
     .footer {
-      margin-top: 45px; 
+      margin-top: 35px; 
       display: flex;
       justify-content: center;
       gap: 25px; 
@@ -219,7 +218,7 @@
       color: #fff;
       text-decoration: none;
       padding: 14px 45px; 
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 900;
       letter-spacing: 0.15em;
       border: 1px solid var(--brand-red);
@@ -241,7 +240,7 @@
         row-gap: 40px; 
       }
       .brand-title { font-size: 48px; }
-      .terminal { padding: 40px 20px 25px; }
+      .terminal { padding: 30px 20px 20px; }
       .section-spacer { margin-top: 0; }
     }
   </style>
