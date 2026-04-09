@@ -108,39 +108,38 @@
   <script>
     const P = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
     
-    async function fetchData(url) {
-      // 캐시 무력화를 위해 무작위 쿼리 추가 + 가장 단순한 Fetch
-      const target = `${url}?nocache=${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
-      const r = await fetch(target);
-      if (!r.ok) throw new Error('fail');
-      return r.json();
-    }
-
     async function update() {
       const c = document.getElementById('cap'), h = document.getElementById('chan'), t = document.getElementById('tick');
+      
+      // 1. 멤풀 서버 리스트 (캐시 방지 쿼리 포함)
       const endpoints = [
-        `https://mempool.space/api/v1/lightning/nodes/${P}`,
-        `https://mempool.emzy.de/api/v1/lightning/nodes/${P}`
+        `https://mempool.space/api/v1/lightning/nodes/${P}?t=${Date.now()}`,
+        `https://mempool.emzy.de/api/v1/lightning/nodes/${P}?t=${Date.now()}`
       ];
 
       for (let url of endpoints) {
         try {
-          const d = await fetchData(url);
-          const cap = d.capacity || d.total_capacity || 0;
-          const chan = d.active_channel_count || d.num_channels || d.channel_count || 0;
+          const r = await fetch(url);
+          if (!r.ok) continue;
+          const d = await r.json();
           
-          if (cap > 0) {
-            c.innerText = (cap / 1e8).toFixed(2) + ' BTC';
-            h.innerText = chan;
-            t.innerText = `ONLINE / ${url.includes('emzy') ? 'MIRROR' : 'MAIN'} SYNC / ${c.innerText}`;
-            return; // 하나라도 성공하면 종료
+          const capSats = d.capacity || d.total_capacity || 0;
+          const chanCount = d.active_channel_count || d.num_channels || 0;
+          
+          if (capSats > 0) {
+            const btc = (capSats / 1e8).toFixed(2);
+            c.innerText = btc + ' BTC';
+            h.innerText = chanCount;
+            
+            // 멤풀이 아직 3.0 미만 소리하면 'SYNCING' 띄우기
+            const statusLabel = btc < 3.0 ? "SYNCING..." : "ONLINE";
+            t.innerText = `${statusLabel} / MAIN SYNC / ${btc} BTC`;
+            
+            // 만약 제대로 된 데이터(3.0 이상)를 잡았다면 더 이상 시도 안 함
+            if (btc >= 3.0) return;
           }
-        } catch (e) {
-          console.log(`Failed to fetch from ${url}`);
-        }
+        } catch (e) { console.error("Fetch error"); }
       }
-      
-      if (c.innerText === "LOADING...") t.innerText = "RETRIEVING DATA...";
     }
 
     async function copy(id, txt, msg) {
