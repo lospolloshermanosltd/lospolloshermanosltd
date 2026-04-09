@@ -60,7 +60,7 @@
       <div class="menu-track">
         <div class="section">
           <div class="section-title"><span>[ TODAY'S INGREDIENTS ]</span><span>SIZE</span></div>
-          <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value highlight" id="cap">... BTC</span></div>
+          <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value highlight" id="cap">LOADING...</span></div>
           <div class="row"><span class="label">ACTIVE FRANCHISES</span><span class="fill"></span><span class="value highlight" id="chan">...</span></div>
           <div class="row"><span class="label">MINIMUM ORDER</span><span class="fill"></span><span class="value">3M SATS</span></div>
           <div class="row"><span class="label">RESTOCKING (REBAL)</span><span class="fill"></span><span class="value">ACTIVE</span></div>
@@ -94,7 +94,7 @@
           <div class="packet-layer"><span class="packet p1"></span><span class="packet p2"></span></div>
           <div class="pubkey-wrap">
             <div class="pubkey-block"><div class="pubkey" id="pk">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div></div>
-            <div class="status-strip"><span class="live-dot"></span><span id="tick">ESTABLISHING CONNECTION...</span></div>
+            <div class="status-strip"><span class="live-dot"></span><span id="tick">INITIALIZING KITCHEN...</span></div>
           </div>
         </div>
       </div>
@@ -107,23 +107,40 @@
 
   <script>
     const P = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
+    
+    async function fetchData(url) {
+      // 캐시 무력화를 위해 무작위 쿼리 추가 + 가장 단순한 Fetch
+      const target = `${url}?nocache=${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+      const r = await fetch(target);
+      if (!r.ok) throw new Error('fail');
+      return r.json();
+    }
+
     async function update() {
       const c = document.getElementById('cap'), h = document.getElementById('chan'), t = document.getElementById('tick');
-      try {
-        // 캐시를 완전히 박살내기 위해 URL에 랜덤 숫자 + 현재 시간 + 강제 새로고침 플래그 추가
-        const r = await fetch(`https://mempool.space/api/v1/lightning/nodes/${P}?v=${Math.random()}&t=${Date.now()}`, {
-          method: 'GET',
-          cache: 'reload', // 브라우저 캐시 무시하고 서버에서 새로 받아오기
-          headers: { 'Pragma': 'no-cache', 'Cache-Control': 'no-cache' }
-        });
-        const d = await r.json();
-        const cap = d.capacity || d.total_capacity || 0;
-        const chan = d.active_channel_count || d.num_channels || d.channel_count || 0;
-        
-        c.innerText = (cap / 1e8).toFixed(2) + ' BTC';
-        h.innerText = chan;
-        t.innerText = `NODE ONLINE / ${chan} CHANNELS / ${c.innerText}`;
-      } catch (e) { t.innerText = "OFFLINE - RETRYING..."; }
+      const endpoints = [
+        `https://mempool.space/api/v1/lightning/nodes/${P}`,
+        `https://mempool.emzy.de/api/v1/lightning/nodes/${P}`
+      ];
+
+      for (let url of endpoints) {
+        try {
+          const d = await fetchData(url);
+          const cap = d.capacity || d.total_capacity || 0;
+          const chan = d.active_channel_count || d.num_channels || d.channel_count || 0;
+          
+          if (cap > 0) {
+            c.innerText = (cap / 1e8).toFixed(2) + ' BTC';
+            h.innerText = chan;
+            t.innerText = `ONLINE / ${url.includes('emzy') ? 'MIRROR' : 'MAIN'} SYNC / ${c.innerText}`;
+            return; // 하나라도 성공하면 종료
+          }
+        } catch (e) {
+          console.log(`Failed to fetch from ${url}`);
+        }
+      }
+      
+      if (c.innerText === "LOADING...") t.innerText = "RETRIEVING DATA...";
     }
 
     async function copy(id, txt, msg) {
@@ -140,7 +157,6 @@
 
     update();
     setInterval(update, 60000);
-    // 애니메이션 랜덤화 로직 (동일)
     setInterval(() => {
       document.documentElement.style.setProperty('--flow-duration', (1.6+Math.random()*0.4).toFixed(2)+'s');
       document.documentElement.style.setProperty('--packet-duration', (2.2+Math.random()*0.4).toFixed(2)+'s');
