@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
-
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
@@ -29,6 +28,7 @@
       --brand-red: #DA291C;   
       --accent-glow: rgba(243, 216, 13, 0.3);
       --line-glow: rgba(31, 78, 121, 0.4);
+      --flow-duration: 0.5s;
     }
 
     * { box-sizing: border-box; }
@@ -150,14 +150,14 @@
       text-align: center;
     }
 
-    /* 라우팅 효과를 위한 CSS 수정 구역 */
     .secure-channel {
       position: relative;
-      padding-top: 15px;
+      padding-top: 22px;
       width: 100%;
+      overflow: hidden;
     }
 
-    /* 라우팅 흐름 애니메이션 (데이터 패킷 이동 효과) */
+    /* 기존 점선 라인 */
     .secure-channel::before {
       content: '';
       position: absolute;
@@ -167,12 +167,67 @@
       height: 1px;
       background: linear-gradient(90deg, var(--line) 50%, transparent 50%);
       background-size: 15px 1px;
-      animation: routing-flow 0.5s linear infinite;
+      animation: routing-flow var(--flow-duration) linear infinite;
+      opacity: 0.9;
+    }
+
+    /* moving packet layer */
+    .packet-layer {
+      position: absolute;
+      top: -4px;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .packet {
+      position: absolute;
+      top: 50%;
+      left: -20px;
+      width: 4px;
+      height: 4px;
+      margin-top: -2px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent-glow), 0 0 12px var(--accent-glow);
+      opacity: 0;
+      animation: packet-travel 1.6s linear infinite;
+    }
+
+    .packet.p2 {
+      animation-delay: 0.55s;
+    }
+
+    .packet.p3 {
+      animation-delay: 1.05s;
     }
 
     @keyframes routing-flow {
       0% { background-position: 0 0; }
       100% { background-position: 15px 0; }
+    }
+
+    @keyframes packet-travel {
+      0% {
+        left: -20px;
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      10% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      85% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        left: calc(100% + 20px);
+        opacity: 0;
+        transform: scale(0.8);
+      }
     }
 
     .pubkey-label {
@@ -190,7 +245,6 @@
       border: 1px solid var(--line);
       display: inline-block;
       font-family: 'IBM Plex Mono', monospace; 
-      /* 노드가 숨쉬는 듯한 맥박 효과 추가 */
       animation: node-pulse 2.5s infinite;
     }
 
@@ -237,7 +291,6 @@
       color: #fff;
     }
 
-    /* 이메일 복사용 클릭 효과 스타일 */
     .clickable {
       cursor: pointer;
     }
@@ -311,7 +364,12 @@
       </div>
 
       <div class="secure-channel-container">
-        <div class="secure-channel">
+        <div class="secure-channel" id="secureChannel">
+          <div class="packet-layer" aria-hidden="true">
+            <span class="packet p1"></span>
+            <span class="packet p2"></span>
+            <span class="packet p3"></span>
+          </div>
           <div class="pubkey-label">>> SECURE DELIVERY ROUTE (PUBKEY) <<</div>
           <div class="pubkey">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div>
         </div>
@@ -326,6 +384,7 @@
 
   <script>
     const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
+
     async function loadNode() {
       try {
         const res = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`);
@@ -337,18 +396,32 @@
         document.getElementById('channelsValue').textContent = 'OFFLINE';
       }
     }
+
     loadNode();
 
-    // 이메일 클립보드 복사 함수
+    function randomizeFlow() {
+      const root = document.documentElement;
+      const flow = (0.35 + Math.random() * 0.55).toFixed(2) + 's';
+      root.style.setProperty('--flow-duration', flow);
+
+      const packets = document.querySelectorAll('.packet');
+      packets.forEach((packet) => {
+        const duration = (1.2 + Math.random() * 1.0).toFixed(2) + 's';
+        packet.style.animationDuration = duration;
+      });
+    }
+
+    randomizeFlow();
+    setInterval(randomizeFlow, 900);
+
     function copyEmail(e, emailAddress) {
-      e.preventDefault(); // 페이지 맨 위로 올라가는 기본 동작 방지
+      e.preventDefault();
       navigator.clipboard.writeText(emailAddress).then(() => {
         const target = e.target;
         const originalText = target.innerText;
         target.innerText = '[ COPIED! ]';
         target.style.color = '#fff';
         
-        // 1.5초 뒤에 원래 텍스트로 복구
         setTimeout(() => {
           target.innerText = originalText;
           target.style.color = 'var(--accent)';
