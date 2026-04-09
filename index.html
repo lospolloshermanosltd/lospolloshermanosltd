@@ -19,7 +19,7 @@
     :root {
       --bg: #050505;
       --fg: #d9e3e1;
-      --fg-soft: #E6E6E6; /* 선명한 무채색 회색 */
+      --fg-soft: #E6E6E6; 
       --fg-dim: rgba(230, 230, 230, 0.5); 
       --line: #1F4E79;        
       --accent: #F3D80D;      
@@ -35,9 +35,9 @@
       padding: 0;
       background: var(--bg);
       color: var(--fg);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
       -webkit-font-smoothing: antialiased;
-      overflow: hidden; /* 맥북 스크롤 방지 */
+      overflow: hidden; /* 스크롤 방지 고정 */
     }
 
     body {
@@ -49,43 +49,40 @@
 
     .page {
       width: 100%;
-      max-width: 1200px; 
+      max-width: 1250px; /* 좌우 간격 확대로 전체 폭 살짝 상향 */
       padding: 0 20px;
     }
 
     .brand {
       text-align: center;
-      margin-bottom: 30px; 
+      margin-bottom: 25px; /* 상단 여백 축소로 공간 확보 */
     }
 
     .brand-title {
       font-family: 'JI Burrito', 'Ranchers', sans-serif;
-      font-size: 60px; 
+      font-size: 56px; 
       color: var(--accent);
       margin: 0;
       line-height: 1.1;
       text-shadow: 0 0 12px var(--accent-glow);
-      font-weight: normal;
-      letter-spacing: 2px;
     }
 
     .brand .sub {
-      margin-top: 6px;
+      margin-top: 4px;
       color: var(--fg-dim);
-      font-size: 11px;
+      font-size: 10px;
       letter-spacing: 0.28em;
       text-transform: uppercase;
     }
 
     .terminal {
-      border: 3px solid var(--line); /* 3px 두께 유지 */
+      border: 3px solid var(--line); 
       background: #0a0a0a;
-      padding: 40px 35px 25px; 
+      padding: 35px 40px 20px; 
       position: relative;
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
 
-    /* ROUTING MENU: 본문보다 큰 24px 및 고딕 계열 통일 */
     .terminal-head {
       position: absolute;
       top: -21px; 
@@ -95,7 +92,6 @@
       background: var(--bg);
       border: 3px solid var(--line);
       color: var(--accent);
-      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
       font-size: 24px; 
       font-weight: bold;
       letter-spacing: 0.12em;
@@ -105,26 +101,24 @@
       white-space: nowrap;
     }
 
-    .blink {
-      animation: blinker 1s step-end infinite;
-    }
+    .blink { animation: blinker 1s step-end infinite; }
     @keyframes blinker { 50% { opacity: 0; } }
 
     .menu-board {
       display: grid;
       grid-template-columns: 1fr 1fr; 
-      column-gap: 100px; 
+      column-gap: 150px; /* [요청사항] 좌우 간격 150px */
       row-gap: 0; 
       justify-content: center;
     }
 
     .section-title {
       color: #fff;
-      font-size: 15px; 
+      font-size: 14px; 
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 15px; 
-      padding-bottom: 6px;
+      margin-bottom: 12px; 
+      padding-bottom: 5px;
       border-bottom: 1px dotted var(--line); 
       display: flex;
       justify-content: space-between;
@@ -134,79 +128,50 @@
       display: flex;
       justify-content: space-between;
       align-items: end;
-      margin-bottom: 10px; 
-      font-size: 16px; 
+      margin-bottom: 8px; /* 행간 미세 축소로 높이 조절 */
+      font-size: 15px; 
       color: var(--fg-soft);
     }
 
-    .row .label {
-      text-transform: uppercase;
-      white-space: nowrap;
-      padding-right: 8px;
-    }
+    .row .label { text-transform: uppercase; white-space: nowrap; padding-right: 8px; }
+    .row .fill { flex-grow: 1; border-bottom: 1px dotted rgba(31, 78, 121, 0.3); position: relative; top: -4px; }
+    .row .value { color: var(--accent); font-weight: 700; padding-left: 10px; text-shadow: 0 0 4px var(--accent-glow); white-space: nowrap; }
 
-    .row .fill {
-      flex-grow: 1;
-      border-bottom: 1px dotted rgba(31, 78, 121, 0.3);
-      position: relative;
-      top: -4px;
-    }
-
-    .row .value {
-      color: var(--accent);
-      font-weight: 700;
-      padding-left: 10px;
-      text-shadow: 0 0 4px var(--accent-glow);
-      white-space: nowrap;
-    }
-
-    .value.highlight {
-      background: var(--accent);
-      color: #000;
-      padding: 0 6px;
-      text-shadow: none;
-    }
+    .value.highlight { background: var(--accent); color: #000; padding: 0 6px; text-shadow: none; }
 
     .section-spacer {
-      margin-top: 45px; 
+      margin-top: 75px; /* [요청사항] 상하 여백 75px (150의 절반) */
     }
 
     .secure-channel {
       grid-column: 1 / -1;
-      margin-top: 30px; 
-      padding-top: 20px;
+      margin-top: 25px; 
+      padding-top: 15px;
       border-top: 1px dashed var(--line);
       text-align: center;
     }
 
     .pubkey-label {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--accent);
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       letter-spacing: 0.15em;
     }
 
     .pubkey {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--fg-dim);
       cursor: pointer;
-      word-break: break-all;
       background: rgba(0,0,0,0.5);
-      padding: 8px 15px;
+      padding: 6px 12px;
       border: 1px solid var(--line);
       display: inline-block;
-      transition: all 0.2s;
-    }
-
-    .pubkey:hover { 
-      color: var(--accent); 
-      border-color: var(--accent);
-      box-shadow: 0 0 10px var(--accent-glow);
+      word-break: break-all;
     }
 
     .footer {
-      margin-top: 35px; 
+      margin-top: 25px; 
       display: flex;
       justify-content: center;
       gap: 20px; 
@@ -216,30 +181,18 @@
       background-color: var(--brand-red);
       color: #fff;
       text-decoration: none;
-      padding: 12px 40px; 
-      font-size: 14px;
+      padding: 10px 35px; 
+      font-size: 13px;
       font-weight: 900;
       letter-spacing: 0.15em;
       border: 1px solid var(--brand-red);
       box-shadow: 0 0 15px rgba(218, 41, 28, 0.25);
-      transition: all 0.2s;
       text-transform: uppercase;
-    }
-
-    .footer a:hover { 
-      background-color: var(--bg);
-      color: var(--brand-red);
     }
 
     @media (max-width: 950px) {
       body { height: auto; overflow-y: auto; padding: 20px 15px; }
-      .menu-board {
-        grid-template-columns: 1fr;
-        column-gap: 0;
-        row-gap: 30px; 
-      }
-      .brand-title { font-size: 42px; }
-      .terminal { padding: 35px 20px 20px; }
+      .menu-board { grid-template-columns: 1fr; column-gap: 0; row-gap: 25px; }
       .section-spacer { margin-top: 0; }
     }
   </style>
@@ -253,7 +206,6 @@
 
     <div class="terminal">
       <div class="terminal-head">ROUTING MENU<span class="blink">_</span></div>
-
       <div class="menu-board">
         <div class="column">
           <div class="section">
@@ -300,29 +252,14 @@
 
   <script>
     const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
-    const API_URL = `https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`;
-
     const capacityEl = document.getElementById('capacityValue');
     const channelsEl = document.getElementById('channelsValue');
-    const pubkeyEl = document.getElementById('pubkeyText');
-
-    pubkeyEl.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(PUBKEY);
-        const original = PUBKEY;
-        pubkeyEl.textContent = 'COPIED TO CLIPBOARD';
-        setTimeout(() => { pubkeyEl.textContent = original; }, 1200);
-      } catch (err) {}
-    });
-
     async function loadNode() {
       try {
-        const res = await fetch(API_URL);
+        const res = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`);
         const data = await res.json();
-        const cap = data.capacity || 0;
-        const chan = data.active_channel_count || 0;
-        capacityEl.textContent = `${(cap / 100000000).toFixed(2)} BTC`;
-        channelsEl.textContent = chan.toLocaleString();
+        capacityEl.textContent = `${(data.capacity / 100000000).toFixed(2)} BTC`;
+        channelsEl.textContent = data.active_channel_count.toLocaleString();
       } catch (e) {
         capacityEl.textContent = 'OFFLINE';
         channelsEl.textContent = 'OFFLINE';
