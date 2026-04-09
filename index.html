@@ -283,7 +283,6 @@
       font-size: 10px;
       letter-spacing: 0.05em;
       color: var(--terminal-green-dim);
-      text-transform: uppercase;
       text-shadow: 0 0 6px var(--terminal-glow);
     }
 
@@ -301,6 +300,7 @@
       display: inline-block;
       text-align: left;
       white-space: nowrap;
+      text-transform: none;
     }
 
     @keyframes live-pulse {
@@ -490,7 +490,7 @@
       document.getElementById('tickerText').textContent = text;
     }
 
-    function rotateTicker(lines, interval = 3200) {
+    function rotateTicker(lines, interval = 3600) {
       if (!Array.isArray(lines) || !lines.length) return;
 
       let i = 0;
@@ -537,15 +537,17 @@
         if (!list.length) throw new Error('empty');
 
         const lines = list.map(ch => {
-          const peerKey = ch?.node?.public_key || '';
-          const peerAlias = ch?.node?.alias?.trim() || shortKey(peerKey);
-          const capacity = formatSats(ch?.capacity || 0);
-          const feeRate = Number.isFinite(Number(ch?.fee_rate)) ? `${Number(ch.fee_rate)} PPM` : 'N/A';
+          const alias =
+            ch?.node?.alias?.trim() ||
+            ch?.alias?.trim() ||
+            shortKey(ch?.node?.public_key || ch?.public_key || '');
 
-          return `PEER ${peerAlias} / ${capacity} / ${feeRate}`;
+          const capacity = formatSats(ch?.capacity || 0);
+
+          return `${alias} · ${capacity}`;
         });
 
-        rotateTicker(lines, 3200);
+        rotateTicker(lines, 3600);
       } catch (e) {
         let dots = 1;
         setTickerText('LINK WAITING.');
