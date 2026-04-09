@@ -36,8 +36,8 @@
       background: var(--bg);
       color: var(--fg);
       font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
-      -webkit-font-smoothing: antialiased;
-      overflow: hidden; /* 스크롤 절대 박멸 */
+      -webkit-font-smoothing: none; /* [물결 회복] 안티앨리어싱 제거 */
+      overflow: hidden; 
     }
 
     body {
@@ -49,7 +49,7 @@
 
     .page {
       width: 100%;
-      max-width: 1100px; /* 전체 폭 축소로 시선 집중 */
+      max-width: 1100px; 
       padding: 0 20px;
       display: flex;
       flex-direction: column;
@@ -58,15 +58,15 @@
 
     .brand {
       text-align: center;
-      margin-bottom: 35px; /* 공간 확보 */
+      margin-bottom: 20px; /* 간판 확대로 인한 마진 축소 */
     }
 
     .brand-title {
       font-family: 'JI Burrito', 'Ranchers', sans-serif;
-      font-size: 60px; /* 물결을 위한 60px 유지 */
+      font-size: 80px; /* [물결 회복] 80px로 상향 */
       color: var(--accent);
       margin: 0;
-      line-height: 1.1;
+      line-height: 1.0;
       text-shadow: 0 0 12px var(--accent-glow);
     }
 
@@ -78,49 +78,46 @@
       text-transform: uppercase;
     }
 
-    /* ROUTING MENU: 두 박스 중앙 상단에 배치 */
     .routing-title {
       color: var(--accent);
-      font-size: 20px; 
+      font-size: 19px; 
       font-weight: bold;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       text-shadow: 0 0 5px var(--accent-glow);
-      margin-bottom: 20px; /* 두 박스와의 간격 */
-      position: relative;
+      margin-bottom: 15px; 
     }
+
     .blink { animation: blinker 1s step-end infinite; }
     @keyframes blinker { 50% { opacity: 0; } }
 
-    /* 투 트랙 레이아웃 */
     .menu-container {
       display: grid;
-      grid-template-columns: 1fr 1fr; /* 독립된 두 개의 열 */
-      column-gap: 80px; /* 두 박스 사이 간격 최적화 */
+      grid-template-columns: 1fr 1fr; 
+      column-gap: 80px; /* [수학적 밸런스] */
       width: 100%;
     }
 
-    /* 독립된 각 메뉴판 스타일 */
     .menu-track {
-      border: 3px solid var(--line); /* 묵직한 3px 선 */
+      border: 3px solid var(--line); 
       background: #0a0a0a;
-      padding: 30px; /* 내부 여백 시원하게 */
+      padding: 25px 30px; 
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
-      border-radius: 4px; /* 미세하게 둥글려 세련미 추가 */
+      border-radius: 2px;
     }
 
     .section {
-      margin-bottom: 40px; /* 섹션 사이 간격 통일 */
+      margin-bottom: 35px; /* [수학적 밸런스] 좌우 80의 약 절반 */
     }
     .section:last-child { margin-bottom: 0; }
 
     .section-title {
       color: #fff;
-      font-size: 15px; 
+      font-size: 14px; 
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 12px; 
-      padding-bottom: 5px;
+      margin-bottom: 10px; 
+      padding-bottom: 4px;
       border-bottom: 1px dotted var(--line); 
       display: flex;
       justify-content: space-between;
@@ -130,8 +127,8 @@
       display: flex;
       justify-content: space-between;
       align-items: end;
-      margin-bottom: 8px; 
-      font-size: 15px; 
+      margin-bottom: 7px; 
+      font-size: 14px; 
       color: var(--fg-soft);
     }
 
@@ -141,47 +138,39 @@
 
     .value.highlight { background: var(--accent); color: #000; padding: 0 6px; text-shadow: none; }
 
-    /* 하단 통합 섹션 (두 박스 아래 걸침) */
     .secure-channel-container {
-      grid-column: 1 / -1; /* 두 박스 전체 너비 사용 */
-      margin-top: 30px; 
+      grid-column: 1 / -1; 
+      margin-top: 25px; 
       text-align: center;
     }
 
     .secure-channel {
       border-top: 1px dashed var(--line);
-      padding-top: 15px;
+      padding-top: 12px;
       display: inline-block;
       width: 100%;
     }
 
     .pubkey-label {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--accent);
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       letter-spacing: 0.15em;
     }
 
     .pubkey {
-      font-size: 13px;
+      font-size: 11px;
       color: var(--fg-dim);
-      cursor: pointer;
       background: rgba(0,0,0,0.5);
-      padding: 8px 15px;
+      padding: 6px 12px;
       border: 1px solid var(--line);
       display: inline-block;
       word-break: break-all;
     }
 
-    .pubkey:hover { 
-      color: var(--accent); 
-      border-color: var(--accent);
-      box-shadow: 0 0 10px var(--accent-glow);
-    }
-
     .footer {
-      margin-top: 35px; 
+      margin-top: 25px; /* 하단 여백 최적화 */
       display: flex;
       justify-content: center;
       gap: 20px; 
@@ -191,8 +180,8 @@
       background-color: var(--brand-red);
       color: #fff;
       text-decoration: none;
-      padding: 12px 40px; 
-      font-size: 14px;
+      padding: 10px 35px; 
+      font-size: 13px;
       font-weight: 900;
       letter-spacing: 0.15em;
       border: 1px solid var(--brand-red);
@@ -202,9 +191,8 @@
 
     @media (max-width: 950px) {
       body { height: auto; overflow-y: auto; padding: 20px 15px; }
-      .menu-container { grid-template-columns: 1fr; column-gap: 0; row-gap: 30px; }
-      .brand-title { font-size: 42px; }
-      .section { margin-bottom: 30px; }
+      .menu-container { grid-template-columns: 1fr; column-gap: 0; row-gap: 25px; }
+      .brand-title { font-size: 50px; }
     }
   </style>
 </head>
@@ -253,30 +241,28 @@
       <div class="secure-channel-container">
         <div class="secure-channel">
           <div class="pubkey-label">>> SECURE DELIVERY ROUTE (PUBKEY) <<</div>
-          <div class="pubkey" id="pubkeyText">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div>
+          <div class="pubkey">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div>
         </div>
       </div>
     </div>
 
     <div class="footer">
-      <a id="ambossLink" href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">AMBOSS</a>
-      <a id="mempoolLink" href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">MEMPOOL</a>
+      <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">AMBOSS</a>
+      <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">MEMPOOL</a>
     </div>
   </div>
 
   <script>
     const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
-    const capacityEl = document.getElementById('capacityValue');
-    const channelsEl = document.getElementById('channelsValue');
     async function loadNode() {
       try {
         const res = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PUBKEY}`);
         const data = await res.json();
-        capacityEl.textContent = `${(data.capacity / 100000000).toFixed(2)} BTC`;
-        channelsEl.textContent = data.active_channel_count.toLocaleString();
+        document.getElementById('capacityValue').textContent = `${(data.capacity / 100000000).toFixed(2)} BTC`;
+        document.getElementById('channelsValue').textContent = data.active_channel_count.toLocaleString();
       } catch (e) {
-        capacityEl.textContent = 'OFFLINE';
-        channelsEl.textContent = 'OFFLINE';
+        document.getElementById('capacityValue').textContent = 'OFFLINE';
+        document.getElementById('channelsValue').textContent = 'OFFLINE';
       }
     }
     loadNode();
