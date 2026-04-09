@@ -1,250 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LOS POLLOS HERMANOS LTD | NODE OPS</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LOS POLLOS HERMANOS LTD | NODE OPS</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Ranchers&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Ranchers&display=swap" rel="stylesheet">
 
-  <style>
-    @font-face {
-      font-family: 'JI Burrito';
-      src: url('JI Burrito.ttf') format('truetype');
-      font-display: swap;
-      font-weight: 400;
-      font-style: normal;
-    }
+<style>
+@font-face {
+  font-family: 'JI Burrito';
+  src: url('JI Burrito.ttf') format('truetype');
+  font-display: swap;
+}
 
-    :root {
-      --bg: #050505;
-      --panel-bg: #0a0a0a;
-      --fg: #d9e3e1;
-      --fg-soft: #e6e6e6;
-      --fg-dim: rgba(230, 230, 230, 0.52);
-      --line: #1F4E79;
-      --line-soft: rgba(31, 78, 121, 0.28);
-      --line-faint: rgba(31, 78, 121, 0.18);
-      --accent: #F3D80D;
-      --accent-glow: rgba(243, 216, 13, 0.34);
-      --brand-red: #DA291C;
-      --brand-red-glow: rgba(218, 41, 28, 0.34);
-      --shadow-panel: 0 0 26px rgba(0, 0, 0, 0.64);
+:root {
+  --bg: #050505;
+  --panel-bg: #0a0a0a;
+  --fg: #d9e3e1;
+  --fg-soft: #e6e6e6;
+  --fg-dim: rgba(230,230,230,0.52);
+  --line: #1F4E79;
+  --line-faint: rgba(31,78,121,0.18);
+  --accent: #F3D80D;
+  --accent-glow: rgba(243,216,13,0.34);
+  --brand-red: #DA291C;
+  --brand-red-glow: rgba(218,41,28,0.34);
 
-      /* Layout Scale */
-      --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
-      --s-5: 24px; --s-6: 32px; --s-7: 40px; --s-8: 48px;
+  --page-max: 1100px;
 
-      --page-max: 1100px;
-      --title-size: 80px;
-      --sub-size: 11px;
-      --routing-size: 18px;
-      --section-title-size: 15px;
-      --row-size: 13px;
-      --pubkey-size: 11px;
-    }
+  --title-size: 80px; /* 고정 */
+  --sub-size: 11px;
+  --routing-size: 18px;
+  --section-title-size: 15px;
+  --row-size: 13px;
+  --pubkey-size: 11px;
+}
 
-    * { box-sizing: border-box; cursor: crosshair; }
+* { box-sizing: border-box; cursor: crosshair; }
 
-    html, body {
-      width: 100%; height: 100%; margin: 0; padding: 0;
-      background: var(--bg); color: var(--fg);
-      overflow-x: hidden;
-      font-family: 'JetBrains Mono', monospace;
-      -webkit-font-smoothing: antialiased;
-    }
+html, body {
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font-family:'JetBrains Mono', monospace;
+}
 
-    body {
-      display: flex; justify-content: center; align-items: center;
-      min-height: 100svh;
-      padding: 4vh 18px 3vh;
-    }
+body {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100svh;
+  padding: 2vh 16px 2vh; /* ↓ 압축 */
+}
 
-    .page {
-      width: min(100%, var(--page-max));
-      display: grid;
-      grid-template-rows: auto auto 1fr auto auto;
-      row-gap: var(--s-5);
-    }
+.page {
+  width:min(100%, var(--page-max));
+  display:grid;
+  grid-template-rows:auto auto 1fr auto auto;
+  row-gap:20px; /* ↓ 기존보다 타이트 */
+}
 
-    /* Brand Header */
-    .brand { display: grid; row-gap: var(--s-1); text-align: center; }
-    .brand-title {
-      margin: 0; font-family: 'JI Burrito', 'Ranchers', sans-serif;
-      font-size: var(--title-size); line-height: 0.95; letter-spacing: -1.35px;
-      color: var(--accent); text-shadow: 2px 2px 0 rgba(0,0,0,0.95), 0 0 8px var(--accent-glow);
-    }
-    .brand-sub {
-      margin: 0; font-size: var(--sub-size); letter-spacing: 0.34em;
-      color: var(--fg-dim); text-transform: uppercase;
-    }
+.brand { text-align:center; }
+.brand-title {
+  font-family:'JI Burrito','Ranchers';
+  font-size:var(--title-size);
+  line-height:0.92;
+  letter-spacing:-1.35px;
+  color:var(--accent);
+  text-shadow:2px 2px 0 rgba(0,0,0,0.95),0 0 8px var(--accent-glow);
+}
+.brand-sub {
+  font-size:var(--sub-size);
+  letter-spacing:0.34em;
+  color:var(--fg-dim);
+}
 
-    .routing-title {
-      text-align: center; color: var(--accent); font-size: var(--routing-size);
-      font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase;
-    }
-    .blink { animation: blinker 1s step-end infinite; }
-    @keyframes blinker { 50% { opacity: 0; } }
+.routing-title {
+  text-align:center;
+  color:var(--accent);
+  font-size:var(--routing-size);
+  font-weight:800;
+  letter-spacing:0.18em;
+}
 
-    /* Panels */
-    .menu-container {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
-    }
-    .menu-track {
-      background: var(--panel-bg); border: 2px solid var(--line);
-      padding: 26px 28px; box-shadow: var(--shadow-panel);
-      display: grid; row-gap: var(--s-7);
-    }
-    .section { display: grid; row-gap: var(--s-2); }
-    .section-title {
-      display: flex; justify-content: space-between; align-items: baseline;
-      border-bottom: 1px dotted var(--line); padding-bottom: 5px;
-      font-size: var(--section-title-size); color: #fff; text-transform: uppercase;
-    }
-    .row {
-      display: grid; grid-template-columns: auto 1fr auto; align-items: end;
-      font-size: var(--row-size); line-height: 1.32;
-    }
-    .label { color: var(--fg-soft); text-transform: uppercase; padding-right: var(--s-2); }
-    .fill { border-bottom: 1px dotted var(--line-faint); margin: 0 var(--s-2) 3px 0; }
-    .value { color: var(--accent); font-weight: 700; text-shadow: 0 0 4px var(--accent-glow); }
-    .value.highlight { background: var(--accent); color: #000; padding: 1px 6px 0; text-shadow: none; }
+.menu-container {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:48px; /* ↓ 살짝 압축 */
+}
 
-    /* Secure Delivery (Interactive Pubkey) */
-    .secure-channel { text-align: center; border-top: 1px dashed var(--line); padding-top: var(--s-4); }
-    .pubkey-label { color: var(--accent); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
-    .pubkey {
-      display: inline-block; margin-top: 8px; font-size: var(--pubkey-size);
-      color: var(--fg-dim); padding: 10px 16px; background: rgba(0,0,0,0.5);
-      border: 1px solid var(--line); transition: all 0.2s ease;
-      position: relative; overflow: hidden;
-    }
-    .pubkey:hover {
-      color: var(--accent); border-color: var(--accent);
-      background: rgba(243, 216, 13, 0.05); cursor: copy;
-    }
-    .pubkey:active { transform: scale(0.98); }
+.menu-track {
+  background:var(--panel-bg);
+  border:2px solid var(--line);
+  padding:22px 24px; /* ↓ 압축 */
+  display:grid;
+  row-gap:28px;
+}
 
-    /* Footer */
-    .footer { display: flex; justify-content: center; gap: var(--s-3); }
-    .footer a {
-      min-width: 126px; height: 40px; display: inline-flex; align-items: center; justify-content: center;
-      background: var(--brand-red); color: #fff; text-decoration: none; font-weight: 900;
-      font-size: 13px; letter-spacing: 0.13em; box-shadow: 0 0 12px var(--brand-red-glow);
-    }
+.section-title {
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px dotted var(--line);
+  padding-bottom:5px;
+  font-size:var(--section-title-size);
+  color:#fff;
+}
 
-    @media (max-width: 920px) {
-      .menu-container { grid-template-columns: 1fr; gap: 24px; }
-      .brand-title { font-size: 60px; }
-      .pubkey { white-space: normal; word-break: break-all; }
-    }
-  </style>
+.row {
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  font-size:var(--row-size);
+}
+
+.label { color:var(--fg-soft); }
+.fill { border-bottom:1px dotted var(--line-faint); margin:0 8px 3px 0; }
+.value { color:var(--accent); font-weight:700; }
+
+.secure-channel {
+  text-align:center;
+  border-top:1px dashed var(--line);
+  padding-top:14px;
+}
+
+.pubkey {
+  margin-top:8px;
+  font-size:var(--pubkey-size);
+  color:var(--fg-dim);
+  padding:8px 14px;
+  border:1px solid var(--line);
+}
+
+.footer {
+  display:flex;
+  justify-content:center;
+  gap:12px;
+}
+.footer a {
+  min-width:120px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--brand-red);
+  color:#fff;
+  font-weight:900;
+  font-size:13px;
+}
+
+/* 🔥 핵심: 모바일에서도 절대 줄이지 않음 */
+@media (max-width: 920px) {
+  .menu-container { grid-template-columns:1fr; gap:20px; }
+  .brand-title { font-size:80px; } /* 유지 */
+}
+</style>
 </head>
+
 <body>
-  <main class="page">
-    <header class="brand">
-      <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
-      <p class="brand-sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</p>
-    </header>
+<main class="page">
 
-    <div class="routing-title">ROUTING MENU<span class="blink">_</span></div>
+<header class="brand">
+  <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
+  <p class="brand-sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</p>
+</header>
 
-    <section class="menu-container">
-      <div class="menu-track">
-        <div class="section">
-          <div class="section-title"><span>[ TODAY'S INGREDIENTS ]</span><span>SIZE</span></div>
-          <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value highlight" id="cap">LOADING...</span></div>
-          <div class="row"><span class="label">ACTIVE FRANCHISES</span><span class="fill"></span><span class="value highlight" id="chan">--</span></div>
-          <div class="row"><span class="label">MINIMUM ORDER</span><span class="fill"></span><span class="value">3.0M SATS</span></div>
-        </div>
-        <div class="section">
-          <div class="section-title"><span>[ KITCHEN EQUIPMENT ]</span><span>SPEC</span></div>
-          <div class="row"><span class="label">RECIPE BOOK (RAM)</span><span class="fill"></span><span class="value highlight">64GB ECC</span></div>
-          <div class="row"><span class="label">FREEZER (STORAGE)</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
-          <div class="row"><span class="label">BACKUP GEN</span><span class="fill"></span><span class="value">UPS</span></div>
-        </div>
-      </div>
+<div class="routing-title">ROUTING MENU_</div>
 
-      <div class="menu-track">
-        <div class="section">
-          <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEE</span></div>
-          <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">MILD</span></div>
-          <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">CLASSIC</span></div>
-          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value highlight">SPICY</span></div>
-        </div>
-        <div class="section">
-          <div class="section-title"><span>[ CONTACT / INFO ]</span><span>COMMS</span></div>
-          <div class="row"><span class="label">DIRECT LINE</span><span class="fill"></span><span class="value">PROTON</span></div>
-          <div class="row"><span class="label">STORE HOURS</span><span class="fill"></span><span class="value">99.9%</span></div>
-          <div class="row"><span class="label">FEE POLICY</span><span class="fill"></span><span class="value">DYNAMIC</span></div>
-        </div>
-      </div>
-    </section>
+<section class="menu-container">
 
-    <section class="secure-channel">
-      <p class="pubkey-label">>> SECURE DELIVERY ROUTE (PUBKEY) <<</p>
-      <div class="pubkey" id="pubkeyDisplay" title="Click to copy">
-        033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
-      </div>
-    </section>
+<div class="menu-track">
+  <div class="section-title"><span>[ TODAY'S INGREDIENTS ]</span><span>SIZE</span></div>
+  <div class="row"><span class="label">DEEP FRYER CAPACITY</span><span class="fill"></span><span class="value">--</span></div>
+  <div class="row"><span class="label">ACTIVE FRANCHISES</span><span class="fill"></span><span class="value">--</span></div>
+</div>
 
-    <footer class="footer">
-      <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">AMBOSS</a>
-      <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank">MEMPOOL</a>
-    </footer>
-  </main>
+<div class="menu-track">
+  <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEE</span></div>
+  <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">CLASSIC</span></div>
+</div>
 
-  <script>
-    const PK = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
+</section>
 
-    // 1. Node Stats Update
-    async function updateNodeStats() {
-      const capEl = document.getElementById('cap');
-      const chanEl = document.getElementById('chan');
+<section class="secure-channel">
+  <div class="pubkey">033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28</div>
+</section>
 
-      try {
-        const res = await fetch(`https://mempool.space/api/v1/lightning/nodes/${PK}`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        
-        const data = await res.json();
+<footer class="footer">
+  <a href="#">AMBOSS</a>
+  <a href="#">MEMPOOL</a>
+</footer>
 
-        // 데이터 유무를 더 유연하게 체크 (문자열 포함)
-        const capSats = data.capacity;
-        const channels = data.active_channel_count;
-
-        capEl.textContent = (capSats != null) 
-          ? `${(Number(capSats) / 100000000).toFixed(2)} BTC` 
-          : 'OFFLINE';
-          
-        chanEl.textContent = (channels != null) 
-          ? Number(channels).toLocaleString() 
-          : 'OFFLINE';
-
-      } catch (e) {
-        console.error("Fetch Error:", e);
-        capEl.textContent = 'OFFLINE';
-        chanEl.textContent = 'OFFLINE';
-      }
-    }
-
-    // 2. Click to Copy Function
-    const pubkeyDiv = document.getElementById('pubkeyDisplay');
-    pubkeyDiv.addEventListener('click', () => {
-      navigator.clipboard.writeText(PK).then(() => {
-        const originalText = pubkeyDiv.textContent;
-        pubkeyDiv.textContent = 'COPIED TO CLIPPING BOARD';
-        pubkeyDiv.style.color = 'var(--accent)';
-        
-        setTimeout(() => {
-          pubkeyDiv.textContent = originalText;
-          pubkeyDiv.style.color = '';
-        }, 1500);
-      });
-    });
-
-    updateNodeStats();
-  </script>
+</main>
 </body>
 </html>
