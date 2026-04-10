@@ -319,7 +319,7 @@
       font-size: 10px;
       letter-spacing: 0.05em;
       color: var(--terminal-green-dim);
-      text-transform: uppercase;
+      text-transform: none;
       text-shadow: 0 0 6px var(--terminal-glow);
     }
 
@@ -336,8 +336,9 @@
     .ticker-text {
       display: inline-flex;
       align-items: baseline;
-      gap: 1.2ch;
-      width: 44ch;
+      justify-content: flex-start;
+      gap: 2ch;
+      width: 34ch;
       max-width: 100%;
       min-width: 0;
       text-align: left;
@@ -345,17 +346,22 @@
     }
 
     .ticker-alias {
-      flex: 1 1 auto;
-      min-width: 0;
+      flex: 0 0 15ch;
+      width: 15ch;
+      min-width: 15ch;
+      max-width: 15ch;
       overflow: hidden;
-      text-overflow: ellipsis;
       white-space: nowrap;
+      text-align: left;
     }
 
     .ticker-capacity {
-      flex: 0 0 auto;
+      flex: 0 0 15ch;
+      width: 15ch;
+      min-width: 15ch;
+      max-width: 15ch;
       white-space: nowrap;
-      text-align: right;
+      text-align: left;
     }
 
     @keyframes live-pulse {
@@ -441,6 +447,15 @@
 
       .ticker-text {
         width: 100%;
+        gap: 1.2ch;
+      }
+
+      .ticker-alias,
+      .ticker-capacity {
+        width: auto;
+        min-width: 0;
+        max-width: none;
+        flex: 1 1 auto;
       }
     }
   </style>
@@ -494,7 +509,7 @@
           <div class="row">
             <span class="label">LNURL</span><span class="fill"></span>
             <span class="value">
-              <a href="#" class="clickable" id="lnurlValue" title="Click to copy LNURL">ORDER@OKSU.SU</a>
+              <a href="#" class="clickable" id="lnurlValue" title="Click to copy LNURL">order@oksu.su</a>
             </span>
           </div>
           <div class="row">
@@ -521,8 +536,8 @@
             <div class="status-strip">
               <span class="live-dot"></span>
               <div class="ticker-text" id="tickerText">
-                <span class="ticker-alias">BOOTING ROUTING TABLE...</span>
-                <span class="ticker-capacity"></span>
+                <span class="ticker-alias">booting route...</span>
+                <span class="ticker-capacity">loading sats</span>
               </div>
             </div>
           </div>
@@ -539,11 +554,12 @@
   <script>
     const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
     const EMAIL = 'lospolloshermanosltd@proton.me';
-    const LNURL = 'ORDER@OKSU.SU';
+    const LNURL = 'order@oksu.su';
     const API_BASE = 'https://mempool.space/api/v1/lightning';
     const NODE_REFRESH_MS = 60_000;
     const PEER_REFRESH_MS = 120_000;
     const FLOW_REFRESH_MS = 2_400;
+    const TICKER_ALIAS_VISIBLE = 12;
 
     let tickerRotateInterval = null;
     let waitingInterval = null;
@@ -556,13 +572,19 @@
     }
 
     function formatSats(value) {
-      return `${Math.round(Number(value || 0)).toLocaleString('en-US')} SATS`;
+      return `${Math.round(Number(value || 0)).toLocaleString('en-US')} sats`;
     }
 
     function shortKey(key) {
-      if (!key || typeof key !== 'string') return 'UNKNOWN';
+      if (!key || typeof key !== 'string') return 'unknown';
       if (key.length <= 14) return key;
       return `${key.slice(0, 8)}...${key.slice(-4)}`;
+    }
+
+    function truncateAlias(alias) {
+      const raw = String(alias || 'unknown').trim();
+      if (raw.length <= 15) return raw;
+      return `${raw.slice(0, TICKER_ALIAS_VISIBLE)}...`;
     }
 
     function setTickerText(aliasText, capacityText = '') {
@@ -584,12 +606,12 @@
       }
     }
 
-    function startWaitingTicker(base = 'LINK WAITING') {
+    function startWaitingTicker(base = 'link waiting') {
       stopTickerRotation();
       stopWaitingTicker();
 
       let dots = 1;
-      setTickerText(`${base}.`, '');
+      setTickerText(`${base}${'.'.repeat(dots)}`, '');
 
       waitingInterval = setInterval(() => {
         dots = dots === 3 ? 1 : dots + 1;
@@ -599,7 +621,7 @@
 
     function rotateTicker(lines, interval = 3200) {
       if (!Array.isArray(lines) || !lines.length) {
-        startWaitingTicker('NO LIVE LINKS');
+        startWaitingTicker('no live links');
         return;
       }
 
@@ -648,7 +670,6 @@
         const data = await fetchJson(url);
 
         const capacity = Number(data?.capacity || 0);
-
         const channelCount =
           data?.opened_channel_count ??
           data?.active_channel_count ??
@@ -669,15 +690,13 @@
     function buildPeerTickerLine(channel) {
       const peerKey = channel?.node?.public_key;
       const aliasRaw = channel?.node?.alias;
-      const alias = typeof aliasRaw === 'string' && aliasRaw.trim()
-        ? aliasRaw.trim().toUpperCase()
-        : shortKey(peerKey).toUpperCase();
-
-      const cap = formatSats(channel?.capacity);
+      const aliasBase = typeof aliasRaw === 'string' && aliasRaw.trim()
+        ? aliasRaw.trim()
+        : shortKey(peerKey);
 
       return {
-        alias,
-        capacity: cap
+        alias: truncateAlias(aliasBase),
+        capacity: formatSats(channel?.capacity)
       };
     }
 
@@ -710,7 +729,7 @@
         return list;
       } catch (err) {
         console.error('loadPeerTicker failed:', err);
-        startWaitingTicker('LINK WAITING');
+        startWaitingTicker('link waiting');
         return [];
       }
     }
@@ -793,7 +812,7 @@
       randomizeFlow();
       flowInterval = setInterval(randomizeFlow, FLOW_REFRESH_MS);
 
-      setTickerText('QUERYING ACTIVE PEERS...', '');
+      setTickerText('querying pee...', 'loading sats');
 
       await refreshAll();
 
