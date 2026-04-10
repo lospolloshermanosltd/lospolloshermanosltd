@@ -62,14 +62,34 @@
       position: relative;
       overflow-x: hidden;
       overflow-y: auto;
-      padding: 20px 0 28px;
+      padding: 54px 0 42px;
       background:
-        radial-gradient(circle at top, rgba(243,216,13,0.035), transparent 36%),
+        radial-gradient(circle at top, rgba(243,216,13,0.04), transparent 34%),
+        linear-gradient(to bottom, rgba(255,255,255,0.01), rgba(0,0,0,0.03)),
         var(--bg);
     }
 
-    /* subtle CRT scanlines */
+    /* CRT scanlines */
     body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9998;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.010) 0px,
+          rgba(255,255,255,0.010) 1px,
+          rgba(0,0,0,0.11) 2px,
+          rgba(0,0,0,0.11) 3px
+        );
+      opacity: 0.42;
+      mix-blend-mode: soft-light;
+    }
+
+    /* very subtle moving CRT sweep */
+    body::after {
       content: "";
       position: fixed;
       inset: 0;
@@ -78,13 +98,20 @@
       background:
         linear-gradient(
           to bottom,
-          rgba(0, 0, 0, 0.00) 0px,
-          rgba(0, 0, 0, 0.055) 1px,
-          rgba(0, 0, 0, 0.00) 2px
+          rgba(255,255,255,0) 0%,
+          rgba(255,255,255,0.03) 45%,
+          rgba(255,255,255,0.06) 50%,
+          rgba(255,255,255,0.03) 55%,
+          rgba(255,255,255,0) 100%
         );
-      background-size: 100% 3px;
-      opacity: 0.32;
-      mix-blend-mode: normal;
+      opacity: 0.18;
+      transform: translateY(-100%);
+      animation: crt-sweep 8s linear infinite;
+    }
+
+    @keyframes crt-sweep {
+      0%   { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
     }
 
     .viewport {
@@ -113,7 +140,7 @@
 
     .brand {
       text-align: center;
-      margin-bottom: 14px;
+      margin-bottom: 18px;
       width: 100%;
     }
 
@@ -123,7 +150,10 @@
       color: var(--accent);
       margin: 0;
       line-height: 1;
-      text-shadow: 2px 2px 0 rgba(0,0,0,0.8), 0 0 15px var(--accent-glow);
+      text-shadow:
+        2px 2px 0 rgba(0,0,0,0.8),
+        0 0 15px var(--accent-glow),
+        0 0 32px rgba(243,216,13,0.12);
       font-weight: 400;
       letter-spacing: -1px;
       white-space: nowrap;
@@ -133,7 +163,7 @@
       width: 100%;
       display: flex;
       justify-content: center;
-      margin-bottom: 18px;
+      margin-bottom: 22px;
       min-height: 18px;
       overflow: hidden;
     }
@@ -190,7 +220,9 @@
       border: 3px solid var(--line);
       background: #0a0a0a;
       padding: 26px 28px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.6);
+      box-shadow:
+        0 0 25px rgba(0,0,0,0.6),
+        0 0 12px rgba(31,78,121,0.07);
       border-radius: 2px;
       min-height: 100%;
     }
@@ -272,7 +304,7 @@
 
     .secure-channel-container {
       grid-column: 1 / -1;
-      margin-top: 24px;
+      margin-top: 26px;
       text-align: center;
       width: 100%;
     }
@@ -342,7 +374,7 @@
       align-items: stretch;
       width: auto;
       max-width: 100%;
-      margin-top: 2px;
+      margin-top: 4px;
     }
 
     .pubkey-block {
@@ -351,7 +383,9 @@
       font-family: 'IBM Plex Mono', monospace;
       border: 1px solid var(--line);
       background: rgba(0,0,0,0.52);
-      box-shadow: 0 0 12px rgba(31, 78, 121, 0.2);
+      box-shadow:
+        0 0 12px rgba(31, 78, 121, 0.2),
+        0 0 14px rgba(243,216,13,0.06);
       overflow: hidden;
       animation: node-pulse 2.5s infinite;
       width: min(100%, calc(66ch + 24px));
@@ -394,7 +428,7 @@
       align-items: center;
       justify-content: center;
       gap: 9px;
-      margin-top: 8px;
+      margin-top: 10px;
       min-height: 18px;
       font-size: 10px;
       letter-spacing: 0.05em;
@@ -463,7 +497,7 @@
     }
 
     .footer {
-      margin-top: 24px;
+      margin-top: 28px;
       display: flex;
       justify-content: center;
       gap: 16px;
@@ -505,11 +539,10 @@
 
     .clickable { cursor: pointer; }
 
-    /* no layout-breaking mobile reflow */
     @media (max-width: 1100px) {
       body {
-        padding-top: 14px;
-        padding-bottom: 22px;
+        padding-top: 28px;
+        padding-bottom: 28px;
       }
     }
   </style>
@@ -637,15 +670,14 @@
       const shell = document.getElementById('scaleShell');
       const page = document.getElementById('pageRoot');
       const viewportWidth = window.innerWidth;
-      const horizontalPadding = 24;
+      const horizontalPadding = viewportWidth <= 768 ? 20 : 32;
       const designWidth = 1080;
 
       const scale = Math.min(1, (viewportWidth - horizontalPadding) / designWidth);
       document.documentElement.style.setProperty('--page-scale', String(scale));
 
       requestAnimationFrame(() => {
-        const scaledHeight = page.offsetHeight * scale;
-        shell.style.height = `${scaledHeight}px`;
+        shell.style.height = `${Math.ceil(page.offsetHeight * scale)}px`;
       });
     }
 
@@ -880,25 +912,23 @@
           await navigator.clipboard.writeText(sourceText);
           el.textContent = copiedText;
           el.style.color = 'var(--accent)';
+          updateScale();
 
           setTimeout(() => {
             el.textContent = original;
             el.style.color = '';
             updateScale();
           }, 1400);
-
-          updateScale();
         } catch (err) {
           console.error(`${id} copy failed:`, err);
           el.textContent = '[ COPY FAILED ]';
+          updateScale();
 
           setTimeout(() => {
             el.textContent = original;
             el.style.color = '';
             updateScale();
           }, 1400);
-
-          updateScale();
         }
       });
     }
@@ -913,27 +943,25 @@
           el.textContent = '[ PUBKEY COPIED ]';
           el.classList.add('copied');
           el.classList.remove('copy-failed');
+          updateScale();
 
           setTimeout(() => {
             el.textContent = original;
             el.classList.remove('copied');
             updateScale();
           }, 1400);
-
-          updateScale();
         } catch (err) {
           console.error('pubkey copy failed:', err);
           el.textContent = '[ COPY FAILED ]';
           el.classList.add('copy-failed');
           el.classList.remove('copied');
+          updateScale();
 
           setTimeout(() => {
             el.textContent = original;
             el.classList.remove('copy-failed');
             updateScale();
           }, 1400);
-
-          updateScale();
         }
       });
     }
@@ -975,10 +1003,12 @@
       }, MARKET_REFRESH_MS);
 
       window.addEventListener('resize', updateScale);
+      window.addEventListener('orientationchange', () => setTimeout(updateScale, 120));
       window.addEventListener('load', updateScale);
       document.fonts?.ready?.then(updateScale).catch(() => {});
-      setTimeout(updateScale, 120);
-      setTimeout(updateScale, 500);
+      setTimeout(updateScale, 100);
+      setTimeout(updateScale, 400);
+      setTimeout(updateScale, 900);
     }
 
     init();
