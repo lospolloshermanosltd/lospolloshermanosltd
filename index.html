@@ -25,15 +25,21 @@
       --line: #1F4E79;
       --accent: #F3D80D;
       --brand-red: #DA291C;
-      --accent-glow: rgba(243, 216, 13, 0.30);
-      --line-glow: rgba(31, 78, 121, 0.40);
+      --accent-glow: rgba(243, 216, 13, 0.24);
+      --line-glow: rgba(31, 78, 121, 0.28);
 
       --terminal-green: #7CFC00;
-      --terminal-green-dim: rgba(124, 252, 0, 0.84);
-      --terminal-glow: rgba(124, 252, 0, 0.28);
+      --terminal-green-dim: rgba(124, 252, 0, 0.82);
+      --terminal-glow: rgba(124, 252, 0, 0.22);
 
       --flow-duration: 2.8s;
       --packet-duration: 3.9s;
+
+      --space-1: 10px;
+      --space-2: 16px;
+      --space-3: 24px;
+      --space-4: 32px;
+      --space-5: 40px;
     }
 
     * { box-sizing: border-box; }
@@ -62,7 +68,7 @@
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
-      padding: 58px 22px 74px;
+      padding: 56px 22px 72px;
     }
 
     body::before {
@@ -74,20 +80,20 @@
       background:
         repeating-linear-gradient(
           to bottom,
-          rgba(255,255,255,0.026) 0px,
-          rgba(255,255,255,0.026) 1px,
-          rgba(0,0,0,0.22) 2px,
-          rgba(0,0,0,0.22) 4px
+          rgba(255,255,255,0.02) 0px,
+          rgba(255,255,255,0.02) 1px,
+          rgba(0,0,0,0.20) 2px,
+          rgba(0,0,0,0.20) 4px
         ),
         linear-gradient(
           to bottom,
-          rgba(31,78,121,0.05),
+          rgba(31,78,121,0.04),
           rgba(0,0,0,0.02) 24%,
-          rgba(243,216,13,0.03) 58%,
+          rgba(243,216,13,0.025) 58%,
           rgba(0,0,0,0.03) 100%
         );
       mix-blend-mode: screen;
-      opacity: 0.5;
+      opacity: 0.42;
       animation: crt-drift 10s linear infinite;
     }
 
@@ -115,12 +121,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 6px;
+      padding-top: 4px;
     }
 
     .brand {
       text-align: center;
-      margin-bottom: 16px;
+      margin-bottom: var(--space-2);
       width: 100%;
     }
 
@@ -132,7 +138,7 @@
       line-height: 1;
       text-shadow:
         2px 2px 0 rgba(0,0,0,0.82),
-        0 0 15px var(--accent-glow);
+        0 0 13px var(--accent-glow);
       font-weight: 400;
       letter-spacing: -1px;
       white-space: nowrap;
@@ -143,7 +149,7 @@
       width: 100%;
       display: flex;
       justify-content: center;
-      margin-bottom: 28px;
+      margin-bottom: var(--space-3);
       min-height: 18px;
       overflow: hidden;
     }
@@ -158,13 +164,13 @@
       color: rgba(230,230,230,0.56);
       font-size: 11px;
       letter-spacing: 0.03em;
-      text-shadow: 0 0 6px rgba(243, 216, 13, 0.08);
+      text-shadow: 0 0 5px rgba(243, 216, 13, 0.06);
       white-space: nowrap;
     }
 
     .market-prompt {
       color: var(--accent);
-      text-shadow: 0 0 6px var(--accent-glow);
+      text-shadow: 0 0 5px var(--accent-glow);
       animation: market-pulse 1.95s ease-in-out infinite;
       flex: 0 0 auto;
     }
@@ -178,7 +184,7 @@
     .market-item strong {
       color: var(--accent);
       font-weight: 700;
-      text-shadow: 0 0 5px rgba(243,216,13,0.14);
+      text-shadow: 0 0 4px rgba(243,216,13,0.12);
     }
 
     @keyframes market-pulse {
@@ -198,16 +204,16 @@
     .menu-track {
       border: 3px solid var(--line);
       background: rgba(10, 10, 10, 0.96);
-      padding: 26px 28px;
+      padding: 24px 28px;
       box-shadow:
-        0 0 25px rgba(0,0,0,0.6),
-        0 0 18px rgba(31,78,121,0.08);
+        0 0 22px rgba(0,0,0,0.58),
+        0 0 14px rgba(31,78,121,0.06);
       border-radius: 2px;
       min-height: 100%;
     }
 
     .section {
-      margin-bottom: 34px;
+      margin-bottom: var(--space-4);
     }
 
     .section:last-child {
@@ -232,9 +238,9 @@
       display: flex;
       align-items: baseline;
       gap: 10px;
-      margin-bottom: 9px;
+      margin-bottom: 10px;
       font-size: 14px;
-      line-height: 1.2;
+      line-height: 1.28;
       min-width: 0;
     }
 
@@ -252,14 +258,13 @@
     .row .fill {
       flex: 1 1 auto;
       min-width: 12px;
-      border-bottom: 1px dotted rgba(31, 78, 121, 0.34);
+      border-bottom: 1px dotted rgba(31, 78, 121, 0.30);
       transform: translateY(-0.16em);
     }
 
     .row .value {
-      color: var(--accent);
-      font-weight: 700;
-      text-shadow: 0 0 4px var(--accent-glow);
+      color: var(--fg-soft);
+      font-weight: 400;
       white-space: nowrap;
       flex: 0 0 auto;
       text-align: right;
@@ -271,21 +276,17 @@
       padding: 0;
       font-weight: 700;
       text-shadow:
-        0 0 4px rgba(243, 216, 13, 0.12),
-        0 0 8px rgba(243, 216, 13, 0.04);
+        0 0 4px rgba(243, 216, 13, 0.10),
+        0 0 7px rgba(243, 216, 13, 0.03);
     }
 
     .menu-track:last-child .row .value {
       font-weight: 400;
     }
 
-    .menu-track:last-child .value.highlight {
-      font-weight: 700;
-    }
-
     .secure-channel-container {
       grid-column: 1 / -1;
-      margin-top: 42px;
+      margin-top: var(--space-4);
       text-align: center;
       width: 100%;
       display: flex;
@@ -294,7 +295,7 @@
 
     .secure-channel {
       position: relative;
-      padding-top: 20px;
+      padding-top: 16px;
       width: 100%;
       overflow: hidden;
     }
@@ -309,15 +310,15 @@
       background: linear-gradient(90deg, var(--line) 50%, transparent 50%);
       background-size: 15px 1px;
       animation: routing-flow var(--flow-duration) linear infinite;
-      opacity: 0.92;
+      opacity: 0.76;
     }
 
     .packet-layer {
       position: absolute;
-      top: -4px;
+      top: -3px;
       left: 0;
       width: 100%;
-      height: 10px;
+      height: 9px;
       pointer-events: none;
       overflow: hidden;
     }
@@ -331,7 +332,7 @@
       margin-top: -1.5px;
       border-radius: 50%;
       background: var(--accent);
-      box-shadow: 0 0 5px var(--accent-glow), 0 0 10px var(--accent-glow);
+      box-shadow: 0 0 4px var(--accent-glow), 0 0 8px var(--accent-glow);
       opacity: 0;
       animation: packet-travel var(--packet-duration) linear infinite;
     }
@@ -345,9 +346,9 @@
 
     @keyframes packet-travel {
       0%   { left: -28px; opacity: 0; transform: scale(0.85); }
-      10%  { opacity: 0.78; transform: scale(1); }
-      50%  { opacity: 0.92; transform: scale(1); }
-      88%  { opacity: 0.78; transform: scale(1); }
+      10%  { opacity: 0.70; transform: scale(1); }
+      50%  { opacity: 0.82; transform: scale(1); }
+      88%  { opacity: 0.70; transform: scale(1); }
       100% { left: calc(100% + 28px); opacity: 0; transform: scale(0.85); }
     }
 
@@ -367,11 +368,11 @@
       align-items: center;
       justify-content: center;
       font-family: 'IBM Plex Mono', monospace;
-      border: 1px solid rgba(31, 78, 121, 0.88);
-      background: rgba(0,0,0,0.48);
+      border: 1px solid rgba(31, 78, 121, 0.72);
+      background: rgba(0,0,0,0.34);
       box-shadow:
-        0 0 10px rgba(31, 78, 121, 0.16),
-        0 0 10px rgba(243,216,13,0.04);
+        0 0 8px rgba(31, 78, 121, 0.12),
+        0 0 7px rgba(243,216,13,0.025);
       overflow: hidden;
       width: fit-content;
       max-width: min(100%, 78ch);
@@ -380,16 +381,17 @@
 
     .pubkey {
       font-size: 11px;
-      line-height: 1.25;
-      color: rgba(230, 230, 230, 0.64);
-      padding: 9px 18px;
-      white-space: normal;
-      overflow-wrap: anywhere;
+      line-height: 1.2;
+      color: rgba(230, 230, 230, 0.62);
+      padding: 8px 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: clip;
       transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
       cursor: pointer;
       user-select: none;
       text-align: center;
-      min-height: 36px;
+      min-height: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -398,13 +400,13 @@
     .pubkey.copied,
     .pubkey.copy-failed {
       color: var(--accent);
-      text-shadow: 0 0 6px var(--accent-glow);
+      text-shadow: 0 0 5px var(--accent-glow);
     }
 
     .pubkey:hover {
       color: var(--accent);
-      background: rgba(243, 216, 13, 0.04);
-      text-shadow: 0 0 6px var(--accent-glow);
+      background: rgba(243, 216, 13, 0.03);
+      text-shadow: 0 0 5px var(--accent-glow);
     }
 
     .status-strip {
@@ -413,13 +415,13 @@
       align-items: center;
       justify-content: center;
       gap: 9px;
-      margin-top: 11px;
+      margin-top: 10px;
       min-height: 18px;
       font-size: 10px;
       letter-spacing: 0.05em;
       color: var(--terminal-green-dim);
       text-transform: none;
-      text-shadow: 0 0 6px var(--terminal-glow);
+      text-shadow: 0 0 5px var(--terminal-glow);
       text-align: center;
     }
 
@@ -430,8 +432,8 @@
       border-radius: 50%;
       background: var(--terminal-green);
       box-shadow:
-        0 0 6px rgba(124,252,0,0.55),
-        0 0 12px rgba(124,252,0,0.18);
+        0 0 5px rgba(124,252,0,0.48),
+        0 0 9px rgba(124,252,0,0.14);
       animation: live-pulse 1.7s ease-in-out infinite;
     }
 
@@ -474,7 +476,7 @@
     }
 
     .footer {
-      margin-top: 36px;
+      margin-top: var(--space-4);
       display: flex;
       justify-content: center;
       gap: 16px;
@@ -490,14 +492,14 @@
       font-weight: 900;
       letter-spacing: 0.14em;
       border: 1px solid rgba(218, 41, 28, 0.85);
-      box-shadow: 0 0 10px rgba(218,41,28,0.18);
+      box-shadow: 0 0 9px rgba(218,41,28,0.16);
       text-transform: uppercase;
       transition: all 0.2s ease;
     }
 
     .footer a:hover {
       background-color: #b51c10;
-      box-shadow: 0 0 16px rgba(218,41,28,0.35);
+      box-shadow: 0 0 14px rgba(218,41,28,0.28);
     }
 
     .value a {
@@ -521,7 +523,7 @@
       }
 
       body::before {
-        opacity: 0.48;
+        opacity: 0.44;
       }
 
       .page {
@@ -549,7 +551,7 @@
       }
 
       .market-strip {
-        margin-bottom: 16px;
+        margin-bottom: 18px;
       }
 
       .market-line {
@@ -564,10 +566,11 @@
 
       .row {
         font-size: 13px;
+        line-height: 1.3;
       }
 
       .secure-channel-container {
-        margin-top: 26px;
+        margin-top: 24px;
       }
 
       .pubkey-block {
@@ -576,8 +579,12 @@
       }
 
       .pubkey {
-        font-size: 10px;
-        padding: 8px 10px;
+        font-size: 8.15px;
+        letter-spacing: -0.02em;
+        padding: 8px 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: clip;
       }
 
       .ticker-text {
@@ -635,6 +642,12 @@
         white-space: nowrap;
       }
 
+      .pubkey {
+        font-size: 7.2px;
+        letter-spacing: -0.03em;
+        padding: 8px 4px;
+      }
+
       .footer a {
         min-width: 130px;
         text-align: center;
@@ -662,17 +675,17 @@
         <div class="section">
           <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
           <div class="row"><span class="label">CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">Loading</span></div>
-          <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value highlight" id="channelsValue">Loading</span></div>
+          <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value" id="channelsValue">Loading</span></div>
           <div class="row"><span class="label">MIN CHANNEL</span><span class="fill"></span><span class="value">3,000,000 sats</span></div>
           <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value">Auto</span></div>
         </div>
 
         <div class="section">
           <div class="section-title"><span>[ HARDWARE ]</span><span>SPEC</span></div>
-          <div class="row"><span class="label">RAM</span><span class="fill"></span><span class="value highlight">64GB</span></div>
-          <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
+          <div class="row"><span class="label">RAM</span><span class="fill"></span><span class="value">64GB</span></div>
+          <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value">4TB NVMe</span></div>
           <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS Backed</span></div>
-          <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value">99.9%</span></div>
+          <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value highlight">99.9%</span></div>
         </div>
       </div>
 
