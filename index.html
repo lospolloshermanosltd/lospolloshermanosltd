@@ -26,6 +26,7 @@
       --accent: #F3D80D;
       --brand-red: #DA291C;
       --accent-glow: rgba(243, 216, 13, 0.3);
+      --accent-glow-soft: rgba(243, 216, 13, 0.12);
       --line-glow: rgba(31, 78, 121, 0.4);
 
       --terminal-green: #7CFC00;
@@ -54,20 +55,26 @@
       overflow-x: hidden;
     }
 
+    html {
+      overflow-y: hidden;
+    }
+
     body {
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
       min-height: 100vh;
-      padding: 20px 22px 28px;
+      padding: 20px 22px 18px;
+      overflow: hidden;
     }
 
     .page {
-      width: min(100%, 1080px);
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 0 auto;
     }
 
     .brand {
@@ -85,7 +92,6 @@
       text-shadow: 2px 2px 0 rgba(0,0,0,0.8), 0 0 15px var(--accent-glow);
       font-weight: 400;
       letter-spacing: -1px;
-      overflow-wrap: anywhere;
     }
 
     .market-strip {
@@ -94,15 +100,15 @@
       justify-content: center;
       margin-bottom: 18px;
       min-height: 18px;
-      padding-inline: 8px;
+      padding-inline: 6px;
     }
 
     .market-line {
       display: inline-flex;
       align-items: baseline;
-      justify-content: center;
       gap: 3ch;
       max-width: 100%;
+      min-width: 0;
       color: var(--fg-dim);
       font-size: 11px;
       letter-spacing: 0.03em;
@@ -172,49 +178,6 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      gap: 12px;
-    }
-
-    .status-stats {
-      display: grid;
-      grid-template-columns: 1.35fr 0.85fr;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .status-card {
-      border: 1px solid rgba(243, 216, 13, 0.32);
-      background: linear-gradient(180deg, rgba(243, 216, 13, 0.09), rgba(243, 216, 13, 0.03));
-      box-shadow:
-        inset 0 0 0 1px rgba(243, 216, 13, 0.05),
-        0 0 14px rgba(243, 216, 13, 0.08);
-      padding: 12px 14px 11px;
-      min-width: 0;
-    }
-
-    .status-card-label {
-      display: block;
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(230, 230, 230, 0.62);
-      margin-bottom: 7px;
-    }
-
-    .status-card-value {
-      display: block;
-      color: var(--accent);
-      font-weight: 700;
-      line-height: 1.05;
-      text-shadow: 0 0 8px rgba(243, 216, 13, 0.18);
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
-
-    .status-card.capacity .status-card-value,
-    .status-card.channels .status-card-value {
-      font-size: 30px;
-      letter-spacing: -0.03em;
     }
 
     .row {
@@ -224,6 +187,7 @@
       margin-bottom: 9px;
       font-size: 14px;
       line-height: 1.2;
+      min-width: 0;
       width: 100%;
     }
 
@@ -262,6 +226,34 @@
       text-shadow: none;
       display: inline-block;
       max-width: 100%;
+    }
+
+    /* subtle hierarchy only */
+    .row.capacity-row {
+      margin-bottom: 10px;
+    }
+
+    .row.capacity-row .label {
+      letter-spacing: 0.04em;
+    }
+
+    .row.capacity-row .fill {
+      border-bottom-color: rgba(31, 78, 121, 0.5);
+    }
+
+    .row.capacity-row .value.highlight {
+      padding: 1px 10px 2px;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      box-shadow:
+        0 0 0 1px rgba(243,216,13,0.16),
+        0 0 12px var(--accent-glow-soft);
+    }
+
+    .row.channels-row .value.highlight {
+      padding: 0 7px;
+      box-shadow: 0 0 0 1px rgba(243,216,13,0.08);
     }
 
     .menu-track:last-child .row .value {
@@ -421,6 +413,7 @@
       gap: 2ch;
       width: 32ch;
       max-width: 100%;
+      min-width: 0;
       text-align: left;
       font-variant-ligatures: none;
     }
@@ -498,18 +491,22 @@
       color: #fff;
     }
 
-    .clickable {
-      cursor: pointer;
-    }
+    .clickable { cursor: pointer; }
 
     @media (max-width: 950px) {
+      html {
+        overflow-y: auto;
+      }
+
       body {
         display: block;
+        min-height: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
         padding: 18px 14px 28px;
       }
 
       .page {
-        width: 100%;
         max-width: 680px;
       }
 
@@ -531,7 +528,7 @@
         flex-wrap: wrap;
         justify-content: center;
         row-gap: 6px;
-        column-gap: 1.8ch;
+        column-gap: 1.6ch;
         white-space: normal;
         text-align: center;
       }
@@ -543,43 +540,27 @@
       .section-title {
         font-size: 13px;
         flex-wrap: wrap;
-      }
-
-      .status-stats {
-        grid-template-columns: 1fr;
-      }
-
-      .status-card.capacity .status-card-value,
-      .status-card.channels .status-card-value {
-        font-size: 25px;
+        gap: 12px;
       }
 
       .row {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 6px;
-        margin-bottom: 14px;
-      }
-
-      .row .fill {
-        display: none;
+        gap: 8px;
       }
 
       .row .label {
-        white-space: normal;
+        white-space: nowrap;
       }
 
       .row .value {
         white-space: normal;
         text-align: right;
-        justify-self: end;
-        max-width: 100%;
         overflow-wrap: anywhere;
         word-break: break-word;
       }
 
-      .value.highlight {
-        padding: 2px 6px;
+      .row.capacity-row .value.highlight {
+        font-size: 15px;
+        padding: 2px 8px;
       }
 
       .pubkey-block {
@@ -615,12 +596,12 @@
       }
 
       .footer a {
-        width: 100%;
+        min-width: 160px;
         text-align: center;
       }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 560px) {
       body {
         padding: 14px 10px 24px;
       }
@@ -643,16 +624,37 @@
       }
 
       .row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 6px;
+        margin-bottom: 14px;
         font-size: 12px;
       }
 
-      .status-card.capacity .status-card-value,
-      .status-card.channels .status-card-value {
-        font-size: 22px;
+      .row .fill {
+        display: none;
       }
 
-      .status-card-label {
-        font-size: 9px;
+      .row .label {
+        white-space: normal;
+      }
+
+      .row .value {
+        justify-self: end;
+        max-width: 100%;
+      }
+
+      .row.capacity-row .value.highlight {
+        font-size: 14px;
+        padding: 2px 7px;
+      }
+
+      .value.highlight {
+        padding: 2px 6px;
+      }
+
+      .footer a {
+        width: 100%;
       }
     }
   </style>
@@ -676,121 +678,48 @@
       <div class="menu-track">
         <div class="section">
           <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
-
-          <div class="status-stats">
-            <div class="status-card capacity">
-              <span class="status-card-label">Capacity</span>
-              <span class="status-card-value" id="capacityValue">Loading</span>
-            </div>
-
-            <div class="status-card channels">
-              <span class="status-card-label">Channels</span>
-              <span class="status-card-value" id="channelsValue">Loading</span>
-            </div>
-          </div>
-
-          <div class="row">
-            <span class="label">MIN CHANNEL</span>
-            <span class="fill"></span>
-            <span class="value">3,000,000 sats</span>
-          </div>
-
-          <div class="row">
-            <span class="label">REBALANCE</span>
-            <span class="fill"></span>
-            <span class="value">Auto</span>
-          </div>
+          <div class="row capacity-row"><span class="label">CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">Loading</span></div>
+          <div class="row channels-row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value highlight" id="channelsValue">Loading</span></div>
+          <div class="row"><span class="label">MIN CHANNEL</span><span class="fill"></span><span class="value">3,000,000 sats</span></div>
+          <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value">Auto</span></div>
         </div>
 
         <div class="section">
           <div class="section-title"><span>[ HARDWARE ]</span><span>SPEC</span></div>
-
-          <div class="row">
-            <span class="label">RAM</span>
-            <span class="fill"></span>
-            <span class="value highlight">64GB</span>
-          </div>
-
-          <div class="row">
-            <span class="label">STORAGE</span>
-            <span class="fill"></span>
-            <span class="value highlight">4TB NVMe</span>
-          </div>
-
-          <div class="row">
-            <span class="label">POWER</span>
-            <span class="fill"></span>
-            <span class="value">UPS Backed</span>
-          </div>
-
-          <div class="row">
-            <span class="label">UPTIME</span>
-            <span class="fill"></span>
-            <span class="value">99.9%</span>
-          </div>
+          <div class="row"><span class="label">RAM</span><span class="fill"></span><span class="value highlight">64GB</span></div>
+          <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
+          <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS Backed</span></div>
+          <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value">99.9%</span></div>
         </div>
       </div>
 
       <div class="menu-track">
         <div class="section">
           <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEES</span></div>
-
-          <div class="row">
-            <span class="label">OUTBOUND HEAVY</span>
-            <span class="fill"></span>
-            <span class="value">Mild</span>
-          </div>
-
-          <div class="row">
-            <span class="label">BALANCED</span>
-            <span class="fill"></span>
-            <span class="value">Classic</span>
-          </div>
-
-          <div class="row">
-            <span class="label">INBOUND HEAVY</span>
-            <span class="fill"></span>
-            <span class="value">Spicy</span>
-          </div>
-
-          <div class="row">
-            <span class="label">FEE ADJUSTMENT</span>
-            <span class="fill"></span>
-            <span class="value highlight">Dynamic</span>
-          </div>
+          <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">Mild</span></div>
+          <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">Classic</span></div>
+          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">Spicy</span></div>
+          <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value highlight">Dynamic</span></div>
         </div>
 
         <div class="section">
           <div class="section-title"><span>[ CONTACT ]</span><span>LINKS</span></div>
-
           <div class="row">
-            <span class="label">EMAIL</span>
-            <span class="fill"></span>
+            <span class="label">EMAIL</span><span class="fill"></span>
             <span class="value">
               <a href="#" class="clickable" id="emailValue" title="Click to copy email">lospolloshermanosltd@proton.me</a>
             </span>
           </div>
-
+          <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">Offline</span></div>
           <div class="row">
-            <span class="label">NOSTR</span>
-            <span class="fill"></span>
-            <span class="value">Offline</span>
-          </div>
-
-          <div class="row">
-            <span class="label">LNURL</span>
-            <span class="fill"></span>
+            <span class="label">LNURL</span><span class="fill"></span>
             <span class="value">
               <a href="#" class="clickable" id="lnurlValue" title="Click to copy LNURL">order@oksu.su</a>
             </span>
           </div>
-
           <div class="row">
-            <span class="label">TELEGRAM</span>
-            <span class="fill"></span>
-            <span class="value">
-              <a href="https://t.me/lospolloshermanosltd" target="_blank" rel="noopener noreferrer">@lospolloshermanosltd</a>
-            </span>
+            <span class="label">TELEGRAM</span><span class="fill"></span>
+            <span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank" rel="noopener noreferrer">@lospolloshermanosltd</a></span>
           </div>
         </div>
       </div>
@@ -835,9 +764,9 @@
     const MEMPOOL_BASE = 'https://mempool.space/api';
     const LIGHTNING_BASE = 'https://mempool.space/api/v1/lightning';
 
-    const NODE_REFRESH_MS = 60000;
-    const PEER_REFRESH_MS = 120000;
-    const MARKET_REFRESH_MS = 60000;
+    const NODE_REFRESH_MS = 60_000;
+    const PEER_REFRESH_MS = 120_000;
+    const MARKET_REFRESH_MS = 60_000;
 
     let tickerRotateInterval = null;
     let waitingInterval = null;
