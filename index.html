@@ -42,7 +42,7 @@
       --terminal-glow: rgba(124, 252, 0, 0.16);
 
       --flow-duration: 3.2s;
-      --packet-duration: 4.8s;
+      --packet-duration: 5.4s;
 
       --space-1: 10px;
       --space-2: 16px;
@@ -378,7 +378,7 @@
     }
 
     .packet.p2 {
-      animation-delay: 2.0s;
+      animation-delay: 2.15s;
     }
 
     @keyframes routing-flow {
@@ -388,10 +388,10 @@
 
     @keyframes packet-travel {
       0%   { transform: translateX(0) scale(0.82); opacity: 0; }
-      8%   { opacity: 0.18; }
-      16%  { opacity: 0.72; transform: translateX(16vw) scale(1); }
-      50%  { opacity: 0.9; transform: translateX(50vw) scale(1.08); }
-      84%  { opacity: 0.62; transform: translateX(84vw) scale(1); }
+      7%   { opacity: 0.12; }
+      16%  { opacity: 0.68; transform: translateX(15vw) scale(1); }
+      48%  { opacity: 0.88; transform: translateX(48vw) scale(1.08); }
+      78%  { opacity: 0.58; transform: translateX(80vw) scale(1); }
       100% { transform: translateX(100vw) scale(0.86); opacity: 0; }
     }
 
