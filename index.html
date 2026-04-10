@@ -279,7 +279,7 @@
     }
 
     .pubkey {
-      font-size: 14px;
+      font-size: 12px;
       line-height: 1.2;
       color: rgba(230, 230, 230, 0.62);
       padding: 10px 16px;
@@ -338,7 +338,7 @@
       align-items: baseline;
       justify-content: flex-start;
       gap: 2ch;
-      width: 34ch;
+      width: 32ch;
       max-width: 100%;
       min-width: 0;
       text-align: left;
@@ -361,7 +361,7 @@
       min-width: 15ch;
       max-width: 15ch;
       white-space: nowrap;
-      text-align: left;
+      text-align: right;
     }
 
     @keyframes live-pulse {
@@ -536,7 +536,7 @@
             <div class="status-strip">
               <span class="live-dot"></span>
               <div class="ticker-text" id="tickerText">
-                <span class="ticker-alias">booting route...</span>
+                <span class="ticker-alias">booting route</span>
                 <span class="ticker-capacity">loading sats</span>
               </div>
             </div>
@@ -559,7 +559,9 @@
     const NODE_REFRESH_MS = 60_000;
     const PEER_REFRESH_MS = 120_000;
     const FLOW_REFRESH_MS = 2_400;
+
     const TICKER_ALIAS_VISIBLE = 12;
+    const TICKER_ALIAS_SUFFIX = '···';
 
     let tickerRotateInterval = null;
     let waitingInterval = null;
@@ -578,13 +580,13 @@
     function shortKey(key) {
       if (!key || typeof key !== 'string') return 'unknown';
       if (key.length <= 14) return key;
-      return `${key.slice(0, 8)}...${key.slice(-4)}`;
+      return `${key.slice(0, 8)}${TICKER_ALIAS_SUFFIX}`;
     }
 
     function truncateAlias(alias) {
       const raw = String(alias || 'unknown').trim();
       if (raw.length <= 15) return raw;
-      return `${raw.slice(0, TICKER_ALIAS_VISIBLE)}...`;
+      return `${raw.slice(0, TICKER_ALIAS_VISIBLE)}${TICKER_ALIAS_SUFFIX}`;
     }
 
     function setTickerText(aliasText, capacityText = '') {
@@ -812,7 +814,7 @@
       randomizeFlow();
       flowInterval = setInterval(randomizeFlow, FLOW_REFRESH_MS);
 
-      setTickerText('querying pee...', 'loading sats');
+      setTickerText('querying pee', 'loading sats');
 
       await refreshAll();
 
