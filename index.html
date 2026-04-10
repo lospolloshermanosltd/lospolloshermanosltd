@@ -541,17 +541,17 @@
       <div class="menu-track">
         <div class="section">
           <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
-          <div class="row"><span class="label">CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">LOADING</span></div>
-          <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value highlight" id="channelsValue">LOADING</span></div>
-          <div class="row"><span class="label">MIN CHANNEL SIZE</span><span class="fill"></span><span class="value">3M SATS</span></div>
-          <div class="row"><span class="label">REBALANCING</span><span class="fill"></span><span class="value">AUTO</span></div>
+          <div class="row"><span class="label">CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">Loading</span></div>
+          <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value highlight" id="channelsValue">Loading</span></div>
+          <div class="row"><span class="label">MIN CHANNEL</span><span class="fill"></span><span class="value">3,000,000 sats</span></div>
+          <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value">Auto</span></div>
         </div>
 
         <div class="section">
           <div class="section-title"><span>[ HARDWARE ]</span><span>SPEC</span></div>
           <div class="row"><span class="label">RAM</span><span class="fill"></span><span class="value highlight">64GB</span></div>
           <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
-          <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS</span></div>
+          <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS Backed</span></div>
           <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value">99.9%</span></div>
         </div>
       </div>
@@ -559,21 +559,21 @@
       <div class="menu-track">
         <div class="section">
           <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEES</span></div>
-          <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">MILD</span></div>
-          <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">CLASSIC</span></div>
-          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">SPICY</span></div>
-          <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value highlight">DYNAMIC</span></div>
+          <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">Mild</span></div>
+          <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">Classic</span></div>
+          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">Spicy</span></div>
+          <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value highlight">Dynamic</span></div>
         </div>
 
         <div class="section">
-          <div class="section-title"><span>[ INFO ]</span><span>LINKS</span></div>
+          <div class="section-title"><span>[ CONTACT ]</span><span>LINKS</span></div>
           <div class="row">
             <span class="label">EMAIL</span><span class="fill"></span>
             <span class="value">
               <a href="#" class="clickable" id="emailValue" title="Click to copy email">lospolloshermanosltd@proton.me</a>
             </span>
           </div>
-          <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
+          <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">Offline</span></div>
           <div class="row">
             <span class="label">LNURL</span><span class="fill"></span>
             <span class="value">
@@ -636,10 +636,6 @@
     let nodeRefreshInterval = null;
     let peerRefreshInterval = null;
     let marketRefreshInterval = null;
-
-    function formatBTCFromSats(value) {
-      return `${(Number(value || 0) / 100_000_000).toFixed(2)} BTC`;
-    }
 
     function formatSats(value) {
       return `${Math.round(Number(value || 0)).toLocaleString('en-US')} sats`;
@@ -762,14 +758,14 @@
         const capacity = Number(data?.capacity || 0);
         const channelCount = data?.opened_channel_count ?? data?.active_channel_count ?? 0;
 
-        document.getElementById('capacityValue').textContent = formatBTCFromSats(capacity);
+        document.getElementById('capacityValue').textContent = formatSats(capacity);
         document.getElementById('channelsValue').textContent = Number(channelCount).toLocaleString('en-US');
 
         return data;
       } catch (err) {
         console.error('loadNode failed:', err);
-        document.getElementById('capacityValue').textContent = 'OFFLINE';
-        document.getElementById('channelsValue').textContent = 'OFFLINE';
+        document.getElementById('capacityValue').textContent = 'Offline';
+        document.getElementById('channelsValue').textContent = 'Offline';
         return null;
       }
     }
