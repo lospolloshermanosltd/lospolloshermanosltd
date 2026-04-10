@@ -25,7 +25,7 @@
       --line: #1F4E79;
       --accent: #F3D80D;
       --brand-red: #DA291C;
-      --accent-glow: rgba(243, 216, 13, 0.22);
+      --accent-glow: rgba(243, 216, 13, 0.20);
       --line-glow: rgba(31, 78, 121, 0.22);
 
       --terminal-green: #7CFC00;
@@ -260,7 +260,7 @@
     .row .fill {
       flex: 1 1 auto;
       min-width: 12px;
-      border-bottom: 1px dotted rgba(31, 78, 121, 0.30);
+      border-bottom: 1px dotted rgba(31, 78, 121, 0.22);
       transform: translateY(-0.16em);
     }
 
@@ -276,49 +276,33 @@
 
     .value.highlight {
       color: var(--accent);
-      background: transparent;
-      padding: 0;
       font-weight: 700;
       text-shadow:
-        0 0 4px rgba(243, 216, 13, 0.09),
-        0 0 6px rgba(243, 216, 13, 0.025);
+        0 0 4px rgba(243, 216, 13, 0.08),
+        0 0 6px rgba(243, 216, 13, 0.02);
     }
 
+    /* CAPACITY: one consistent emphasis only */
     .capacity-row .label {
       color: #fff;
       font-weight: 700;
-      text-shadow: 0 0 5px rgba(243,216,13,0.07);
     }
 
     .capacity-row .fill {
-      border-bottom-color: rgba(243, 216, 13, 0.26);
+      display: none;
+    }
+
+    .capacity-row {
+      justify-content: space-between;
+      gap: 16px;
     }
 
     .capacity-row .value {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
       color: var(--accent);
-      text-shadow:
-        0 0 6px rgba(243,216,13,0.16),
-        0 0 10px rgba(243,216,13,0.04);
-    }
-
-    .capacity-value-wrap {
-      display: inline-flex;
-      align-items: baseline;
-      gap: 0.55ch;
-    }
-
-    .capacity-number {
-      font-size: 1em;
-    }
-
-    .capacity-unit {
-      font-size: 0.82em;
-      color: rgba(243,216,13,0.82);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0;
+      text-shadow: 0 0 4px rgba(243,216,13,0.10);
     }
 
     .menu-track:last-child .row .value {
@@ -613,7 +597,7 @@
       }
 
       .capacity-row .value {
-        font-size: 15px;
+        font-size: 13px;
       }
 
       .secure-channel-container {
@@ -690,7 +674,7 @@
       }
 
       .capacity-row .value {
-        font-size: 14px;
+        font-size: 12px;
       }
 
       .pubkey {
@@ -729,13 +713,7 @@
 
           <div class="row capacity-row">
             <span class="label">CAPACITY</span>
-            <span class="fill"></span>
-            <span class="value highlight" id="capacityValue">
-              <span class="capacity-value-wrap">
-                <span class="capacity-number">Loading</span>
-                <span class="capacity-unit"></span>
-              </span>
-            </span>
+            <span class="value highlight" id="capacityValue">Loading</span>
           </div>
 
           <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value" id="channelsValue">Loading</span></div>
@@ -745,10 +723,10 @@
 
         <div class="section">
           <div class="section-title"><span>[ HARDWARE ]</span><span>SPEC</span></div>
-          <div class="row"><span class="label">RAM</span><span class="fill"></span><span class="value">64GB</span></div>
-          <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value">4TB NVMe</span></div>
+          <div class="row"><span class="label">RAM</span><span class="fill"></span><span class="value highlight">64GB</span></div>
+          <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
           <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS Backed</span></div>
-          <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value highlight">99.9%</span></div>
+          <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value">99.99%</span></div>
         </div>
       </div>
 
@@ -769,17 +747,17 @@
               <a href="#" class="clickable" id="emailValue" title="Click to copy email">lospolloshermanosltd@proton.me</a>
             </span>
           </div>
-          <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">offline</span></div>
+          <div class="row">
+            <span class="label">TELEGRAM</span><span class="fill"></span>
+            <span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank" rel="noopener noreferrer">@lospolloshermanosltd</a></span>
+          </div>
           <div class="row">
             <span class="label">LNURL</span><span class="fill"></span>
             <span class="value">
               <a href="#" class="clickable" id="lnurlValue" title="Click to copy LNURL">order@oksu.su</a>
             </span>
           </div>
-          <div class="row">
-            <span class="label">TELEGRAM</span><span class="fill"></span>
-            <span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank" rel="noopener noreferrer">@lospolloshermanosltd</a></span>
-          </div>
+          <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">not listed</span></div>
         </div>
       </div>
 
@@ -834,14 +812,7 @@
     let marketRefreshInterval = null;
 
     function formatSats(value) {
-      return `${Math.round(Number(value || 0)).toLocaleString('en-US')} sats`;
-    }
-
-    function formatSatsParts(value) {
-      return {
-        number: Math.round(Number(value || 0)).toLocaleString('en-US'),
-        unit: 'sats'
-      };
+      return `${Math.round(Number(value || 0)).toLocaleString('en-US')} SATS`;
     }
 
     function formatUsdWhole(value) {
@@ -860,7 +831,7 @@
       }
 
       const rounded = value >= 100 ? value.toFixed(0) : value.toFixed(1);
-      return `${rounded.replace(/\\.0$/, '')} ${units[unitIndex]}`;
+      return `${rounded.replace(/\.0$/, '')} ${units[unitIndex]}`;
     }
 
     function shortKey(key) {
@@ -874,24 +845,8 @@
     }
 
     function setCapacityValue(value) {
-      const root = document.getElementById('capacityValue');
-      const numberEl = root.querySelector('.capacity-number');
-      const unitEl = root.querySelector('.capacity-unit');
-
-      if (!numberEl || !unitEl) {
-        root.textContent = value;
-        return;
-      }
-
-      if (typeof value === 'string' && !value.includes('sats')) {
-        numberEl.textContent = value;
-        unitEl.textContent = '';
-        return;
-      }
-
-      const parts = formatSatsParts(value);
-      numberEl.textContent = parts.number;
-      unitEl.textContent = parts.unit;
+      const el = document.getElementById('capacityValue');
+      el.textContent = typeof value === 'number' ? formatSats(value) : value;
     }
 
     function setTickerText(aliasText, capacityText = '') {
