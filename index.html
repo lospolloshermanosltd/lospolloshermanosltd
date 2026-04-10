@@ -495,6 +495,11 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .ticker-alias,
+    .ticker-capacity {
+      transition: color 120ms linear, text-shadow 120ms linear, opacity 120ms linear;
+    }
+
     .ticker-alias {
       flex: 0 0 15ch;
       width: 15ch;
@@ -513,6 +518,26 @@
       max-width: 15ch;
       white-space: nowrap;
       text-align: right;
+    }
+
+    .ticker-flash .ticker-alias,
+    .ticker-flash .ticker-capacity {
+      animation: ticker-refresh 240ms steps(2, end);
+    }
+
+    @keyframes ticker-refresh {
+      0% {
+        opacity: 0.38;
+        text-shadow: none;
+      }
+      45% {
+        opacity: 1;
+        text-shadow: 0 0 6px rgba(124, 252, 0, 0.18);
+      }
+      100% {
+        opacity: 1;
+        text-shadow: none;
+      }
     }
 
     @keyframes live-pulse {
@@ -878,6 +903,7 @@
       blockHeight: document.getElementById("blockHeightValue"),
       hashrate: document.getElementById("hashrateValue"),
       halving: document.getElementById("halvingValue"),
+      tickerText: document.getElementById("tickerText"),
       tickerAlias: document.querySelector("#tickerText .ticker-alias"),
       tickerCapacity: document.querySelector("#tickerText .ticker-capacity"),
       email: document.getElementById("emailValue"),
@@ -888,7 +914,8 @@
     const runtime = {
       tickerIntervalId: null,
       taskTimers: new Map(),
-      taskControllers: new Map()
+      taskControllers: new Map(),
+      tickerFlashTimeoutId: null
     };
 
     function formatSats(value) {
@@ -952,6 +979,20 @@
       }
     }
 
+    function pulseTicker() {
+      dom.tickerText.classList.remove("ticker-flash");
+      void dom.tickerText.offsetWidth;
+      dom.tickerText.classList.add("ticker-flash");
+
+      if (runtime.tickerFlashTimeoutId) {
+        clearTimeout(runtime.tickerFlashTimeoutId);
+      }
+
+      runtime.tickerFlashTimeoutId = setTimeout(() => {
+        dom.tickerText.classList.remove("ticker-flash");
+      }, 260);
+    }
+
     async function fetchJson(url, { timeoutMs = CONFIG.FETCH.TIMEOUT_MS, signal } = {}) {
       const localController = new AbortController();
       const timeoutId = setTimeout(() => localController.abort(), timeoutMs);
@@ -1012,6 +1053,7 @@
     function setTickerText(aliasText, capacityText = "") {
       dom.tickerAlias.textContent = aliasText;
       dom.tickerCapacity.textContent = capacityText;
+      pulseTicker();
     }
 
     function renderMarket() {
@@ -1073,6 +1115,11 @@
       if (runtime.tickerIntervalId) {
         clearInterval(runtime.tickerIntervalId);
         runtime.tickerIntervalId = null;
+      }
+
+      if (runtime.tickerFlashTimeoutId) {
+        clearTimeout(runtime.tickerFlashTimeoutId);
+        runtime.tickerFlashTimeoutId = null;
       }
     }
 
