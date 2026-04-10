@@ -31,10 +31,6 @@
       --terminal-green: #7CFC00;
       --terminal-green-dim: rgba(124, 252, 0, 0.84);
       --terminal-glow: rgba(124, 252, 0, 0.28);
-      
-      /* 변동률 색상 */
-      --trend-up: #7CFC00;
-      --trend-down: #DA291C;
 
       --flow-duration: 2.8s;
       --packet-duration: 3.9s;
@@ -54,6 +50,10 @@
       -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
       overflow-y: auto;
+    }
+
+    html {
+      background: var(--bg);
     }
 
     body {
@@ -87,7 +87,7 @@
           rgba(0,0,0,0.03) 100%
         );
       mix-blend-mode: screen;
-      opacity: 0.25; 
+      opacity: 0.5;
       animation: crt-drift 10s linear infinite;
     }
 
@@ -238,6 +238,10 @@
       min-width: 0;
     }
 
+    .row:last-child {
+      margin-bottom: 0;
+    }
+
     .row .label {
       text-transform: uppercase;
       white-space: nowrap;
@@ -259,29 +263,6 @@
       white-space: nowrap;
       flex: 0 0 auto;
       text-align: right;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* 변동률 스타일 */
-    .trend {
-      font-size: 10px;
-      font-weight: 400;
-      padding: 1px 4px;
-      border-radius: 2px;
-      background: rgba(255, 255, 255, 0.05);
-    }
-    .trend.up { color: var(--trend-up); }
-    .trend.down { color: var(--trend-down); }
-
-    /* 채널 바 스타일 */
-    .mini-bar {
-      color: var(--line);
-      opacity: 0.7;
-      font-weight: 400;
-      font-size: 12px;
-      letter-spacing: -1px;
     }
 
     .value.highlight {
@@ -292,6 +273,14 @@
       text-shadow:
         0 0 4px rgba(243, 216, 13, 0.12),
         0 0 8px rgba(243, 216, 13, 0.04);
+    }
+
+    .menu-track:last-child .row .value {
+      font-weight: 400;
+    }
+
+    .menu-track:last-child .value.highlight {
+      font-weight: 700;
     }
 
     .secure-channel-container {
@@ -455,6 +444,7 @@
       max-width: 100%;
       min-width: 0;
       text-align: left;
+      font-variant-ligatures: none;
     }
 
     .ticker-alias {
@@ -527,21 +517,67 @@
       body {
         display: block;
         min-height: auto;
-        padding: 15px 14px 20px; 
+        padding: 20px 14px 32px;
+      }
+
+      body::before {
+        opacity: 0.48;
+      }
+
+      .page {
+        max-width: 100%;
+        padding-top: 0;
       }
 
       .menu-container {
         grid-template-columns: 1fr;
-        row-gap: 18px;
+        row-gap: 22px;
+      }
+
+      .menu-track {
+        width: 100%;
+        padding: 22px 18px;
+      }
+
+      .brand {
+        margin-bottom: 12px;
+      }
+
+      .brand-title {
+        font-size: clamp(30px, 7.2vw, 50px);
+        letter-spacing: -0.6px;
+      }
+
+      .market-strip {
+        margin-bottom: 16px;
+      }
+
+      .market-line {
+        gap: 1.6ch;
+        font-size: 10px;
+        white-space: nowrap;
+      }
+
+      .section-title {
+        font-size: 13px;
+      }
+
+      .row {
+        font-size: 13px;
       }
 
       .secure-channel-container {
-        margin-top: 16px; 
+        margin-top: 26px;
+      }
+
+      .pubkey-block {
+        width: 100%;
+        max-width: 100%;
       }
 
       .pubkey {
         font-size: 10px;
-        padding: 6px 8px; 
+        padding: 8px 10px;
       }
 
       .ticker-text {
@@ -550,11 +586,58 @@
         justify-content: center;
         text-align: center;
       }
+
+      .ticker-alias,
+      .ticker-capacity {
+        width: auto;
+        min-width: 0;
+        max-width: none;
+        flex: 1 1 auto;
+        text-align: center;
+      }
+
+      .footer {
+        margin-top: 24px;
+        gap: 12px;
+      }
+
+      .footer a {
+        font-size: 12px;
+        padding: 10px 20px;
+      }
     }
 
     @media (max-width: 560px) {
       .brand-title {
         font-size: clamp(24px, 7vw, 34px);
+      }
+
+      .market-line {
+        font-size: 9px;
+        gap: 1ch;
+      }
+
+      .menu-track {
+        padding: 20px 14px;
+      }
+
+      .section-title {
+        font-size: 12px;
+      }
+
+      .row {
+        gap: 8px;
+        font-size: 12px;
+      }
+
+      .row .label,
+      .row .value {
+        white-space: nowrap;
+      }
+
+      .footer a {
+        min-width: 130px;
+        text-align: center;
       }
     }
   </style>
@@ -565,11 +648,10 @@
       <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
     </div>
 
-    <div class="market-strip" aria-label="network summary">
+    <div class="market-strip" aria-label="bitcoin network summary">
       <div class="market-line" id="marketLine">
         <span class="market-prompt">&gt;</span>
         <span class="market-item">BTC <strong id="btcPriceValue">$--,---</strong></span>
-        <span class="market-item">BLOCK <strong id="blockHeightValue">------</strong></span>
         <span class="market-item">HASH <strong id="hashrateValue">--- EH/s</strong></span>
         <span class="market-item">HALVING <strong id="halvingValue">--.-%</strong></span>
       </div>
@@ -579,21 +661,8 @@
       <div class="menu-track">
         <div class="section">
           <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
-          <div class="row">
-            <span class="label">CAPACITY</span><span class="fill"></span>
-            <span class="value highlight">
-              <span id="capacityValue">SYNCING...</span>
-              <span id="capTrend" class="trend up" style="display:none;">↑ 0.0%</span>
-            </span>
-          </div>
-          <div class="row">
-            <span class="label">CHANNELS</span><span class="fill"></span>
-            <span class="value highlight">
-              <span id="channelsValue">SYNCING...</span>
-              <span id="channelTrend" class="trend down" style="display:none;">↓ 0%</span>
-              <span id="channelBar" class="mini-bar"></span>
-            </span>
-          </div>
+          <div class="row"><span class="label">CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">Loading</span></div>
+          <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value highlight" id="channelsValue">Loading</span></div>
           <div class="row"><span class="label">MIN CHANNEL</span><span class="fill"></span><span class="value">3,000,000 sats</span></div>
           <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value">Auto</span></div>
         </div>
@@ -610,9 +679,9 @@
       <div class="menu-track">
         <div class="section">
           <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEES</span></div>
-          <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">6 PPM</span></div>
-          <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">9-12 PPM</span></div>
-          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">18 PPM</span></div>
+          <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">Mild</span></div>
+          <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">Classic</span></div>
+          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">Spicy</span></div>
           <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value highlight">Dynamic</span></div>
         </div>
 
@@ -684,6 +753,9 @@
 
     let tickerRotateInterval = null;
     let waitingInterval = null;
+    let nodeRefreshInterval = null;
+    let peerRefreshInterval = null;
+    let marketRefreshInterval = null;
 
     function formatSats(value) {
       return `${Math.round(Number(value || 0)).toLocaleString('en-US')} sats`;
@@ -695,14 +767,22 @@
     }
 
     function formatHashrate(hashrate) {
-      const units = ['H/s', 'kH/s', 'MH/s', 'GH/s', 'TH/s', 'PH/s', 'EH/s'];
+      const units = ['H/s', 'kH/s', 'MH/s', 'GH/s', 'TH/s', 'PH/s', 'EH/s', 'ZH/s', 'YH/s'];
       let value = Number(hashrate || 0);
       let unitIndex = 0;
+
       while (value >= 1000 && unitIndex < units.length - 1) {
         value /= 1000;
         unitIndex += 1;
       }
-      return `${value.toFixed(1).replace(/\.0$/, '')} ${units[unitIndex]}`;
+
+      const rounded = value >= 100 ? value.toFixed(0) : value.toFixed(1);
+      return `${rounded.replace(/\.0$/, '')} ${units[unitIndex]}`;
+    }
+
+    function shortKey(key) {
+      if (!key || typeof key !== 'string') return 'unknown';
+      return key.slice(0, 15);
     }
 
     function truncateAlias(alias) {
@@ -710,32 +790,44 @@
       return raw.length <= 15 ? raw : raw.slice(0, 15);
     }
 
-    function drawBar(current, total) {
-      if (!total) return '[..........]';
-      const size = 10;
-      const filled = Math.round((current / total) * size);
-      return '[' + '|'.repeat(filled) + '.'.repeat(size - filled) + ']';
-    }
-
     function setTickerText(aliasText, capacityText = '') {
       document.querySelector('#tickerText .ticker-alias').textContent = aliasText;
       document.querySelector('#tickerText .ticker-capacity').textContent = capacityText;
     }
 
-    function setMarketText({ price, block, hashrate, halving }) {
-      if (price != null) document.getElementById('btcPriceValue').textContent = price;
-      if (block != null) document.getElementById('blockHeightValue').textContent = block;
-      if (hashrate != null) document.getElementById('hashrateValue').textContent = hashrate;
-      if (halving != null) document.getElementById('halvingValue').textContent = halving;
+    function setMarketText({ price, hashrate, halving }) {
+      if (price != null) {
+        document.getElementById('btcPriceValue').textContent = price;
+      }
+      if (hashrate != null) {
+        document.getElementById('hashrateValue').textContent = hashrate;
+      }
+      if (halving != null) {
+        document.getElementById('halvingValue').textContent = halving;
+      }
     }
 
-    function stopTickerRotation() { if (tickerRotateInterval) clearInterval(tickerRotateInterval); tickerRotateInterval = null; }
-    function stopWaitingTicker() { if (waitingInterval) clearInterval(waitingInterval); waitingInterval = null; }
+    function stopTickerRotation() {
+      if (tickerRotateInterval) {
+        clearInterval(tickerRotateInterval);
+        tickerRotateInterval = null;
+      }
+    }
+
+    function stopWaitingTicker() {
+      if (waitingInterval) {
+        clearInterval(waitingInterval);
+        waitingInterval = null;
+      }
+    }
 
     function startWaitingTicker(base = 'link waiting') {
       stopTickerRotation();
       stopWaitingTicker();
+
       let dots = 1;
+      setTickerText(`${base}${'.'.repeat(dots)}`.slice(0, 15), '');
+
       waitingInterval = setInterval(() => {
         dots = dots === 3 ? 1 : dots + 1;
         setTickerText(`${base}${'.'.repeat(dots)}`.slice(0, 15), '');
@@ -743,98 +835,282 @@
     }
 
     function rotateTicker(lines, interval = 3600) {
-      if (!lines.length) { startWaitingTicker('no live links'); return; }
+      if (!Array.isArray(lines) || !lines.length) {
+        startWaitingTicker('no live links');
+        return;
+      }
+
       stopWaitingTicker();
       stopTickerRotation();
+
       let i = 0;
       setTickerText(lines[0].alias, lines[0].capacity);
+
       if (lines.length === 1) return;
+
       tickerRotateInterval = setInterval(() => {
         i = (i + 1) % lines.length;
         setTickerText(lines[i].alias, lines[i].capacity);
       }, interval);
     }
 
-    async function fetchJson(url) {
-      const res = await fetch(url, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
+    async function fetchJson(url, timeoutMs = 12000) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+      try {
+        const res = await fetch(url, {
+          method: 'GET',
+          cache: 'no-store',
+          headers: { 'Accept': 'application/json' },
+          signal: controller.signal
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        return await res.json();
+      } finally {
+        clearTimeout(timer);
+      }
     }
 
     async function loadNode() {
       try {
-        const data = await fetchJson(`${LIGHTNING_BASE}/nodes/${PUBKEY}`);
-        document.getElementById('capacityValue').textContent = formatSats(data?.capacity);
-        
-        const active = data?.active_channel_count ?? 0;
-        const total = data?.opened_channel_count ?? 0;
-        document.getElementById('channelsValue').textContent = total.toLocaleString();
-        
-        // 채널 활성화 바 업데이트
-        document.getElementById('channelBar').textContent = drawBar(active, total);
+        const url = `${LIGHTNING_BASE}/nodes/${PUBKEY}?t=${Date.now()}`;
+        const data = await fetchJson(url);
+
+        const capacity = Number(data?.capacity || 0);
+        const channelCount = data?.opened_channel_count ?? data?.active_channel_count ?? 0;
+
+        document.getElementById('capacityValue').textContent = formatSats(capacity);
+        document.getElementById('channelsValue').textContent = Number(channelCount).toLocaleString('en-US');
+
+        return data;
       } catch (err) {
-        document.getElementById('capacityValue').textContent = 'OFFLINE';
-        document.getElementById('channelsValue').textContent = 'OFFLINE';
+        console.error('loadNode failed:', err);
+        document.getElementById('capacityValue').textContent = 'Offline';
+        document.getElementById('channelsValue').textContent = 'Offline';
+        return null;
       }
+    }
+
+    function buildPeerTickerLine(channel) {
+      const peerKey = channel?.node?.public_key;
+      const aliasRaw = channel?.node?.alias;
+      const aliasBase = typeof aliasRaw === 'string' && aliasRaw.trim()
+        ? aliasRaw.trim()
+        : shortKey(peerKey);
+
+      return {
+        alias: truncateAlias(aliasBase),
+        capacity: formatSats(channel?.capacity)
+      };
     }
 
     async function loadPeerTicker() {
       try {
-        const data = await fetchJson(`${LIGHTNING_BASE}/channels?public_key=${PUBKEY}&status=open`);
-        const lines = data.map(ch => ({
-          alias: truncateAlias(ch?.node?.alias || ch?.node?.public_key.slice(0,15)),
-          capacity: formatSats(ch?.capacity)
-        }));
-        rotateTicker(lines);
-      } catch (err) { startWaitingTicker('offline'); }
+        const url = `${LIGHTNING_BASE}/channels?public_key=${encodeURIComponent(PUBKEY)}&status=open&index=-1&t=${Date.now()}`;
+        const data = await fetchJson(url);
+
+        const list = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.channels)
+            ? data.channels
+            : [];
+
+        if (!list.length) {
+          throw new Error('empty channel list');
+        }
+
+        const lines = list
+          .filter(ch => ch?.node?.public_key)
+          .map(buildPeerTickerLine)
+          .filter(Boolean);
+
+        if (!lines.length) {
+          throw new Error('no valid peer entries');
+        }
+
+        rotateTicker(lines, 3600);
+        return list;
+      } catch (err) {
+        console.error('loadPeerTicker failed:', err);
+        startWaitingTicker('link waiting');
+        return [];
+      }
+    }
+
+    function extractHashrate(hashrateData) {
+      if (typeof hashrateData?.currentHashrate === 'number') {
+        return hashrateData.currentHashrate;
+      }
+
+      if (Array.isArray(hashrateData?.hashrates) && hashrateData.hashrates.length) {
+        return Number(hashrateData.hashrates[hashrateData.hashrates.length - 1]?.avgHashrate || 0);
+      }
+
+      if (Array.isArray(hashrateData) && hashrateData.length) {
+        return Number(hashrateData[hashrateData.length - 1]?.avgHashrate || 0);
+      }
+
+      return 0;
     }
 
     async function loadMarketStrip() {
-      try {
-        const [prices, tip, hashrate] = await Promise.all([
-          fetchJson(`${MEMPOOL_BASE}/v1/prices`),
-          fetchJson(`${MEMPOOL_BASE}/blocks/tip/height`),
-          fetchJson(`${MEMPOOL_BASE}/v1/mining/hashrate/3d`)
-        ]);
-        const progress = ((tip % 210000) / 210000) * 100;
-        const hr = hashrate.currentHashrate || (hashrate.hashrates && hashrate.hashrates[hashrate.hashrates.length-1].avgHashrate);
-        setMarketText({ 
-          price: formatUsdWhole(prices.USD), 
-          block: tip.toLocaleString(),
-          halving: `${progress.toFixed(1)}%`,
-          hashrate: formatHashrate(hr)
-        });
-      } catch (err) { console.error(err); }
+      const results = await Promise.allSettled([
+        fetchJson(`${MEMPOOL_BASE}/v1/prices?t=${Date.now()}`),
+        fetchJson(`${MEMPOOL_BASE}/blocks/tip/height?t=${Date.now()}`),
+        fetchJson(`${MEMPOOL_BASE}/v1/mining/hashrate/3d?t=${Date.now()}`)
+      ]);
+
+      const [pricesResult, tipHeightResult, hashrateResult] = results;
+
+      if (pricesResult.status === 'fulfilled') {
+        const prices = pricesResult.value;
+        const usdPrice = prices?.USD ?? prices?.usd ?? 0;
+        setMarketText({ price: formatUsdWhole(usdPrice) });
+      } else {
+        console.error('price fetch failed:', pricesResult.reason);
+        setMarketText({ price: '$--,---' });
+      }
+
+      if (tipHeightResult.status === 'fulfilled') {
+        const height = Number(tipHeightResult.value || 0);
+        const halvingProgress = height > 0 ? ((height % 210000) / 210000) * 100 : 0;
+        setMarketText({ halving: `${halvingProgress.toFixed(1)}%` });
+      } else {
+        console.error('tip height fetch failed:', tipHeightResult.reason);
+        setMarketText({ halving: '--.-%' });
+      }
+
+      if (hashrateResult.status === 'fulfilled') {
+        const currentHashrate = extractHashrate(hashrateResult.value);
+        setMarketText({ hashrate: formatHashrate(currentHashrate) });
+      } else {
+        console.error('hashrate fetch failed:', hashrateResult.reason);
+        setMarketText({ hashrate: '--- EH/s' });
+      }
     }
 
     async function copyToClipboard(text) {
-      if (navigator.clipboard) return navigator.clipboard.writeText(text);
-      const ta = document.createElement('textarea');
-      ta.value = text; document.body.appendChild(ta);
-      ta.select(); document.execCommand('copy');
-      document.body.removeChild(ta);
+      if (window.isSecureContext && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.top = '-9999px';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+
+      textarea.focus();
+      textarea.select();
+
+      try {
+        const ok = document.execCommand('copy');
+        if (!ok) {
+          throw new Error('execCommand copy failed');
+        }
+      } finally {
+        document.body.removeChild(textarea);
+      }
     }
 
-    function bindCopy(id, text, msg) {
+    function bindCopyLink(id, sourceText, copiedText) {
       const el = document.getElementById(id);
-      const original = el.textContent;
+      const original = el.textContent.trim();
+
       el.addEventListener('click', async (e) => {
         e.preventDefault();
-        await copyToClipboard(text);
-        el.textContent = msg;
-        setTimeout(() => { el.textContent = original; }, 1400);
+
+        try {
+          await copyToClipboard(sourceText);
+          el.textContent = copiedText;
+          el.style.color = 'var(--accent)';
+
+          setTimeout(() => {
+            el.textContent = original;
+            el.style.color = '';
+          }, 1400);
+        } catch (err) {
+          console.error(`${id} copy failed:`, err);
+          el.textContent = '[ copy failed ]';
+
+          setTimeout(() => {
+            el.textContent = original;
+            el.style.color = '';
+          }, 1400);
+        }
       });
     }
 
-    async function init() {
-      bindCopy('emailValue', EMAIL, '[ COPIED ]');
-      bindCopy('lnurlValue', LNURL, '[ COPIED ]');
-      bindCopy('pubkeyValue', PUBKEY, '[ PUBKEY COPIED ]');
+    function bindPubkeyCopy() {
+      const el = document.getElementById('pubkeyValue');
+      const original = el.textContent.trim();
 
-      await Promise.all([loadNode(), loadPeerTicker(), loadMarketStrip()]);
-      setInterval(loadNode, NODE_REFRESH_MS);
-      setInterval(loadPeerTicker, PEER_REFRESH_MS);
-      setInterval(loadMarketStrip, MARKET_REFRESH_MS);
+      el.addEventListener('click', async () => {
+        try {
+          await copyToClipboard(PUBKEY);
+          el.textContent = '[ pubkey copied ]';
+          el.classList.add('copied');
+          el.classList.remove('copy-failed');
+
+          setTimeout(() => {
+            el.textContent = original;
+            el.classList.remove('copied');
+          }, 1400);
+        } catch (err) {
+          console.error('pubkey copy failed:', err);
+          el.textContent = '[ copy failed ]';
+          el.classList.add('copy-failed');
+          el.classList.remove('copied');
+
+          setTimeout(() => {
+            el.textContent = original;
+            el.classList.remove('copy-failed');
+          }, 1400);
+        }
+      });
+    }
+
+    async function refreshAll() {
+      await Promise.all([
+        loadNode(),
+        loadPeerTicker(),
+        loadMarketStrip()
+      ]);
+    }
+
+    async function init() {
+      bindCopyLink('emailValue', EMAIL, '[ email copied ]');
+      bindCopyLink('lnurlValue', LNURL, '[ lnurl copied ]');
+      bindPubkeyCopy();
+
+      setTickerText('querying peers', 'loading sats');
+      setMarketText({
+        price: '$--,---',
+        hashrate: '--- EH/s',
+        halving: '--.-%'
+      });
+
+      await refreshAll();
+
+      nodeRefreshInterval = setInterval(() => {
+        loadNode().catch(err => console.error(err));
+      }, NODE_REFRESH_MS);
+
+      peerRefreshInterval = setInterval(() => {
+        loadPeerTicker().catch(err => console.error(err));
+      }, PEER_REFRESH_MS);
+
+      marketRefreshInterval = setInterval(() => {
+        loadMarketStrip().catch(err => console.error(err));
+      }, MARKET_REFRESH_MS);
     }
 
     init();
