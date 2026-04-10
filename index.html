@@ -279,12 +279,12 @@
     }
 
     .pubkey {
-      font-size: 11px;
+      font-size: 14px;
       line-height: 1.2;
       color: rgba(230, 230, 230, 0.62);
       padding: 10px 16px;
       white-space: nowrap;
-      transition: color 0.2s ease, background-color 0.2s ease, font-size 0.12s ease;
+      transition: color 0.2s ease, background-color 0.2s ease;
       cursor: pointer;
       user-select: none;
       text-align: center;
@@ -296,7 +296,6 @@
 
     .pubkey.copied,
     .pubkey.copy-failed {
-      font-size: 14px;
       color: var(--accent);
       letter-spacing: 0.02em;
       text-shadow: 0 0 6px var(--accent-glow);
@@ -335,13 +334,28 @@
     }
 
     .ticker-text {
-      display: inline-block;
-      text-align: left;
-      white-space: pre;
-      overflow: hidden;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 1.2ch;
       width: 44ch;
       max-width: 100%;
+      min-width: 0;
+      text-align: left;
       font-variant-ligatures: none;
+    }
+
+    .ticker-alias {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .ticker-capacity {
+      flex: 0 0 auto;
+      white-space: nowrap;
+      text-align: right;
     }
 
     @keyframes live-pulse {
@@ -427,8 +441,6 @@
 
       .ticker-text {
         width: 100%;
-        white-space: normal;
-        word-break: break-word;
       }
     }
   </style>
@@ -445,7 +457,7 @@
     <div class="menu-container">
       <div class="menu-track">
         <div class="section">
-          <div class="section-title"><span>[ STATUS ]</span><span>SIZE</span></div>
+          <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
           <div class="row"><span class="label">CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">LOADING</span></div>
           <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value highlight" id="channelsValue">LOADING</span></div>
           <div class="row"><span class="label">MIN CHANNEL SIZE</span><span class="fill"></span><span class="value">3M SATS</span></div>
@@ -479,7 +491,12 @@
             </span>
           </div>
           <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">PENDING</span></div>
-          <div class="row"><span class="label">LNURL</span><span class="fill"></span><span class="value">order@oksu.su</span></div>
+          <div class="row">
+            <span class="label">LNURL</span><span class="fill"></span>
+            <span class="value">
+              <a href="#" class="clickable" id="lnurlValue" title="Click to copy LNURL">ORDER@OKSU.SU</a>
+            </span>
+          </div>
           <div class="row">
             <span class="label">TELEGRAM</span><span class="fill"></span>
             <span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank" rel="noopener noreferrer">@lospolloshermanosltd</a></span>
@@ -503,7 +520,10 @@
 
             <div class="status-strip">
               <span class="live-dot"></span>
-              <span class="ticker-text" id="tickerText">BOOTING ROUTING TABLE...</span>
+              <div class="ticker-text" id="tickerText">
+                <span class="ticker-alias">BOOTING ROUTING TABLE...</span>
+                <span class="ticker-capacity"></span>
+              </div>
             </div>
           </div>
         </div>
@@ -519,11 +539,11 @@
   <script>
     const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
     const EMAIL = 'lospolloshermanosltd@proton.me';
+    const LNURL = 'ORDER@OKSU.SU';
     const API_BASE = 'https://mempool.space/api/v1/lightning';
     const NODE_REFRESH_MS = 60_000;
     const PEER_REFRESH_MS = 120_000;
     const FLOW_REFRESH_MS = 2_400;
-    const TICKER_ALIAS_WIDTH = 22;
 
     let tickerRotateInterval = null;
     let waitingInterval = null;
@@ -545,16 +565,9 @@
       return `${key.slice(0, 8)}...${key.slice(-4)}`;
     }
 
-    function normalizeTickerAlias(alias) {
-      const clean = String(alias || 'UNKNOWN').trim().toUpperCase();
-      if (clean.length <= TICKER_ALIAS_WIDTH) {
-        return clean.padEnd(TICKER_ALIAS_WIDTH, ' ');
-      }
-      return `${clean.slice(0, TICKER_ALIAS_WIDTH - 3)}...`;
-    }
-
-    function setTickerText(text) {
-      document.getElementById('tickerText').textContent = text;
+    function setTickerText(aliasText, capacityText = '') {
+      document.querySelector('#tickerText .ticker-alias').textContent = aliasText;
+      document.querySelector('#tickerText .ticker-capacity').textContent = capacityText;
     }
 
     function stopTickerRotation() {
@@ -576,11 +589,11 @@
       stopWaitingTicker();
 
       let dots = 1;
-      setTickerText(`${base}.`);
+      setTickerText(`${base}.`, '');
 
       waitingInterval = setInterval(() => {
         dots = dots === 3 ? 1 : dots + 1;
-        setTickerText(`${base}${'.'.repeat(dots)}`);
+        setTickerText(`${base}${'.'.repeat(dots)}`, '');
       }, 700);
     }
 
@@ -594,13 +607,13 @@
       stopTickerRotation();
 
       let i = 0;
-      setTickerText(lines[0]);
+      setTickerText(lines[0].alias, lines[0].capacity);
 
       if (lines.length === 1) return;
 
       tickerRotateInterval = setInterval(() => {
         i = (i + 1) % lines.length;
-        setTickerText(lines[i]);
+        setTickerText(lines[i].alias, lines[i].capacity);
       }, interval);
     }
 
@@ -656,14 +669,16 @@
     function buildPeerTickerLine(channel) {
       const peerKey = channel?.node?.public_key;
       const aliasRaw = channel?.node?.alias;
-      const aliasBase = typeof aliasRaw === 'string' && aliasRaw.trim()
-        ? aliasRaw.trim()
-        : shortKey(peerKey);
+      const alias = typeof aliasRaw === 'string' && aliasRaw.trim()
+        ? aliasRaw.trim().toUpperCase()
+        : shortKey(peerKey).toUpperCase();
 
-      const alias = normalizeTickerAlias(aliasBase);
       const cap = formatSats(channel?.capacity);
 
-      return `${alias} / ${cap}`;
+      return {
+        alias,
+        capacity: cap
+      };
     }
 
     async function loadPeerTicker() {
@@ -708,16 +723,16 @@
       root.style.setProperty('--packet-duration', `${packet}s`);
     }
 
-    function bindEmailCopy() {
-      const el = document.getElementById('emailValue');
+    function bindCopyLink(id, sourceText, copiedText) {
+      const el = document.getElementById(id);
       const original = el.textContent.trim();
 
       el.addEventListener('click', async (e) => {
         e.preventDefault();
 
         try {
-          await navigator.clipboard.writeText(EMAIL);
-          el.textContent = '[ EMAIL COPIED ]';
+          await navigator.clipboard.writeText(sourceText);
+          el.textContent = copiedText;
           el.style.color = 'var(--accent)';
 
           setTimeout(() => {
@@ -725,7 +740,7 @@
             el.style.color = '';
           }, 1400);
         } catch (err) {
-          console.error('email copy failed:', err);
+          console.error(`${id} copy failed:`, err);
           el.textContent = '[ COPY FAILED ]';
 
           setTimeout(() => {
@@ -771,13 +786,14 @@
     }
 
     async function init() {
-      bindEmailCopy();
+      bindCopyLink('emailValue', EMAIL, '[ EMAIL COPIED ]');
+      bindCopyLink('lnurlValue', LNURL, '[ LNURL COPIED ]');
       bindPubkeyCopy();
 
       randomizeFlow();
       flowInterval = setInterval(randomizeFlow, FLOW_REFRESH_MS);
 
-      setTickerText('QUERYING ACTIVE PEERS...');
+      setTickerText('QUERYING ACTIVE PEERS...', '');
 
       await refreshAll();
 
