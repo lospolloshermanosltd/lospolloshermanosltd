@@ -282,7 +282,12 @@
         0 0 6px rgba(243, 216, 13, 0.02);
     }
 
-    /* CAPACITY: one consistent emphasis only */
+    /* CAPACITY row */
+    .capacity-row {
+      justify-content: space-between;
+      gap: 16px;
+    }
+
     .capacity-row .label {
       color: #fff;
       font-weight: 700;
@@ -290,11 +295,6 @@
 
     .capacity-row .fill {
       display: none;
-    }
-
-    .capacity-row {
-      justify-content: space-between;
-      gap: 16px;
     }
 
     .capacity-row .value {
@@ -542,6 +542,96 @@
 
     .clickable { cursor: pointer; }
 
+    /* Blue Sky signature */
+    .bb-signature-wrapper {
+      width: 100%;
+      max-width: 1080px;
+      margin-top: 14px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .bb-signature {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+      opacity: 0.18;
+      transform: scale(0.78);
+      transform-origin: bottom right;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
+      user-select: none;
+      filter: drop-shadow(0 0 8px rgba(0,0,0,0.35));
+    }
+
+    .bb-signature:hover {
+      opacity: 0.36;
+      transform: scale(0.8);
+    }
+
+    .bb-word {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 5px;
+    }
+
+    .bb-word-sky {
+      margin-right: 44px;
+    }
+
+    .bb-tile {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(180deg, #334f1c 0%, #263c14 100%);
+      border: 2px solid rgba(235, 240, 220, 0.75);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.05),
+        0 0 10px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bb-num {
+      position: absolute;
+      top: 3px;
+      left: 4px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 8px;
+      line-height: 1;
+      color: rgba(245, 245, 235, 0.88);
+      letter-spacing: 0;
+    }
+
+    .bb-meta {
+      position: absolute;
+      left: 5px;
+      bottom: 4px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 10px;
+      line-height: 1;
+      color: rgba(245, 245, 235, 0.9);
+    }
+
+    .bb-symbol {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 34px;
+      line-height: 1;
+      color: #f3f1e8;
+      transform: translateY(1px);
+    }
+
+    .bb-text {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 52px;
+      line-height: 0.84;
+      color: rgba(244, 241, 232, 0.92);
+      letter-spacing: -0.03em;
+      text-shadow: 0 0 8px rgba(0,0,0,0.18);
+    }
+
     @media (max-width: 950px) {
       body {
         display: block;
@@ -643,6 +733,15 @@
         font-size: 12px;
         padding: 10px 20px;
       }
+
+      .bb-signature {
+        transform: scale(0.72);
+        opacity: 0.16;
+      }
+
+      .bb-signature:hover {
+        transform: scale(0.74);
+      }
     }
 
     @media (max-width: 560px) {
@@ -686,6 +785,19 @@
       .footer a {
         min-width: 130px;
         text-align: center;
+      }
+
+      .bb-signature {
+        transform: scale(0.58);
+        opacity: 0.12;
+      }
+
+      .bb-signature:hover {
+        transform: scale(0.60);
+      }
+
+      .bb-word-sky {
+        margin-right: 34px;
       }
     }
   </style>
@@ -791,6 +903,28 @@
       <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">AMBOSS</a>
       <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">MEMPOOL</a>
     </div>
+
+    <div class="bb-signature-wrapper">
+      <div class="bb-signature" aria-hidden="true">
+        <span class="bb-word">
+          <span class="bb-tile">
+            <span class="bb-num">10.811</span>
+            <span class="bb-symbol">B</span>
+            <span class="bb-meta">5</span>
+          </span>
+          <span class="bb-text">lue</span>
+        </span>
+
+        <span class="bb-word bb-word-sky">
+          <span class="bb-tile">
+            <span class="bb-num">32.066</span>
+            <span class="bb-symbol">S</span>
+            <span class="bb-meta">16</span>
+          </span>
+          <span class="bb-text">ky</span>
+        </span>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -801,9 +935,9 @@
     const MEMPOOL_BASE = 'https://mempool.space/api';
     const LIGHTNING_BASE = 'https://mempool.space/api/v1/lightning';
 
-    const NODE_REFRESH_MS = 60_000;
-    const PEER_REFRESH_MS = 120_000;
-    const MARKET_REFRESH_MS = 60_000;
+    const NODE_REFRESH_MS = 60000;
+    const PEER_REFRESH_MS = 120000;
+    const MARKET_REFRESH_MS = 60000;
 
     let tickerRotateInterval = null;
     let waitingInterval = null;
