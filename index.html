@@ -510,6 +510,52 @@
 
     .clickable { cursor: pointer; }
 
+    .system-indicator {
+      position: fixed;
+      right: 16px;
+      bottom: 14px;
+      z-index: 4;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 8px;
+      border: 1px solid rgba(31, 78, 121, 0.34);
+      background: rgba(0, 0, 0, 0.32);
+      box-shadow:
+        0 0 8px rgba(31, 78, 121, 0.10),
+        0 0 10px rgba(124, 252, 0, 0.04);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      pointer-events: none;
+    }
+
+    .system-spinner {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(124, 252, 0, 0.22);
+      border-top-color: var(--terminal-green);
+      border-right-color: rgba(124, 252, 0, 0.78);
+      box-shadow: 0 0 6px rgba(124, 252, 0, 0.12);
+      animation: system-spin 2.2s linear infinite;
+      flex: 0 0 auto;
+    }
+
+    .system-label {
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      color: rgba(124, 252, 0, 0.62);
+      text-shadow: 0 0 5px rgba(124, 252, 0, 0.10);
+      text-transform: lowercase;
+      white-space: nowrap;
+    }
+
+    @keyframes system-spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
     @media (max-width: 950px) {
       body {
         display: block;
@@ -602,6 +648,17 @@
         font-size: 12px;
         padding: 10px 20px;
       }
+
+      .system-indicator {
+        right: 12px;
+        bottom: 12px;
+        padding: 4px 7px;
+        gap: 7px;
+      }
+
+      .system-label {
+        font-size: 9px;
+      }
     }
 
     @media (max-width: 560px) {
@@ -635,6 +692,20 @@
       .footer a {
         min-width: 130px;
         text-align: center;
+      }
+
+      .system-indicator {
+        right: 10px;
+        bottom: 10px;
+      }
+
+      .system-spinner {
+        width: 7px;
+        height: 7px;
+      }
+
+      .system-label {
+        font-size: 9px;
       }
     }
   </style>
@@ -734,6 +805,11 @@
       <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">AMBOSS</a>
       <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">MEMPOOL</a>
     </div>
+  </div>
+
+  <div class="system-indicator" aria-label="lightning routing status">
+    <span class="system-spinner" aria-hidden="true"></span>
+    <span class="system-label">routing active</span>
   </div>
 
   <script>
