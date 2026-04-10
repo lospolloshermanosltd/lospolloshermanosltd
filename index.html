@@ -34,6 +34,9 @@
 
       --flow-duration: 2.8s;
       --packet-duration: 3.9s;
+
+      --design-width: 1080;
+      --page-scale: 1;
     }
 
     * { box-sizing: border-box; }
@@ -52,16 +55,50 @@
 
     html {
       overflow-x: hidden;
-      overflow-y: hidden;
+      overflow-y: auto;
     }
 
     body {
+      position: relative;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 20px 0 28px;
+      background:
+        radial-gradient(circle at top, rgba(243,216,13,0.035), transparent 36%),
+        var(--bg);
+    }
+
+    /* subtle CRT scanlines */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.00) 0px,
+          rgba(0, 0, 0, 0.055) 1px,
+          rgba(0, 0, 0, 0.00) 2px
+        );
+      background-size: 100% 3px;
+      opacity: 0.32;
+      mix-blend-mode: normal;
+    }
+
+    .viewport {
+      width: 100%;
       display: flex;
       justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px 22px 18px;
-      overflow: hidden;
+      align-items: flex-start;
+    }
+
+    .scale-shell {
+      width: calc(var(--design-width) * 1px);
+      transform: scale(var(--page-scale));
+      transform-origin: top center;
+      will-change: transform;
     }
 
     .page {
@@ -70,11 +107,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding: 0 22px;
+      margin: 0 auto;
     }
 
     .brand {
       text-align: center;
       margin-bottom: 14px;
+      width: 100%;
     }
 
     .brand-title {
@@ -86,6 +126,7 @@
       text-shadow: 2px 2px 0 rgba(0,0,0,0.8), 0 0 15px var(--accent-glow);
       font-weight: 400;
       letter-spacing: -1px;
+      white-space: nowrap;
     }
 
     .market-strip {
@@ -94,11 +135,13 @@
       justify-content: center;
       margin-bottom: 18px;
       min-height: 18px;
+      overflow: hidden;
     }
 
     .market-line {
       display: inline-flex;
       align-items: baseline;
+      justify-content: center;
       gap: 3ch;
       max-width: 100%;
       min-width: 0;
@@ -107,6 +150,7 @@
       letter-spacing: 0.03em;
       text-shadow: 0 0 6px rgba(243, 216, 13, 0.08);
       white-space: nowrap;
+      flex-wrap: nowrap;
     }
 
     .market-prompt {
@@ -170,6 +214,7 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
+      white-space: nowrap;
     }
 
     .row {
@@ -180,6 +225,7 @@
       font-size: 14px;
       line-height: 1.2;
       min-width: 0;
+      white-space: nowrap;
     }
 
     .row:last-child {
@@ -318,6 +364,8 @@
       color: rgba(230, 230, 230, 0.62);
       padding: 8px 12px;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: clip;
       transition: color 0.2s ease, background-color 0.2s ease;
       cursor: pointer;
       user-select: none;
@@ -344,16 +392,17 @@
       width: 100%;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       gap: 9px;
       margin-top: 8px;
-      padding-left: 4px;
       min-height: 18px;
       font-size: 10px;
       letter-spacing: 0.05em;
       color: var(--terminal-green-dim);
       text-transform: none;
       text-shadow: 0 0 6px var(--terminal-glow);
+      white-space: nowrap;
+      overflow: hidden;
     }
 
     .live-dot {
@@ -369,13 +418,15 @@
     .ticker-text {
       display: inline-flex;
       align-items: baseline;
-      justify-content: flex-start;
+      justify-content: center;
       gap: 2ch;
       width: 32ch;
       max-width: 100%;
       min-width: 0;
-      text-align: left;
+      text-align: center;
       font-variant-ligatures: none;
+      white-space: nowrap;
+      flex-wrap: nowrap;
     }
 
     .ticker-alias {
@@ -396,6 +447,7 @@
       max-width: 15ch;
       white-space: nowrap;
       text-align: right;
+      overflow: hidden;
     }
 
     @keyframes live-pulse {
@@ -415,6 +467,8 @@
       display: flex;
       justify-content: center;
       gap: 16px;
+      flex-wrap: nowrap;
+      white-space: nowrap;
     }
 
     .footer a {
@@ -429,6 +483,7 @@
       box-shadow: 0 0 10px rgba(218,41,28,0.18);
       text-transform: uppercase;
       transition: all 0.2s ease;
+      white-space: nowrap;
     }
 
     .footer a:hover {
@@ -440,6 +495,7 @@
       color: var(--accent);
       text-decoration: none;
       transition: color 0.2s ease;
+      white-space: nowrap;
     }
 
     .value a:hover {
@@ -449,173 +505,113 @@
 
     .clickable { cursor: pointer; }
 
-    @media (max-width: 950px) {
-      html {
-        overflow-x: hidden;
-        overflow-y: auto;
-      }
-
+    /* no layout-breaking mobile reflow */
+    @media (max-width: 1100px) {
       body {
-        display: block;
-        min-height: auto;
-        overflow-x: hidden;
-        overflow-y: auto;
-        padding: 18px 15px 28px;
-      }
-
-      .page {
-        max-width: none;
-      }
-
-      .menu-container {
-        grid-template-columns: 1fr;
-        row-gap: 24px;
-      }
-
-      .brand-title {
-        font-size: 50px;
-      }
-
-      .market-strip {
-        margin-bottom: 16px;
-      }
-
-      .market-line {
-        flex-wrap: wrap;
-        justify-content: center;
-        row-gap: 6px;
-        white-space: normal;
-        text-align: center;
-      }
-
-      .pubkey-block {
-        width: 100%;
-        max-width: 100%;
-      }
-
-      .pubkey {
-        white-space: normal;
-        word-break: break-all;
-        font-size: 11px;
-        padding: 8px 10px;
-      }
-
-      .status-strip {
-        justify-content: center;
-        padding-left: 0;
-      }
-
-      .ticker-text {
-        width: 100%;
-        gap: 1.2ch;
-        justify-content: center;
-        text-align: center;
-      }
-
-      .ticker-alias,
-      .ticker-capacity {
-        width: auto;
-        min-width: 0;
-        max-width: none;
-        flex: 1 1 auto;
+        padding-top: 14px;
+        padding-bottom: 22px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="brand">
-      <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
-    </div>
-
-    <div class="market-strip" aria-label="bitcoin network summary">
-      <div class="market-line" id="marketLine">
-        <span class="market-prompt">&gt;</span>
-        <span class="market-item" id="btcPriceItem">BTC <strong>$--,---</strong></span>
-        <span class="market-item" id="hashrateItem">HASH <strong>--- EH/s</strong></span>
-        <span class="market-item" id="halvingItem">HALVING <strong>--.-%</strong></span>
-      </div>
-    </div>
-
-    <div class="menu-container">
-      <div class="menu-track">
-        <div class="section">
-          <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
-          <div class="row"><span class="label">CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">Loading</span></div>
-          <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value highlight" id="channelsValue">Loading</span></div>
-          <div class="row"><span class="label">MIN CHANNEL</span><span class="fill"></span><span class="value">3,000,000 sats</span></div>
-          <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value">Auto</span></div>
+  <div class="viewport">
+    <div class="scale-shell" id="scaleShell">
+      <div class="page" id="pageRoot">
+        <div class="brand">
+          <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
         </div>
 
-        <div class="section">
-          <div class="section-title"><span>[ HARDWARE ]</span><span>SPEC</span></div>
-          <div class="row"><span class="label">RAM</span><span class="fill"></span><span class="value highlight">64GB</span></div>
-          <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
-          <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS Backed</span></div>
-          <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value">99.9%</span></div>
-        </div>
-      </div>
-
-      <div class="menu-track">
-        <div class="section">
-          <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEES</span></div>
-          <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">Mild</span></div>
-          <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">Classic</span></div>
-          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">Spicy</span></div>
-          <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value highlight">Dynamic</span></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title"><span>[ CONTACT ]</span><span>LINKS</span></div>
-          <div class="row">
-            <span class="label">EMAIL</span><span class="fill"></span>
-            <span class="value">
-              <a href="#" class="clickable" id="emailValue" title="Click to copy email">lospolloshermanosltd@proton.me</a>
-            </span>
-          </div>
-          <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">Offline</span></div>
-          <div class="row">
-            <span class="label">LNURL</span><span class="fill"></span>
-            <span class="value">
-              <a href="#" class="clickable" id="lnurlValue" title="Click to copy LNURL">order@oksu.su</a>
-            </span>
-          </div>
-          <div class="row">
-            <span class="label">TELEGRAM</span><span class="fill"></span>
-            <span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank" rel="noopener noreferrer">@lospolloshermanosltd</a></span>
+        <div class="market-strip" aria-label="bitcoin network summary">
+          <div class="market-line" id="marketLine">
+            <span class="market-prompt">&gt;</span>
+            <span class="market-item" id="btcPriceItem">BTC <strong>$--,---</strong></span>
+            <span class="market-item" id="hashrateItem">HASH <strong>--- EH/s</strong></span>
+            <span class="market-item" id="halvingItem">HALVING <strong>--.-%</strong></span>
           </div>
         </div>
-      </div>
 
-      <div class="secure-channel-container">
-        <div class="secure-channel" id="secureChannel">
-          <div class="packet-layer" aria-hidden="true">
-            <span class="packet p1"></span>
-            <span class="packet p2"></span>
-          </div>
-
-          <div class="pubkey-wrap">
-            <div class="pubkey-block">
-              <div class="pubkey" id="pubkeyValue" title="Click to copy pubkey">
-                033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
-              </div>
+        <div class="menu-container">
+          <div class="menu-track">
+            <div class="section">
+              <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
+              <div class="row"><span class="label">CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">Loading</span></div>
+              <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value highlight" id="channelsValue">Loading</span></div>
+              <div class="row"><span class="label">MIN CHANNEL</span><span class="fill"></span><span class="value">3,000,000 sats</span></div>
+              <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value">Auto</span></div>
             </div>
 
-            <div class="status-strip">
-              <span class="live-dot"></span>
-              <div class="ticker-text" id="tickerText">
-                <span class="ticker-alias">querying peers</span>
-                <span class="ticker-capacity">loading sats</span>
+            <div class="section">
+              <div class="section-title"><span>[ HARDWARE ]</span><span>SPEC</span></div>
+              <div class="row"><span class="label">RAM</span><span class="fill"></span><span class="value highlight">64GB</span></div>
+              <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
+              <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS Backed</span></div>
+              <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value">99.9%</span></div>
+            </div>
+          </div>
+
+          <div class="menu-track">
+            <div class="section">
+              <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEES</span></div>
+              <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">Mild</span></div>
+              <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">Classic</span></div>
+              <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">Spicy</span></div>
+              <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value highlight">Dynamic</span></div>
+            </div>
+
+            <div class="section">
+              <div class="section-title"><span>[ CONTACT ]</span><span>LINKS</span></div>
+              <div class="row">
+                <span class="label">EMAIL</span><span class="fill"></span>
+                <span class="value">
+                  <a href="#" class="clickable" id="emailValue" title="Click to copy email">lospolloshermanosltd@proton.me</a>
+                </span>
+              </div>
+              <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">Offline</span></div>
+              <div class="row">
+                <span class="label">LNURL</span><span class="fill"></span>
+                <span class="value">
+                  <a href="#" class="clickable" id="lnurlValue" title="Click to copy LNURL">order@oksu.su</a>
+                </span>
+              </div>
+              <div class="row">
+                <span class="label">TELEGRAM</span><span class="fill"></span>
+                <span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank" rel="noopener noreferrer">@lospolloshermanosltd</a></span>
               </div>
             </div>
           </div>
+
+          <div class="secure-channel-container">
+            <div class="secure-channel" id="secureChannel">
+              <div class="packet-layer" aria-hidden="true">
+                <span class="packet p1"></span>
+                <span class="packet p2"></span>
+              </div>
+
+              <div class="pubkey-wrap">
+                <div class="pubkey-block">
+                  <div class="pubkey" id="pubkeyValue" title="Click to copy pubkey">
+                    033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
+                  </div>
+                </div>
+
+                <div class="status-strip">
+                  <span class="live-dot"></span>
+                  <div class="ticker-text" id="tickerText">
+                    <span class="ticker-alias">querying peers</span>
+                    <span class="ticker-capacity">loading sats</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">AMBOSS</a>
+          <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">MEMPOOL</a>
         </div>
       </div>
-    </div>
-
-    <div class="footer">
-      <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">AMBOSS</a>
-      <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">MEMPOOL</a>
     </div>
   </div>
 
@@ -636,6 +632,22 @@
     let nodeRefreshInterval = null;
     let peerRefreshInterval = null;
     let marketRefreshInterval = null;
+
+    function updateScale() {
+      const shell = document.getElementById('scaleShell');
+      const page = document.getElementById('pageRoot');
+      const viewportWidth = window.innerWidth;
+      const horizontalPadding = 24;
+      const designWidth = 1080;
+
+      const scale = Math.min(1, (viewportWidth - horizontalPadding) / designWidth);
+      document.documentElement.style.setProperty('--page-scale', String(scale));
+
+      requestAnimationFrame(() => {
+        const scaledHeight = page.offsetHeight * scale;
+        shell.style.height = `${scaledHeight}px`;
+      });
+    }
 
     function formatSats(value) {
       return `${Math.round(Number(value || 0)).toLocaleString('en-US')} sats`;
@@ -673,12 +685,14 @@
     function setTickerText(aliasText, capacityText = '') {
       document.querySelector('#tickerText .ticker-alias').textContent = aliasText;
       document.querySelector('#tickerText .ticker-capacity').textContent = capacityText;
+      updateScale();
     }
 
     function setMarketText({ price, hashrate, halving }) {
       document.getElementById('btcPriceItem').innerHTML = `BTC <strong>${price}</strong>`;
       document.getElementById('hashrateItem').innerHTML = `HASH <strong>${hashrate}</strong>`;
       document.getElementById('halvingItem').innerHTML = `HALVING <strong>${halving}</strong>`;
+      updateScale();
     }
 
     function stopTickerRotation() {
@@ -760,12 +774,14 @@
 
         document.getElementById('capacityValue').textContent = formatSats(capacity);
         document.getElementById('channelsValue').textContent = Number(channelCount).toLocaleString('en-US');
+        updateScale();
 
         return data;
       } catch (err) {
         console.error('loadNode failed:', err);
         document.getElementById('capacityValue').textContent = 'Offline';
         document.getElementById('channelsValue').textContent = 'Offline';
+        updateScale();
         return null;
       }
     }
@@ -868,7 +884,10 @@
           setTimeout(() => {
             el.textContent = original;
             el.style.color = '';
+            updateScale();
           }, 1400);
+
+          updateScale();
         } catch (err) {
           console.error(`${id} copy failed:`, err);
           el.textContent = '[ COPY FAILED ]';
@@ -876,7 +895,10 @@
           setTimeout(() => {
             el.textContent = original;
             el.style.color = '';
+            updateScale();
           }, 1400);
+
+          updateScale();
         }
       });
     }
@@ -895,7 +917,10 @@
           setTimeout(() => {
             el.textContent = original;
             el.classList.remove('copied');
+            updateScale();
           }, 1400);
+
+          updateScale();
         } catch (err) {
           console.error('pubkey copy failed:', err);
           el.textContent = '[ COPY FAILED ]';
@@ -905,7 +930,10 @@
           setTimeout(() => {
             el.textContent = original;
             el.classList.remove('copy-failed');
+            updateScale();
           }, 1400);
+
+          updateScale();
         }
       });
     }
@@ -916,6 +944,7 @@
         loadPeerTicker(),
         loadMarketStrip()
       ]);
+      updateScale();
     }
 
     async function init() {
@@ -930,6 +959,7 @@
         halving: '--.-%'
       });
 
+      updateScale();
       await refreshAll();
 
       nodeRefreshInterval = setInterval(() => {
@@ -943,6 +973,12 @@
       marketRefreshInterval = setInterval(() => {
         loadMarketStrip().catch(err => console.error(err));
       }, MARKET_REFRESH_MS);
+
+      window.addEventListener('resize', updateScale);
+      window.addEventListener('load', updateScale);
+      document.fonts?.ready?.then(updateScale).catch(() => {});
+      setTimeout(updateScale, 120);
+      setTimeout(updateScale, 500);
     }
 
     init();
