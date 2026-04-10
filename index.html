@@ -22,17 +22,21 @@
       --fg: #d9e3e1;
       --fg-soft: #E6E6E6;
       --fg-dim: rgba(230, 230, 230, 0.5);
+      --fg-faint: rgba(230, 230, 230, 0.34);
+
       --line: #1F4E79;
+      --line-soft: rgba(31, 78, 121, 0.23);
+      --line-faint: rgba(31, 78, 121, 0.17);
+
       --accent: #F3D80D;
       --brand-red: #DA291C;
-      --accent-glow: rgba(243, 216, 13, 0.3);
-      --line-glow: rgba(31, 78, 121, 0.4);
+      --accent-glow: rgba(243, 216, 13, 0.24);
+      --accent-glow-soft: rgba(243, 216, 13, 0.11);
 
       --terminal-green: #7CFC00;
-      --terminal-green-dim: rgba(124, 252, 0, 0.84);
-      --terminal-glow: rgba(124, 252, 0, 0.28);
+      --terminal-green-dim: rgba(124, 252, 0, 0.82);
+      --terminal-glow: rgba(124, 252, 0, 0.22);
 
-      /* 최종 고정값 */
       --flow-duration: 2.8s;
       --packet-duration: 3.9s;
     }
@@ -84,7 +88,7 @@
       color: var(--accent);
       margin: 0;
       line-height: 1;
-      text-shadow: 2px 2px 0 rgba(0,0,0,0.8), 0 0 15px var(--accent-glow);
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.8), 0 0 14px var(--accent-glow);
       font-weight: 400;
       letter-spacing: -1px;
     }
@@ -106,13 +110,14 @@
       color: var(--fg-dim);
       font-size: 11px;
       letter-spacing: 0.03em;
-      text-shadow: 0 0 6px rgba(243, 216, 13, 0.08);
       white-space: nowrap;
+      opacity: 0.96;
+      animation: market-breathe 6.2s ease-in-out infinite;
     }
 
     .market-prompt {
       color: var(--accent);
-      text-shadow: 0 0 6px var(--accent-glow);
+      text-shadow: 0 0 5px var(--accent-glow);
       animation: market-pulse 1.95s ease-in-out infinite;
       flex: 0 0 auto;
     }
@@ -126,13 +131,19 @@
     .market-item strong {
       color: var(--accent);
       font-weight: 700;
-      text-shadow: 0 0 5px rgba(243,216,13,0.14);
+      text-shadow: 0 0 4px var(--accent-glow-soft);
     }
 
     @keyframes market-pulse {
       0%   { opacity: 0.28; }
       50%  { opacity: 1; }
       100% { opacity: 0.28; }
+    }
+
+    @keyframes market-breathe {
+      0%   { opacity: 0.92; }
+      50%  { opacity: 1; }
+      100% { opacity: 0.92; }
     }
 
     .menu-container {
@@ -147,7 +158,7 @@
       border: 3px solid var(--line);
       background: #0a0a0a;
       padding: 26px 28px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.6);
+      box-shadow: 0 0 22px rgba(0,0,0,0.58);
       border-radius: 2px;
       min-height: 100%;
     }
@@ -167,10 +178,17 @@
       text-transform: uppercase;
       margin-bottom: 12px;
       padding-bottom: 5px;
-      border-bottom: 1px dotted var(--line);
+      border-bottom: 1px dotted var(--line-soft);
       display: flex;
       justify-content: space-between;
       align-items: baseline;
+    }
+
+    .section-title .meta {
+      color: var(--fg-faint);
+      letter-spacing: 0.16em;
+      font-size: 12px;
+      text-shadow: none;
     }
 
     .row {
@@ -197,14 +215,14 @@
     .row .fill {
       flex: 1 1 auto;
       min-width: 12px;
-      border-bottom: 1px dotted rgba(31, 78, 121, 0.34);
+      border-bottom: 1px dotted var(--line-faint);
       transform: translateY(-0.16em);
     }
 
     .row .value {
       color: var(--accent);
       font-weight: 700;
-      text-shadow: 0 0 4px var(--accent-glow);
+      text-shadow: 0 0 3px var(--accent-glow-soft);
       white-space: nowrap;
       flex: 0 0 auto;
       text-align: right;
@@ -249,7 +267,7 @@
       background: linear-gradient(90deg, var(--line) 50%, transparent 50%);
       background-size: 15px 1px;
       animation: routing-flow var(--flow-duration) linear infinite;
-      opacity: 0.92;
+      opacity: 0.9;
     }
 
     .packet-layer {
@@ -271,7 +289,7 @@
       margin-top: -1.5px;
       border-radius: 50%;
       background: var(--accent);
-      box-shadow: 0 0 5px var(--accent-glow), 0 0 10px var(--accent-glow);
+      box-shadow: 0 0 5px var(--accent-glow), 0 0 10px var(--accent-glow-soft);
       opacity: 0;
       animation: packet-travel var(--packet-duration) linear infinite;
     }
@@ -285,9 +303,9 @@
 
     @keyframes packet-travel {
       0%   { left: -28px; opacity: 0; transform: scale(0.85); }
-      10%  { opacity: 0.78; transform: scale(1); }
-      50%  { opacity: 0.92; transform: scale(1); }
-      88%  { opacity: 0.78; transform: scale(1); }
+      10%  { opacity: 0.76; transform: scale(1); }
+      50%  { opacity: 0.9; transform: scale(1); }
+      88%  { opacity: 0.76; transform: scale(1); }
       100% { left: calc(100% + 28px); opacity: 0; transform: scale(0.85); }
     }
 
@@ -306,7 +324,7 @@
       font-family: 'IBM Plex Mono', monospace;
       border: 1px solid var(--line);
       background: rgba(0,0,0,0.52);
-      box-shadow: 0 0 12px rgba(31, 78, 121, 0.2);
+      box-shadow: 0 0 10px rgba(31, 78, 121, 0.18);
       overflow: hidden;
       animation: node-pulse 2.5s infinite;
       width: min(100%, calc(66ch + 24px));
@@ -337,8 +355,8 @@
 
     .pubkey:hover {
       color: var(--accent);
-      background: rgba(243, 216, 13, 0.05);
-      text-shadow: 0 0 6px var(--accent-glow);
+      background: rgba(243, 216, 13, 0.04);
+      text-shadow: 0 0 5px var(--accent-glow-soft);
     }
 
     .status-strip {
@@ -354,7 +372,7 @@
       letter-spacing: 0.05em;
       color: var(--terminal-green-dim);
       text-transform: none;
-      text-shadow: 0 0 6px var(--terminal-glow);
+      text-shadow: 0 0 5px var(--terminal-glow);
     }
 
     .live-dot {
@@ -363,7 +381,7 @@
       min-width: 7px;
       border-radius: 50%;
       background: var(--terminal-green);
-      box-shadow: 0 0 6px rgba(124,252,0,0.55), 0 0 12px rgba(124,252,0,0.18);
+      box-shadow: 0 0 6px rgba(124,252,0,0.52), 0 0 11px rgba(124,252,0,0.16);
       animation: live-pulse 1.7s ease-in-out infinite;
     }
 
@@ -406,9 +424,9 @@
     }
 
     @keyframes node-pulse {
-      0%   { box-shadow: 0 0 0 var(--accent-glow); }
-      50%  { box-shadow: 0 0 12px var(--accent-glow); border-color: rgba(31,78,121,0.85); }
-      100% { box-shadow: 0 0 0 var(--accent-glow); }
+      0%   { box-shadow: 0 0 0 rgba(243, 216, 13, 0.12); }
+      50%  { box-shadow: 0 0 10px rgba(243, 216, 13, 0.12); border-color: rgba(31,78,121,0.82); }
+      100% { box-shadow: 0 0 0 rgba(243, 216, 13, 0.12); }
     }
 
     .footer {
@@ -427,14 +445,14 @@
       font-weight: 900;
       letter-spacing: 0.14em;
       border: 1px solid rgba(218, 41, 28, 0.85);
-      box-shadow: 0 0 10px rgba(218,41,28,0.18);
+      box-shadow: 0 0 9px rgba(218,41,28,0.16);
       text-transform: uppercase;
       transition: all 0.2s ease;
     }
 
     .footer a:hover {
       background-color: #b51c10;
-      box-shadow: 0 0 16px rgba(218,41,28,0.35);
+      box-shadow: 0 0 14px rgba(218,41,28,0.28);
     }
 
     .value a {
@@ -541,7 +559,7 @@
     <div class="menu-container">
       <div class="menu-track">
         <div class="section">
-          <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
+          <div class="section-title"><span>[ STATUS ]</span><span class="meta">DATA</span></div>
           <div class="row"><span class="label">CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">LOADING</span></div>
           <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value highlight" id="channelsValue">LOADING</span></div>
           <div class="row"><span class="label">MIN CHANNEL SIZE</span><span class="fill"></span><span class="value">3M SATS</span></div>
@@ -549,7 +567,7 @@
         </div>
 
         <div class="section">
-          <div class="section-title"><span>[ HARDWARE ]</span><span>SPEC</span></div>
+          <div class="section-title"><span>[ HARDWARE ]</span><span class="meta">SPEC</span></div>
           <div class="row"><span class="label">RAM</span><span class="fill"></span><span class="value highlight">64GB</span></div>
           <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
           <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS</span></div>
@@ -559,7 +577,7 @@
 
       <div class="menu-track">
         <div class="section">
-          <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEES</span></div>
+          <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span class="meta">FEES</span></div>
           <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">MILD</span></div>
           <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">CLASSIC</span></div>
           <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">SPICY</span></div>
@@ -567,7 +585,7 @@
         </div>
 
         <div class="section">
-          <div class="section-title"><span>[ INFO ]</span><span>LINKS</span></div>
+          <div class="section-title"><span>[ INFO ]</span><span class="meta">LINKS</span></div>
           <div class="row">
             <span class="label">EMAIL</span><span class="fill"></span>
             <span class="value">
