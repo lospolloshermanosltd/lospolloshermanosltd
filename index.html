@@ -18,20 +18,11 @@
     }
 
     :root {
-      --bg: #050505;
-      --fg: #d9e3e1;
-      --fg-soft: #E6E6E6;
-      --fg-dim: rgba(230, 230, 230, 0.5);
-      --line: #1F4E79;
-      --accent: #F3D80D;
-      --brand-red: #DA291C;
-      --accent-glow: rgba(243, 216, 13, 0.20);
-      --line-glow: rgba(31, 78, 121, 0.22);
-      --terminal-green: #7CFC00;
-      --terminal-green-dim: rgba(124, 252, 0, 0.76);
-      --terminal-glow: rgba(124, 252, 0, 0.16);
-      --flow-duration: 3.6s;
-      --packet-duration: 5.2s;
+      --bg: #050505; --fg: #d9e3e1; --fg-soft: #E6E6E6; --fg-dim: rgba(230, 230, 230, 0.5);
+      --line: #1F4E79; --accent: #F3D80D; --brand-red: #DA291C;
+      --accent-glow: rgba(243, 216, 13, 0.20); --line-glow: rgba(31, 78, 121, 0.22);
+      --terminal-green: #7CFC00; --terminal-green-dim: rgba(124, 252, 0, 0.76); --terminal-glow: rgba(124, 252, 0, 0.16);
+      --flow-duration: 3.6s; --packet-duration: 5.2s;
       --space-1: 10px; --space-2: 16px; --space-3: 24px; --space-4: 32px; --space-5: 40px;
     }
 
@@ -42,7 +33,7 @@
       background: var(--bg); color: var(--fg);
       font-family: 'IBM Plex Mono', monospace;
       -webkit-font-smoothing: none; -moz-osx-font-smoothing: grayscale;
-      overflow-x: hidden; overflow-y: auto; font-variant-numeric: tabular-nums;
+      overflow-x: hidden; font-variant-numeric: tabular-nums;
     }
 
     body {
@@ -50,7 +41,7 @@
       align-items: flex-start; min-height: 100vh; padding: 56px 22px 72px;
     }
 
-    /* 최적화: 스캔라인 애니메이션에 will-change 추가 */
+    /* 최적화: 스캔라인 레이어 */
     body::before {
       content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 2;
       background:
@@ -69,69 +60,62 @@
 
     @keyframes crt-drift { 0% { transform: translateY(0); } 100% { transform: translateY(2px); } }
 
-    .page { position: relative; z-index: 0; width: 100%; max-width: 1080px; display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
+    .page { position: relative; z-index: 0; width: 100%; max-width: 1080px; display: flex; flex-direction: column; align-items: center; margin: 0 auto; }
     .brand { text-align: center; margin-bottom: var(--space-2); width: 100%; }
-    .brand-title { font-family: 'JI Burrito', 'Ranchers', sans-serif; font-size: clamp(38px, 8vw, 80px); color: var(--accent); margin: 0; line-height: 1; text-shadow: 2px 2px 0 rgba(0,0,0,0.82), 0 0 12px var(--accent-glow); font-weight: 400; letter-spacing: -1px; white-space: nowrap; text-align: center; }
+    .brand-title { font-family: 'JI Burrito', 'Ranchers', sans-serif; font-size: clamp(38px, 8vw, 80px); color: var(--accent); margin: 0; line-height: 1; text-shadow: 2px 2px 0 rgba(0,0,0,0.82), 0 0 12px var(--accent-glow); font-weight: 400; letter-spacing: -1px; white-space: nowrap; }
 
-    .market-strip { width: 100%; display: flex; justify-content: center; margin-bottom: var(--space-3); min-height: 18px; overflow: hidden; }
-    .market-line { display: inline-flex; align-items: baseline; justify-content: center; gap: 3ch; max-width: 100%; min-width: 0; color: rgba(230,230,230,0.54); font-size: 11px; letter-spacing: 0.03em; text-shadow: 0 0 4px rgba(243, 216, 13, 0.045); white-space: nowrap; font-variant-numeric: tabular-nums; }
-    .market-prompt { color: var(--accent); text-shadow: 0 0 4px rgba(243,216,13,0.12); animation: market-pulse 3.2s ease-in-out infinite; flex: 0 0 auto; }
-    .market-item { color: rgba(230,230,230,0.56); flex: 0 0 auto; white-space: nowrap; }
-    .market-item strong { color: var(--accent); font-weight: 700; text-shadow: 0 0 4px rgba(243,216,13,0.10); }
+    .market-strip { width: 100%; display: flex; justify-content: center; margin-bottom: var(--space-3); min-height: 18px; }
+    .market-line { display: inline-flex; align-items: baseline; justify-content: center; gap: 3ch; max-width: 100%; color: rgba(230,230,230,0.54); font-size: 11px; white-space: nowrap; }
+    .market-prompt { color: var(--accent); animation: market-pulse 3.2s ease-in-out infinite; }
+    .market-item strong { color: var(--accent); font-weight: 700; }
 
     @keyframes market-pulse { 0%, 100% { opacity: 0.42; } 50% { opacity: 0.88; } }
 
     .menu-container { display: grid; grid-template-columns: 1fr 1fr; column-gap: 56px; width: 100%; align-items: start; }
-    .menu-track { border: 3px solid var(--line); background: rgba(10, 10, 10, 0.96); padding: 24px 28px; box-shadow: 0 0 22px rgba(0,0,0,0.58), 0 0 12px rgba(31,78,121,0.05); border-radius: 2px; min-height: 100%; }
+    .menu-track { border: 3px solid var(--line); background: rgba(10, 10, 10, 0.96); padding: 24px 28px; box-shadow: 0 0 22px rgba(0,0,0,0.58); border-radius: 2px; }
     .section { margin-bottom: var(--space-4); }
-    .section:last-child { margin-bottom: 0; }
-    .section-title { color: #fff; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; padding-bottom: 5px; border-bottom: 1px dotted var(--line); display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .section-title { color: #fff; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; padding-bottom: 5px; border-bottom: 1px dotted var(--line); display: flex; justify-content: space-between; }
 
-    .row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; font-size: 14px; line-height: 1.28; min-width: 0; }
-    .row .label { text-transform: uppercase; white-space: nowrap; color: var(--fg-soft); flex: 0 0 auto; }
-    .row .fill { flex: 1 1 auto; min-width: 12px; border-bottom: 1px dotted rgba(31, 78, 121, 0.22); transform: translateY(-0.16em); }
-    .row .value { color: var(--fg-soft); font-weight: 400; white-space: nowrap; flex: 0 0 auto; text-align: right; font-variant-numeric: tabular-nums; }
-    .value.highlight { color: var(--accent); font-weight: 700; text-shadow: 0 0 4px rgba(243, 216, 13, 0.08); }
+    .row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; font-size: 14px; }
+    .row .label { text-transform: uppercase; white-space: nowrap; color: var(--fg-soft); }
+    .row .fill { flex: 1; border-bottom: 1px dotted rgba(31, 78, 121, 0.22); transform: translateY(-0.16em); }
+    .row .value { color: var(--fg-soft); text-align: right; }
+    .value.highlight { color: var(--accent); font-weight: 700; }
 
     .capacity-row .label { color: #fff; font-weight: 700; }
-    .capacity-row .fill { display: none; }
-    .capacity-row { justify-content: space-between; gap: 16px; }
-    .capacity-row .value { color: var(--accent); font-weight: 700; font-size: 14px; text-shadow: 0 0 4px rgba(243,216,13,0.10); }
+    .capacity-row .value { color: var(--accent); font-weight: 700; }
 
-    .secure-channel-container { grid-column: 1 / -1; margin-top: var(--space-4); text-align: center; width: 100%; display: flex; justify-content: center; }
+    .secure-channel-container { grid-column: 1 / -1; margin-top: var(--space-4); width: 100%; display: flex; justify-content: center; }
     .secure-channel { position: relative; padding-top: 16px; width: 100%; overflow: hidden; }
-    .secure-channel::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, var(--line) 50%, transparent 50%); background-size: 15px 1px; animation: routing-flow var(--flow-duration) linear infinite; opacity: 0.62; }
+    .secure-channel::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, var(--line) 50%, transparent 50%); background-size: 15px 1px; animation: routing-flow var(--flow-duration) linear infinite; }
     
     .packet-layer { position: absolute; top: -3px; left: 0; width: 100%; height: 9px; pointer-events: none; overflow: hidden; }
-    /* 최적화: 패킷 애니메이션에 will-change 추가 */
-    .packet { position: absolute; top: 50%; left: -28px; width: 2px; height: 2px; margin-top: -1px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 4px rgba(243,216,13,0.18); opacity: 0; animation: packet-travel var(--packet-duration) linear infinite; will-change: left, opacity; }
+    .packet { position: absolute; top: 50%; left: -28px; width: 2px; height: 2px; background: var(--accent); border-radius: 50%; opacity: 0; animation: packet-travel var(--packet-duration) linear infinite; will-change: left, opacity; }
     .packet.p2 { animation-delay: 2.6s; }
 
     @keyframes routing-flow { 0% { background-position: 0 0; } 100% { background-position: 15px 0; } }
-    @keyframes packet-travel { 0% { left: -28px; opacity: 0; transform: scale(0.8); } 12% { opacity: 0.42; transform: scale(1); } 50% { opacity: 0.56; transform: scale(1); } 88% { opacity: 0.42; transform: scale(1); } 100% { left: calc(100% + 28px); opacity: 0; transform: scale(0.8); } }
+    @keyframes packet-travel { 0% { left: -28px; opacity: 0; } 12% { opacity: 0.42; } 88% { opacity: 0.42; } 100% { left: 105%; opacity: 0; } }
 
-    .pubkey-block { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; border: 1px solid rgba(31, 78, 121, 0.72); background: rgba(0,0,0,0.34); box-shadow: 0 0 8px rgba(31, 78, 121, 0.10); overflow: hidden; width: fit-content; max-width: min(100%, 78ch); margin: 0 auto; }
-    .pubkey { font-size: 11px; line-height: 1.2; color: rgba(230, 230, 230, 0.62); padding: 8px 16px; white-space: nowrap; overflow: hidden; cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: center; min-height: 34px; }
-    .pubkey.copied { color: var(--accent); text-shadow: 0 0 5px var(--accent-glow); }
-    .status-strip { width: 100%; display: flex; align-items: center; justify-content: center; gap: 9px; margin-top: 10px; font-size: 10px; color: var(--terminal-green-dim); text-shadow: 0 0 4px var(--terminal-glow); }
+    .pubkey-block { border: 1px solid rgba(31, 78, 121, 0.72); background: rgba(0,0,0,0.34); margin: 0 auto; width: fit-content; max-width: 100%; }
+    .pubkey { font-size: 11px; color: rgba(230, 230, 230, 0.62); padding: 8px 16px; white-space: nowrap; cursor: pointer; text-overflow: ellipsis; overflow: hidden; }
+    .pubkey.copied { color: var(--accent); }
+
+    .status-strip { display: flex; align-items: center; justify-content: center; gap: 9px; margin-top: 10px; font-size: 10px; color: var(--terminal-green-dim); }
     .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--terminal-green); animation: live-pulse 2.6s ease-in-out infinite; }
-    @keyframes live-pulse { 0%, 100% { opacity: 0.46; transform: scale(0.96); } 50% { opacity: 0.82; transform: scale(1.04); } }
+    @keyframes live-pulse { 0%, 100% { opacity: 0.46; } 50% { opacity: 0.82; } }
 
-    .ticker-text { display: inline-flex; align-items: baseline; gap: 2ch; width: 32ch; text-align: left; }
-    .ticker-alias { flex: 0 0 15ch; overflow: hidden; white-space: nowrap; text-overflow: clip; }
-    .ticker-capacity { flex: 0 0 15ch; text-align: right; }
+    .ticker-text { display: inline-flex; gap: 2ch; }
+    .ticker-alias { width: 15ch; overflow: hidden; text-overflow: clip; text-align: left; }
+    .ticker-capacity { width: 15ch; text-align: right; }
 
     .footer { margin-top: var(--space-4); display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
-    .footer a { background-color: rgba(218, 41, 28, 0.92); color: #fff; text-decoration: none; padding: 10px 28px; font-size: 13px; font-weight: 900; letter-spacing: 0.14em; border: 1px solid rgba(218, 41, 28, 0.85); text-transform: uppercase; transition: all 0.2s ease; }
-    .footer a:hover { background-color: #b51c10; }
-    .value a { color: var(--accent); text-decoration: none; }
-    .clickable { cursor: pointer; }
+    .footer a { background: var(--brand-red); color: #fff; text-decoration: none; padding: 10px 28px; font-size: 13px; font-weight: 900; text-transform: uppercase; }
 
     @media (max-width: 950px) {
-      body { display: block; padding: 20px 14px 32px; }
+      body { padding: 20px 14px 32px; align-items: flex-start; }
       .menu-container { grid-template-columns: 1fr; row-gap: 22px; }
       .brand-title { font-size: clamp(30px, 7.2vw, 50px); }
-      .pubkey { font-size: 8.15px; }
+      .pubkey { font-size: 9px; }
     }
   </style>
 </head>
@@ -153,7 +137,7 @@
       <div class="menu-track">
         <div class="section">
           <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
-          <div class="row capacity-row"><span class="label">CAPACITY</span><span class="value highlight" id="capacityValue">Loading</span></div>
+          <div class="row capacity-row"><span class="label">CAPACITY</span><span class="value" id="capacityValue">Loading</span></div>
           <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value" id="channelsValue">Loading</span></div>
           <div class="row"><span class="label">MIN CHANNEL</span><span class="fill"></span><span class="value">3,000,000 sats</span></div>
           <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value">Auto</span></div>
@@ -177,9 +161,9 @@
         </div>
         <div class="section">
           <div class="section-title"><span>[ CONTACT ]</span><span>LINKS</span></div>
-          <div class="row"><span class="label">EMAIL</span><span class="fill"></span><span class="value"><a href="#" id="emailValue" class="clickable">lospolloshermanosltd@proton.me</a></span></div>
-          <div class="row"><span class="label">TELEGRAM</span><span class="fill"></span><span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank">@lospolloshermanosltd</a></span></div>
-          <div class="row"><span class="label">LNURL</span><span class="fill"></span><span class="value"><a href="#" id="lnurlValue" class="clickable">order@oksu.su</a></span></div>
+          <div class="row"><span class="label">EMAIL</span><span class="fill"></span><span class="value"><a href="mailto:lospolloshermanosltd@proton.me" id="emailValue" style="color:var(--accent); text-decoration:none;">lospolloshermanosltd@proton.me</a></span></div>
+          <div class="row"><span class="label">TELEGRAM</span><span class="fill"></span><span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank" style="color:var(--accent); text-decoration:none;">@lospolloshermanosltd</a></span></div>
+          <div class="row"><span class="label">LNURL</span><span class="fill"></span><span class="value"><a href="#" id="lnurlValue" style="color:var(--accent); text-decoration:none;">order@oksu.su</a></span></div>
           <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">not listed</span></div>
         </div>
       </div>
@@ -210,8 +194,6 @@
   <script>
     const CONFIG = {
       PUBKEY: '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28',
-      EMAIL: 'lospolloshermanosltd@proton.me',
-      LNURL: 'order@oksu.su',
       ENDPOINTS: {
         PRICE: 'https://mempool.space/api/v1/prices',
         TIP: 'https://mempool.space/api/blocks/tip/height',
@@ -222,83 +204,56 @@
       INTERVALS: { NODE: 60000, PEER: 120000, MARKET: 60000, ROTATE: 3800 }
     };
 
-    // [개선 1] 최소한의 상태 관리
-    const state = {
-      market: { price: null, block: null, hashrate: null, halving: null },
-      node: { capacity: 0, channels: 0 },
-      peers: [],
-      peerIndex: 0
-    };
+    const state = { market: {}, node: { capacity: 0, channels: 0 }, peers: [], peerIndex: 0 };
 
-    // [개선 2] 최신 클립보드 API + Fallback
     async function copyToClipboard(text) {
-      if (navigator.clipboard && window.isSecureContext) {
-        return await navigator.clipboard.writeText(text);
-      }
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      document.body.appendChild(textArea);
-      textArea.select();
-      try { document.execCommand('copy'); } finally { document.body.removeChild(textArea); }
+      if (navigator.clipboard && window.isSecureContext) return await navigator.clipboard.writeText(text);
+      const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta);
+      ta.select(); try { document.execCommand('copy'); } finally { document.body.removeChild(ta); }
     }
 
-    // [개선 3] 경합 상태 방지를 위한 안전한 Fetch 래퍼
     async function safeFetch(url) {
-      try {
-        const res = await fetch(`${url}?t=${Date.now()}`);
-        if (!res.ok) return null;
-        return await res.json();
-      } catch (e) { return null; }
+      try { const res = await fetch(`${url}?t=${Date.now()}`); return res.ok ? await res.json() : null; }
+      catch (e) { return null; }
     }
 
     const UI = {
       el: (id) => document.getElementById(id),
       updateMarket() {
-        if (state.market.price) this.el('btcPriceValue').textContent = `$${state.market.price.toLocaleString()}`;
+        if (state.market.price) this.el('btcPriceValue').textContent = `$${Number(state.market.price).toLocaleString()}`;
         if (state.market.block) {
-          this.el('blockHeightValue').textContent = state.market.block.toLocaleString();
+          this.el('blockHeightValue').textContent = Number(state.market.block).toLocaleString();
           this.el('halvingValue').textContent = `${((state.market.block % 210000) / 210000 * 100).toFixed(1)}%`;
         }
         if (state.market.hashrate) this.el('hashrateValue').textContent = state.market.hashrate;
       },
       updateNode() {
-        this.el('capacityValue').textContent = state.node.capacity ? `${state.node.capacity.toLocaleString()} SATS` : 'Offline';
-        this.el('channelsValue').textContent = state.node.channels.toLocaleString();
+        // [수정] Number() 강제 형변환으로 콤마(toLocaleString) 복구
+        const cap = Number(state.node.capacity);
+        this.el('capacityValue').textContent = cap ? `${cap.toLocaleString()} SATS` : 'OFFLINE';
+        this.el('channelsValue').textContent = Number(state.node.channels).toLocaleString();
       },
       updateTicker() {
         if (!state.peers.length) return;
         const p = state.peers[state.peerIndex];
-        const aliasEl = document.querySelector('#tickerText .ticker-alias');
-        const capEl = document.querySelector('#tickerText .ticker-capacity');
-        aliasEl.textContent = (p.node.alias || p.node.public_key.slice(0, 15)).slice(0, 15);
-        capEl.textContent = `${p.capacity.toLocaleString()} SATS`;
+        document.querySelector('#tickerText .ticker-alias').textContent = (p.node.alias || p.node.public_key.slice(0, 15)).slice(0, 15);
+        document.querySelector('#tickerText .ticker-capacity').textContent = `${Number(p.capacity).toLocaleString()} SATS`;
         state.peerIndex = (state.peerIndex + 1) % state.peers.length;
       }
     };
 
-    // [개선 4] setInterval 대신 재귀 setTimeout 사용 (Race Condition 해결)
     async function refreshMarket() {
-      const [p, b, h] = await Promise.all([
-        safeFetch(CONFIG.ENDPOINTS.PRICE),
-        safeFetch(CONFIG.ENDPOINTS.TIP),
-        safeFetch(CONFIG.ENDPOINTS.HASHRATE)
-      ]);
-      if (p) state.market.price = p.USD || 0;
-      if (b) state.market.block = Number(b);
-      if (h) {
-        let val = h.currentHashrate || (Array.isArray(h) ? h[h.length-1]?.avgHashrate : 0);
-        state.market.hashrate = (val / 1e18).toFixed(1) + ' EH/s';
-      }
+      const [p, b, h] = await Promise.all([safeFetch(CONFIG.ENDPOINTS.PRICE), safeFetch(CONFIG.ENDPOINTS.TIP), safeFetch(CONFIG.ENDPOINTS.HASHRATE)]);
+      if (p) state.market.price = p.USD;
+      if (b) state.market.block = b;
+      if (h) state.market.hashrate = ((h.currentHashrate || h[h.length-1]?.avgHashrate || 0) / 1e18).toFixed(1) + ' EH/s';
       UI.updateMarket();
       setTimeout(refreshMarket, CONFIG.INTERVALS.MARKET);
     }
 
     async function refreshNode() {
       const d = await safeFetch(CONFIG.ENDPOINTS.NODE(CONFIG.PUBKEY));
-      if (d) {
-        state.node.capacity = d.capacity || 0;
-        state.node.channels = d.opened_channel_count || 0;
-      }
+      if (d) { state.node.capacity = d.capacity; state.node.channels = d.opened_channel_count; }
       UI.updateNode();
       setTimeout(refreshNode, CONFIG.INTERVALS.NODE);
     }
@@ -309,27 +264,18 @@
       setTimeout(refreshPeers, CONFIG.INTERVALS.PEER);
     }
 
-    function initInteractions() {
-      const bind = (id, val, msg) => {
-        const el = UI.el(id);
-        const original = el.textContent;
-        el.addEventListener('click', async (e) => {
-          e.preventDefault();
-          await copyToClipboard(val);
-          el.textContent = msg;
-          setTimeout(() => { el.textContent = original; }, 1400);
-        });
-      };
-      bind('emailValue', CONFIG.EMAIL, '[ email copied ]');
-      bind('lnurlValue', CONFIG.LNURL, '[ lnurl copied ]');
-      bind('pubkeyValue', CONFIG.PUBKEY, '[ pubkey copied ]');
-    }
+    const bindCopy = (id, val, msg) => {
+      const el = UI.el(id); const orig = el.textContent;
+      el.addEventListener('click', async (e) => {
+        e.preventDefault(); await copyToClipboard(val);
+        el.textContent = msg; setTimeout(() => { el.textContent = orig; }, 1400);
+      });
+    };
 
-    // 메인 실행
-    initInteractions();
-    refreshMarket();
-    refreshNode();
-    refreshPeers();
+    bindCopy('lnurlValue', 'order@oksu.su', '[ LNURL COPIED ]');
+    bindCopy('pubkeyValue', CONFIG.PUBKEY, '[ PUBKEY COPIED ]');
+    
+    refreshMarket(); refreshNode(); refreshPeers();
     setInterval(() => UI.updateTicker(), CONFIG.INTERVALS.ROTATE);
   </script>
 </body>
