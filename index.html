@@ -1,1132 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LOS POLLOS HERMANOS LTD</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-  <style>
-    @font-face {
-      font-family: 'JI Burrito';
-      src: url('JI Burrito.ttf') format('truetype');
-      font-display: swap;
-    }
-
-    :root {
-      --bg: #050505;
-      --fg: #d9e3e1;
-      --fg-soft: #E6E6E6;
-      --fg-dim: rgba(230, 230, 230, 0.5);
-      --line: #1F4E79;
-      --accent: #F3D80D;
-      --brand-red: #DA291C;
-      --accent-glow: rgba(243, 216, 13, 0.24);
-      --line-glow: rgba(31, 78, 121, 0.28);
-
-      --terminal-green: #7CFC00;
-      --terminal-green-dim: rgba(124, 252, 0, 0.82);
-      --terminal-glow: rgba(124, 252, 0, 0.22);
-
-      --flow-duration: 2.8s;
-      --packet-duration: 3.9s;
-
-      --space-1: 10px;
-      --space-2: 16px;
-      --space-3: 24px;
-      --space-4: 32px;
-      --space-5: 40px;
-    }
-
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      min-height: 100%;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: 'IBM Plex Mono', monospace;
-      -webkit-font-smoothing: none;
-      -moz-osx-font-smoothing: grayscale;
-      overflow-x: hidden;
-      overflow-y: auto;
-    }
-
-    html {
-      background: var(--bg);
-    }
-
-    body {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      padding: 56px 22px 72px;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 2;
-      background:
-        repeating-linear-gradient(
-          to bottom,
-          rgba(255,255,255,0.02) 0px,
-          rgba(255,255,255,0.02) 1px,
-          rgba(0,0,0,0.20) 2px,
-          rgba(0,0,0,0.20) 4px
-        ),
-        linear-gradient(
-          to bottom,
-          rgba(31,78,121,0.04),
-          rgba(0,0,0,0.02) 24%,
-          rgba(243,216,13,0.025) 58%,
-          rgba(0,0,0,0.03) 100%
-        );
-      mix-blend-mode: screen;
-      opacity: 0.42;
-      animation: crt-drift 10s linear infinite;
-    }
-
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-      background:
-        radial-gradient(circle at center, transparent 57%, rgba(0,0,0,0.24) 100%);
-      opacity: 0.95;
-    }
-
-    @keyframes crt-drift {
-      0%   { transform: translateY(0); }
-      100% { transform: translateY(3px); }
-    }
-
-    .page {
-      position: relative;
-      z-index: 0;
-      width: 100%;
-      max-width: 1080px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 4px;
-    }
-
-    .brand {
-      text-align: center;
-      margin-bottom: var(--space-2);
-      width: 100%;
-    }
-
-    .brand-title {
-      font-family: 'JI Burrito', 'Ranchers', sans-serif;
-      font-size: clamp(38px, 8vw, 80px);
-      color: var(--accent);
-      margin: 0;
-      line-height: 1;
-      text-shadow:
-        2px 2px 0 rgba(0,0,0,0.82),
-        0 0 13px var(--accent-glow);
-      font-weight: 400;
-      letter-spacing: -1px;
-      white-space: nowrap;
-      text-align: center;
-    }
-
-    .market-strip {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      margin-bottom: var(--space-3);
-      min-height: 18px;
-      overflow: hidden;
-    }
-
-    .market-line {
-      display: inline-flex;
-      align-items: baseline;
-      justify-content: center;
-      gap: 3ch;
-      max-width: 100%;
-      min-width: 0;
-      color: rgba(230,230,230,0.56);
-      font-size: 11px;
-      letter-spacing: 0.03em;
-      text-shadow: 0 0 5px rgba(243, 216, 13, 0.06);
-      white-space: nowrap;
-    }
-
-    .market-prompt {
-      color: var(--accent);
-      text-shadow: 0 0 5px var(--accent-glow);
-      animation: market-pulse 1.95s ease-in-out infinite;
-      flex: 0 0 auto;
-    }
-
-    .market-item {
-      color: rgba(230,230,230,0.56);
-      flex: 0 0 auto;
-      white-space: nowrap;
-    }
-
-    .market-item strong {
-      color: var(--accent);
-      font-weight: 700;
-      text-shadow: 0 0 4px rgba(243,216,13,0.12);
-    }
-
-    @keyframes market-pulse {
-      0%   { opacity: 0.28; }
-      50%  { opacity: 1; }
-      100% { opacity: 0.28; }
-    }
-
-    .menu-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      column-gap: 56px;
-      width: 100%;
-      align-items: start;
-    }
-
-    .menu-track {
-      border: 3px solid var(--line);
-      background: rgba(10, 10, 10, 0.96);
-      padding: 24px 28px;
-      box-shadow:
-        0 0 22px rgba(0,0,0,0.58),
-        0 0 14px rgba(31,78,121,0.06);
-      border-radius: 2px;
-      min-height: 100%;
-    }
-
-    .section {
-      margin-bottom: var(--space-4);
-    }
-
-    .section:last-child {
-      margin-bottom: 0;
-    }
-
-    .section-title {
-      color: #fff;
-      font-size: 14px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      padding-bottom: 5px;
-      border-bottom: 1px dotted var(--line);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 12px;
-    }
-
-    .row {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      margin-bottom: 10px;
-      font-size: 14px;
-      line-height: 1.28;
-      min-width: 0;
-    }
-
-    .row:last-child {
-      margin-bottom: 0;
-    }
-
-    .row .label {
-      text-transform: uppercase;
-      white-space: nowrap;
-      color: var(--fg-soft);
-      flex: 0 0 auto;
-    }
-
-    .row .fill {
-      flex: 1 1 auto;
-      min-width: 12px;
-      border-bottom: 1px dotted rgba(31, 78, 121, 0.30);
-      transform: translateY(-0.16em);
-    }
-
-    .row .value {
-      color: var(--fg-soft);
-      font-weight: 400;
-      white-space: nowrap;
-      flex: 0 0 auto;
-      text-align: right;
-    }
-
-    .value.highlight {
-      color: var(--accent);
-      background: transparent;
-      padding: 0;
-      font-weight: 700;
-      text-shadow:
-        0 0 4px rgba(243, 216, 13, 0.10),
-        0 0 7px rgba(243, 216, 13, 0.03);
-    }
-
-    .menu-track:last-child .row .value {
-      font-weight: 400;
-    }
-
-    .secure-channel-container {
-      grid-column: 1 / -1;
-      margin-top: var(--space-4);
-      text-align: center;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
-
-    .secure-channel {
-      position: relative;
-      padding-top: 16px;
-      width: 100%;
-      overflow: hidden;
-    }
-
-    .secure-channel::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, var(--line) 50%, transparent 50%);
-      background-size: 15px 1px;
-      animation: routing-flow var(--flow-duration) linear infinite;
-      opacity: 0.76;
-    }
-
-    .packet-layer {
-      position: absolute;
-      top: -3px;
-      left: 0;
-      width: 100%;
-      height: 9px;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .packet {
-      position: absolute;
-      top: 50%;
-      left: -28px;
-      width: 3px;
-      height: 3px;
-      margin-top: -1.5px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 4px var(--accent-glow), 0 0 8px var(--accent-glow);
-      opacity: 0;
-      animation: packet-travel var(--packet-duration) linear infinite;
-    }
-
-    .packet.p2 { animation-delay: 1.95s; }
-
-    @keyframes routing-flow {
-      0%   { background-position: 0 0; }
-      100% { background-position: 15px 0; }
-    }
-
-    @keyframes packet-travel {
-      0%   { left: -28px; opacity: 0; transform: scale(0.85); }
-      10%  { opacity: 0.70; transform: scale(1); }
-      50%  { opacity: 0.82; transform: scale(1); }
-      88%  { opacity: 0.70; transform: scale(1); }
-      100% { left: calc(100% + 28px); opacity: 0; transform: scale(0.85); }
-    }
-
-    .pubkey-wrap {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      max-width: 100%;
-      margin-top: 0;
-    }
-
-    .pubkey-block {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: 'IBM Plex Mono', monospace;
-      border: 1px solid rgba(31, 78, 121, 0.72);
-      background: rgba(0,0,0,0.34);
-      box-shadow:
-        0 0 8px rgba(31, 78, 121, 0.12),
-        0 0 7px rgba(243,216,13,0.025);
-      overflow: hidden;
-      width: fit-content;
-      max-width: min(100%, 78ch);
-      margin: 0 auto;
-    }
-
-    .pubkey {
-      font-size: 11px;
-      line-height: 1.2;
-      color: rgba(230, 230, 230, 0.62);
-      padding: 8px 16px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: clip;
-      transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-      cursor: pointer;
-      user-select: none;
-      text-align: center;
-      min-height: 34px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .pubkey.copied,
-    .pubkey.copy-failed {
-      color: var(--accent);
-      text-shadow: 0 0 5px var(--accent-glow);
-    }
-
-    .pubkey:hover {
-      color: var(--accent);
-      background: rgba(243, 216, 13, 0.03);
-      text-shadow: 0 0 5px var(--accent-glow);
-    }
-
-    .status-strip {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      margin-top: 10px;
-      min-height: 18px;
-      font-size: 10px;
-      letter-spacing: 0.05em;
-      color: var(--terminal-green-dim);
-      text-transform: none;
-      text-shadow: 0 0 5px var(--terminal-glow);
-      text-align: center;
-    }
-
-    .live-dot {
-      width: 7px;
-      height: 7px;
-      min-width: 7px;
-      border-radius: 50%;
-      background: var(--terminal-green);
-      box-shadow:
-        0 0 5px rgba(124,252,0,0.48),
-        0 0 9px rgba(124,252,0,0.14);
-      animation: live-pulse 1.7s ease-in-out infinite;
-    }
-
-    .ticker-text {
-      display: inline-flex;
-      align-items: baseline;
-      justify-content: flex-start;
-      gap: 2ch;
-      width: 32ch;
-      max-width: 100%;
-      min-width: 0;
-      text-align: left;
-      font-variant-ligatures: none;
-    }
-
-    .ticker-alias {
-      flex: 0 0 15ch;
-      width: 15ch;
-      min-width: 15ch;
-      max-width: 15ch;
-      overflow: hidden;
-      white-space: nowrap;
-      text-align: left;
-      text-overflow: clip;
-    }
-
-    .ticker-capacity {
-      flex: 0 0 15ch;
-      width: 15ch;
-      min-width: 15ch;
-      max-width: 15ch;
-      white-space: nowrap;
-      text-align: right;
-    }
-
-    @keyframes live-pulse {
-      0%   { opacity: 0.42; transform: scale(0.94); }
-      50%  { opacity: 1; transform: scale(1.08); }
-      100% { opacity: 0.42; transform: scale(0.94); }
-    }
-
-    .footer {
-      margin-top: var(--space-4);
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .footer a {
-      background-color: rgba(218, 41, 28, 0.92);
-      color: #fff;
-      text-decoration: none;
-      padding: 10px 28px;
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: 0.14em;
-      border: 1px solid rgba(218, 41, 28, 0.85);
-      box-shadow: 0 0 9px rgba(218,41,28,0.16);
-      text-transform: uppercase;
-      transition: all 0.2s ease;
-    }
-
-    .footer a:hover {
-      background-color: #b51c10;
-      box-shadow: 0 0 14px rgba(218,41,28,0.28);
-    }
-
-    .value a {
-      color: var(--accent);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-
-    .value a:hover {
-      text-decoration: underline;
-      color: #fff;
-    }
-
-    .clickable { cursor: pointer; }
-
-    @media (max-width: 950px) {
-      body {
-        display: block;
-        min-height: auto;
-        padding: 20px 14px 32px;
-      }
-
-      body::before {
-        opacity: 0.44;
-      }
-
-      .page {
-        max-width: 100%;
-        padding-top: 0;
-      }
-
-      .menu-container {
-        grid-template-columns: 1fr;
-        row-gap: 22px;
-      }
-
-      .menu-track {
-        width: 100%;
-        padding: 22px 18px;
-      }
-
-      .brand {
-        margin-bottom: 12px;
-      }
-
-      .brand-title {
-        font-size: clamp(30px, 7.2vw, 50px);
-        letter-spacing: -0.6px;
-      }
-
-      .market-strip {
-        margin-bottom: 18px;
-      }
-
-      .market-line {
-        gap: 1.6ch;
-        font-size: 10px;
-        white-space: nowrap;
-      }
-
-      .section-title {
-        font-size: 13px;
-      }
-
-      .row {
-        font-size: 13px;
-        line-height: 1.3;
-      }
-
-      .secure-channel-container {
-        margin-top: 24px;
-      }
-
-      .pubkey-block {
-        width: 100%;
-        max-width: 100%;
-      }
-
-      .pubkey {
-        font-size: 8.15px;
-        letter-spacing: -0.02em;
-        padding: 8px 6px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: clip;
-      }
-
-      .ticker-text {
-        width: 100%;
-        gap: 1.2ch;
-        justify-content: center;
-        text-align: center;
-      }
-
-      .ticker-alias,
-      .ticker-capacity {
-        width: auto;
-        min-width: 0;
-        max-width: none;
-        flex: 1 1 auto;
-        text-align: center;
-      }
-
-      .footer {
-        margin-top: 24px;
-        gap: 12px;
-      }
-
-      .footer a {
-        font-size: 12px;
-        padding: 10px 20px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .brand-title {
-        font-size: clamp(24px, 7vw, 34px);
-      }
-
-      .market-line {
-        font-size: 9px;
-        gap: 1ch;
-      }
-
-      .menu-track {
-        padding: 20px 14px;
-      }
-
-      .section-title {
-        font-size: 12px;
-      }
-
-      .row {
-        gap: 8px;
-        font-size: 12px;
-      }
-
-      .row .label,
-      .row .value {
-        white-space: nowrap;
-      }
-
-      .pubkey {
-        font-size: 7.2px;
-        letter-spacing: -0.03em;
-        padding: 8px 4px;
-      }
-
-      .footer a {
-        min-width: 130px;
-        text-align: center;
-      }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LOS POLLOS HERMANOS LTD</title>
+
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:#050505;
+  --fg:#d9e3e1;
+  --accent:#F3D80D;
+  --line:#1F4E79;
+}
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font-family:'IBM Plex Mono', monospace;
+  display:flex;
+  justify-content:center;
+  padding:40px 16px;
+}
+
+.page {
+  width:100%;
+  max-width:1000px;
+}
+
+.section {
+  margin-bottom:28px;
+}
+
+.section-title {
+  font-size:13px;
+  border-bottom:1px dotted var(--line);
+  margin-bottom:10px;
+}
+
+.row {
+  display:flex;
+  gap:10px;
+  margin-bottom:8px;
+  font-size:14px;
+}
+
+.label {
+  white-space:nowrap;
+}
+
+.fill {
+  flex:1;
+  border-bottom:1px dotted rgba(31,78,121,0.4);
+}
+
+.value {
+  white-space:nowrap;
+}
+
+.highlight {
+  color:var(--accent);
+  font-weight:700;
+}
+
+/* 모바일 pubkey 한줄 */
+.pubkey {
+  font-size:8px;
+  white-space:nowrap;
+  overflow:hidden;
+}
+
+@media(max-width:600px){
+  .pubkey { font-size:7px; }
+}
+</style>
 </head>
+
 <body>
-  <div class="page">
-    <div class="brand">
-      <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
-    </div>
+<div class="page">
 
-    <div class="market-strip" aria-label="bitcoin network summary">
-      <div class="market-line" id="marketLine">
-        <span class="market-prompt">&gt;</span>
-        <span class="market-item">BTC <strong id="btcPriceValue">$--,---</strong></span>
-        <span class="market-item">HASH <strong id="hashrateValue">--- EH/s</strong></span>
-        <span class="market-item">HALVING <strong id="halvingValue">--.-%</strong></span>
-      </div>
-    </div>
+<!-- STATUS -->
+<div class="section">
+  <div class="section-title">[ STATUS ]</div>
 
-    <div class="menu-container">
-      <div class="menu-track">
-        <div class="section">
-          <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
-          <div class="row"><span class="label">CAPACITY</span><span class="fill"></span><span class="value highlight" id="capacityValue">Loading</span></div>
-          <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value" id="channelsValue">Loading</span></div>
-          <div class="row"><span class="label">MIN CHANNEL</span><span class="fill"></span><span class="value">3,000,000 sats</span></div>
-          <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value">Auto</span></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title"><span>[ HARDWARE ]</span><span>SPEC</span></div>
-          <div class="row"><span class="label">RAM</span><span class="fill"></span><span class="value">64GB</span></div>
-          <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value">4TB NVMe</span></div>
-          <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS Backed</span></div>
-          <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value highlight">99.9%</span></div>
-        </div>
-      </div>
-
-      <div class="menu-track">
-        <div class="section">
-          <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEES</span></div>
-          <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">Mild</span></div>
-          <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">Classic</span></div>
-          <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">Spicy</span></div>
-          <div class="row"><span class="label">FEE ADJUSTMENT</span><span class="fill"></span><span class="value highlight">Dynamic</span></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title"><span>[ CONTACT ]</span><span>LINKS</span></div>
-          <div class="row">
-            <span class="label">EMAIL</span><span class="fill"></span>
-            <span class="value">
-              <a href="#" class="clickable" id="emailValue" title="Click to copy email">lospolloshermanosltd@proton.me</a>
-            </span>
-          </div>
-          <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">offline</span></div>
-          <div class="row">
-            <span class="label">LNURL</span><span class="fill"></span>
-            <span class="value">
-              <a href="#" class="clickable" id="lnurlValue" title="Click to copy LNURL">order@oksu.su</a>
-            </span>
-          </div>
-          <div class="row">
-            <span class="label">TELEGRAM</span><span class="fill"></span>
-            <span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank" rel="noopener noreferrer">@lospolloshermanosltd</a></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="secure-channel-container">
-        <div class="secure-channel" id="secureChannel">
-          <div class="packet-layer" aria-hidden="true">
-            <span class="packet p1"></span>
-            <span class="packet p2"></span>
-          </div>
-
-          <div class="pubkey-wrap">
-            <div class="pubkey-block">
-              <div class="pubkey" id="pubkeyValue" title="Click to copy pubkey">
-                033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
-              </div>
-            </div>
-
-            <div class="status-strip">
-              <span class="live-dot"></span>
-              <div class="ticker-text" id="tickerText">
-                <span class="ticker-alias">querying peers</span>
-                <span class="ticker-capacity">loading sats</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">AMBOSS</a>
-      <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">MEMPOOL</a>
-    </div>
+  <div class="row">
+    <span class="label">CAPACITY</span><span class="fill"></span>
+    <span class="value highlight" id="capacityValue">Loading</span>
   </div>
 
-  <script>
-    const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
-    const EMAIL = 'lospolloshermanosltd@proton.me';
-    const LNURL = 'order@oksu.su';
-
-    const MEMPOOL_BASE = 'https://mempool.space/api';
-    const LIGHTNING_BASE = 'https://mempool.space/api/v1/lightning';
-
-    const NODE_REFRESH_MS = 60_000;
-    const PEER_REFRESH_MS = 120_000;
-    const MARKET_REFRESH_MS = 60_000;
-
-    let tickerRotateInterval = null;
-    let waitingInterval = null;
-    let nodeRefreshInterval = null;
-    let peerRefreshInterval = null;
-    let marketRefreshInterval = null;
-
-    function formatSats(value) {
-      return `${Math.round(Number(value || 0)).toLocaleString('en-US')} sats`;
-    }
-
-    function formatUsdWhole(value) {
-      const amount = Math.round(Number(value || 0));
-      return `$${amount.toLocaleString('en-US')}`;
-    }
-
-    function formatHashrate(hashrate) {
-      const units = ['H/s', 'kH/s', 'MH/s', 'GH/s', 'TH/s', 'PH/s', 'EH/s', 'ZH/s', 'YH/s'];
-      let value = Number(hashrate || 0);
-      let unitIndex = 0;
-
-      while (value >= 1000 && unitIndex < units.length - 1) {
-        value /= 1000;
-        unitIndex += 1;
-      }
-
-      const rounded = value >= 100 ? value.toFixed(0) : value.toFixed(1);
-      return `${rounded.replace(/\.0$/, '')} ${units[unitIndex]}`;
-    }
-
-    function shortKey(key) {
-      if (!key || typeof key !== 'string') return 'unknown';
-      return key.slice(0, 15);
-    }
-
-    function truncateAlias(alias) {
-      const raw = String(alias || 'unknown').trim();
-      return raw.length <= 15 ? raw : raw.slice(0, 15);
-    }
-
-    function setTickerText(aliasText, capacityText = '') {
-      document.querySelector('#tickerText .ticker-alias').textContent = aliasText;
-      document.querySelector('#tickerText .ticker-capacity').textContent = capacityText;
-    }
-
-    function setMarketText({ price, hashrate, halving }) {
-      if (price != null) {
-        document.getElementById('btcPriceValue').textContent = price;
-      }
-      if (hashrate != null) {
-        document.getElementById('hashrateValue').textContent = hashrate;
-      }
-      if (halving != null) {
-        document.getElementById('halvingValue').textContent = halving;
-      }
-    }
-
-    function stopTickerRotation() {
-      if (tickerRotateInterval) {
-        clearInterval(tickerRotateInterval);
-        tickerRotateInterval = null;
-      }
-    }
-
-    function stopWaitingTicker() {
-      if (waitingInterval) {
-        clearInterval(waitingInterval);
-        waitingInterval = null;
-      }
-    }
-
-    function startWaitingTicker(base = 'link waiting') {
-      stopTickerRotation();
-      stopWaitingTicker();
-
-      let dots = 1;
-      setTickerText(`${base}${'.'.repeat(dots)}`.slice(0, 15), '');
-
-      waitingInterval = setInterval(() => {
-        dots = dots === 3 ? 1 : dots + 1;
-        setTickerText(`${base}${'.'.repeat(dots)}`.slice(0, 15), '');
-      }, 700);
-    }
-
-    function rotateTicker(lines, interval = 3600) {
-      if (!Array.isArray(lines) || !lines.length) {
-        startWaitingTicker('no live links');
-        return;
-      }
-
-      stopWaitingTicker();
-      stopTickerRotation();
-
-      let i = 0;
-      setTickerText(lines[0].alias, lines[0].capacity);
-
-      if (lines.length === 1) return;
-
-      tickerRotateInterval = setInterval(() => {
-        i = (i + 1) % lines.length;
-        setTickerText(lines[i].alias, lines[i].capacity);
-      }, interval);
-    }
-
-    async function fetchJson(url, timeoutMs = 12000) {
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), timeoutMs);
-
-      try {
-        const res = await fetch(url, {
-          method: 'GET',
-          cache: 'no-store',
-          headers: { 'Accept': 'application/json' },
-          signal: controller.signal
-        });
-
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
-        }
-
-        return await res.json();
-      } finally {
-        clearTimeout(timer);
-      }
-    }
-
-    async function loadNode() {
-      try {
-        const url = `${LIGHTNING_BASE}/nodes/${PUBKEY}?t=${Date.now()}`;
-        const data = await fetchJson(url);
-
-        const capacity = Number(data?.capacity || 0);
-        const channelCount = data?.opened_channel_count ?? data?.active_channel_count ?? 0;
-
-        document.getElementById('capacityValue').textContent = formatSats(capacity);
-        document.getElementById('channelsValue').textContent = Number(channelCount).toLocaleString('en-US');
-
-        return data;
-      } catch (err) {
-        console.error('loadNode failed:', err);
-        document.getElementById('capacityValue').textContent = 'Offline';
-        document.getElementById('channelsValue').textContent = 'Offline';
-        return null;
-      }
-    }
-
-    function buildPeerTickerLine(channel) {
-      const peerKey = channel?.node?.public_key;
-      const aliasRaw = channel?.node?.alias;
-      const aliasBase = typeof aliasRaw === 'string' && aliasRaw.trim()
-        ? aliasRaw.trim()
-        : shortKey(peerKey);
-
-      return {
-        alias: truncateAlias(aliasBase),
-        capacity: formatSats(channel?.capacity)
-      };
-    }
-
-    async function loadPeerTicker() {
-      try {
-        const url = `${LIGHTNING_BASE}/channels?public_key=${encodeURIComponent(PUBKEY)}&status=open&index=-1&t=${Date.now()}`;
-        const data = await fetchJson(url);
-
-        const list = Array.isArray(data)
-          ? data
-          : Array.isArray(data?.channels)
-            ? data.channels
-            : [];
-
-        if (!list.length) {
-          throw new Error('empty channel list');
-        }
-
-        const lines = list
-          .filter(ch => ch?.node?.public_key)
-          .map(buildPeerTickerLine)
-          .filter(Boolean);
-
-        if (!lines.length) {
-          throw new Error('no valid peer entries');
-        }
-
-        rotateTicker(lines, 3600);
-        return list;
-      } catch (err) {
-        console.error('loadPeerTicker failed:', err);
-        startWaitingTicker('link waiting');
-        return [];
-      }
-    }
-
-    function extractHashrate(hashrateData) {
-      if (typeof hashrateData?.currentHashrate === 'number') {
-        return hashrateData.currentHashrate;
-      }
-
-      if (Array.isArray(hashrateData?.hashrates) && hashrateData.hashrates.length) {
-        return Number(hashrateData.hashrates[hashrateData.hashrates.length - 1]?.avgHashrate || 0);
-      }
-
-      if (Array.isArray(hashrateData) && hashrateData.length) {
-        return Number(hashrateData[hashrateData.length - 1]?.avgHashrate || 0);
-      }
-
-      return 0;
-    }
-
-    async function loadMarketStrip() {
-      const results = await Promise.allSettled([
-        fetchJson(`${MEMPOOL_BASE}/v1/prices?t=${Date.now()}`),
-        fetchJson(`${MEMPOOL_BASE}/blocks/tip/height?t=${Date.now()}`),
-        fetchJson(`${MEMPOOL_BASE}/v1/mining/hashrate/3d?t=${Date.now()}`)
-      ]);
-
-      const [pricesResult, tipHeightResult, hashrateResult] = results;
-
-      if (pricesResult.status === 'fulfilled') {
-        const prices = pricesResult.value;
-        const usdPrice = prices?.USD ?? prices?.usd ?? 0;
-        setMarketText({ price: formatUsdWhole(usdPrice) });
-      } else {
-        console.error('price fetch failed:', pricesResult.reason);
-        setMarketText({ price: '$--,---' });
-      }
-
-      if (tipHeightResult.status === 'fulfilled') {
-        const height = Number(tipHeightResult.value || 0);
-        const halvingProgress = height > 0 ? ((height % 210000) / 210000) * 100 : 0;
-        setMarketText({ halving: `${halvingProgress.toFixed(1)}%` });
-      } else {
-        console.error('tip height fetch failed:', tipHeightResult.reason);
-        setMarketText({ halving: '--.-%' });
-      }
-
-      if (hashrateResult.status === 'fulfilled') {
-        const currentHashrate = extractHashrate(hashrateResult.value);
-        setMarketText({ hashrate: formatHashrate(currentHashrate) });
-      } else {
-        console.error('hashrate fetch failed:', hashrateResult.reason);
-        setMarketText({ hashrate: '--- EH/s' });
-      }
-    }
-
-    async function copyToClipboard(text) {
-      if (window.isSecureContext && navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text);
-        return;
-      }
-
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.setAttribute('readonly', '');
-      textarea.style.position = 'fixed';
-      textarea.style.top = '-9999px';
-      textarea.style.left = '-9999px';
-      document.body.appendChild(textarea);
-
-      textarea.focus();
-      textarea.select();
-
-      try {
-        const ok = document.execCommand('copy');
-        if (!ok) {
-          throw new Error('execCommand copy failed');
-        }
-      } finally {
-        document.body.removeChild(textarea);
-      }
-    }
-
-    function bindCopyLink(id, sourceText, copiedText) {
-      const el = document.getElementById(id);
-      const original = el.textContent.trim();
-
-      el.addEventListener('click', async (e) => {
-        e.preventDefault();
-
-        try {
-          await copyToClipboard(sourceText);
-          el.textContent = copiedText;
-          el.style.color = 'var(--accent)';
-
-          setTimeout(() => {
-            el.textContent = original;
-            el.style.color = '';
-          }, 1400);
-        } catch (err) {
-          console.error(`${id} copy failed:`, err);
-          el.textContent = '[ copy failed ]';
-
-          setTimeout(() => {
-            el.textContent = original;
-            el.style.color = '';
-          }, 1400);
-        }
-      });
-    }
-
-    function bindPubkeyCopy() {
-      const el = document.getElementById('pubkeyValue');
-      const original = el.textContent.trim();
-
-      el.addEventListener('click', async () => {
-        try {
-          await copyToClipboard(PUBKEY);
-          el.textContent = '[ pubkey copied ]';
-          el.classList.add('copied');
-          el.classList.remove('copy-failed');
-
-          setTimeout(() => {
-            el.textContent = original;
-            el.classList.remove('copied');
-          }, 1400);
-        } catch (err) {
-          console.error('pubkey copy failed:', err);
-          el.textContent = '[ copy failed ]';
-          el.classList.add('copy-failed');
-          el.classList.remove('copied');
-
-          setTimeout(() => {
-            el.textContent = original;
-            el.classList.remove('copy-failed');
-          }, 1400);
-        }
-      });
-    }
-
-    async function refreshAll() {
-      await Promise.all([
-        loadNode(),
-        loadPeerTicker(),
-        loadMarketStrip()
-      ]);
-    }
-
-    async function init() {
-      bindCopyLink('emailValue', EMAIL, '[ email copied ]');
-      bindCopyLink('lnurlValue', LNURL, '[ lnurl copied ]');
-      bindPubkeyCopy();
-
-      setTickerText('querying peers', 'loading sats');
-      setMarketText({
-        price: '$--,---',
-        hashrate: '--- EH/s',
-        halving: '--.-%'
-      });
-
-      await refreshAll();
-
-      nodeRefreshInterval = setInterval(() => {
-        loadNode().catch(err => console.error(err));
-      }, NODE_REFRESH_MS);
-
-      peerRefreshInterval = setInterval(() => {
-        loadPeerTicker().catch(err => console.error(err));
-      }, PEER_REFRESH_MS);
-
-      marketRefreshInterval = setInterval(() => {
-        loadMarketStrip().catch(err => console.error(err));
-      }, MARKET_REFRESH_MS);
-    }
-
-    init();
-  </script>
+  <div class="row">
+    <span class="label">CHANNELS</span><span class="fill"></span>
+    <span class="value highlight" id="channelsValue">Loading</span>
+  </div>
+
+  <div class="row">
+    <span class="label">MIN CHANNEL</span><span class="fill"></span>
+    <span class="value">3,000,000 sats</span>
+  </div>
+
+  <div class="row">
+    <span class="label">REBALANCE</span><span class="fill"></span>
+    <span class="value">Auto</span>
+  </div>
+</div>
+
+<!-- HARDWARE -->
+<div class="section">
+  <div class="section-title">[ HARDWARE ]</div>
+
+  <div class="row">
+    <span class="label">RAM</span><span class="fill"></span>
+    <span class="value highlight">64GB</span>
+  </div>
+
+  <div class="row">
+    <span class="label">STORAGE</span><span class="fill"></span>
+    <span class="value highlight">4TB NVMe</span>
+  </div>
+
+  <div class="row">
+    <span class="label">POWER</span><span class="fill"></span>
+    <span class="value">UPS Backed</span>
+  </div>
+
+  <div class="row">
+    <span class="label">UPTIME</span><span class="fill"></span>
+    <span class="value">99.9%</span>
+  </div>
+</div>
+
+<!-- ROUTING -->
+<div class="section">
+  <div class="section-title">[ ROUTING ]</div>
+
+  <div class="row">
+    <span class="label">OUTBOUND</span><span class="fill"></span>
+    <span class="value">Mild</span>
+  </div>
+
+  <div class="row">
+    <span class="label">BALANCED</span><span class="fill"></span>
+    <span class="value">Classic</span>
+  </div>
+
+  <div class="row">
+    <span class="label">INBOUND</span><span class="fill"></span>
+    <span class="value">Spicy</span>
+  </div>
+
+  <div class="row">
+    <span class="label">FEE</span><span class="fill"></span>
+    <span class="value highlight">Dynamic</span>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="section">
+  <div class="section-title">[ CONTACT ]</div>
+
+  <div class="row">
+    <span class="label">EMAIL</span><span class="fill"></span>
+    <span class="value">lospolloshermanosltd@proton.me</span>
+  </div>
+</div>
+
+<!-- PUBKEY -->
+<div class="section">
+  <div class="section-title">[ NODE ]</div>
+
+  <div class="row">
+    <span class="label">PUBKEY</span><span class="fill"></span>
+    <span class="value pubkey">
+      033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
+    </span>
+  </div>
+</div>
+
+</div>
+
+<script>
+async function loadNode(){
+  try{
+    const res = await fetch("https://mempool.space/api/v1/lightning/nodes/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28");
+    const data = await res.json();
+
+    document.getElementById("capacityValue").textContent =
+      Number(data.capacity).toLocaleString()+" sats";
+
+    document.getElementById("channelsValue").textContent =
+      Number(data.active_channel_count).toLocaleString();
+
+  }catch(e){
+    document.getElementById("capacityValue").textContent="Offline";
+    document.getElementById("channelsValue").textContent="Offline";
+  }
+}
+
+loadNode();
+setInterval(loadNode,60000);
+</script>
+
 </body>
 </html>
