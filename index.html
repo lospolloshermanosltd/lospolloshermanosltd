@@ -41,15 +41,14 @@
       align-items: flex-start; min-height: 100vh; padding: 56px 22px 72px;
     }
 
-    /* 최적화: 스캔라인 레이어 */
+    /* 최적화: 스캔라인 레이어 (will-change 추가로 성능 확보) */
     body::before {
       content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 2;
       background:
         repeating-linear-gradient(to bottom, rgba(255,255,255,0.013) 0px, rgba(255,255,255,0.013) 1px, rgba(0,0,0,0.16) 2px, rgba(0,0,0,0.16) 4px),
         linear-gradient(to bottom, rgba(31,78,121,0.028), rgba(0,0,0,0.016) 24%, rgba(243,216,13,0.018) 58%, rgba(0,0,0,0.022) 100%);
       mix-blend-mode: screen; opacity: 0.28;
-      animation: crt-drift 18s linear infinite;
-      will-change: transform;
+      animation: crt-drift 18s linear infinite; will-change: transform;
     }
 
     body::after {
@@ -60,7 +59,7 @@
 
     @keyframes crt-drift { 0% { transform: translateY(0); } 100% { transform: translateY(2px); } }
 
-    .page { position: relative; z-index: 0; width: 100%; max-width: 1080px; display: flex; flex-direction: column; align-items: center; margin: 0 auto; }
+    .page { position: relative; z-index: 0; width: 100%; max-width: 1080px; display: flex; flex-direction: column; align-items: center; }
     .brand { text-align: center; margin-bottom: var(--space-2); width: 100%; }
     .brand-title { font-family: 'JI Burrito', 'Ranchers', sans-serif; font-size: clamp(38px, 8vw, 80px); color: var(--accent); margin: 0; line-height: 1; text-shadow: 2px 2px 0 rgba(0,0,0,0.82), 0 0 12px var(--accent-glow); font-weight: 400; letter-spacing: -1px; white-space: nowrap; }
 
@@ -76,14 +75,15 @@
     .section { margin-bottom: var(--space-4); }
     .section-title { color: #fff; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; padding-bottom: 5px; border-bottom: 1px dotted var(--line); display: flex; justify-content: space-between; }
 
-    .row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; font-size: 14px; }
-    .row .label { text-transform: uppercase; white-space: nowrap; color: var(--fg-soft); }
-    .row .fill { flex: 1; border-bottom: 1px dotted rgba(31, 78, 121, 0.22); transform: translateY(-0.16em); }
-    .row .value { color: var(--fg-soft); text-align: right; }
+    /* [중요] 모든 row 정렬 방식 통일 */
+    .row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; font-size: 14px; width: 100%; }
+    .row .label { text-transform: uppercase; white-space: nowrap; color: var(--fg-soft); flex-shrink: 0; }
+    .row .fill { flex-grow: 1; border-bottom: 1px dotted rgba(31, 78, 121, 0.22); transform: translateY(-0.16em); }
+    .row .value { color: var(--fg-soft); text-align: right; flex-shrink: 0; }
     .value.highlight { color: var(--accent); font-weight: 700; }
 
-    .capacity-row .label { color: #fff; font-weight: 700; }
-    .capacity-row .value { color: var(--accent); font-weight: 700; }
+    /* [복구] CAPACITY 우측 정렬 강제 */
+    .capacity-row .value { color: var(--accent) !important; font-weight: 700; }
 
     .secure-channel-container { grid-column: 1 / -1; margin-top: var(--space-4); width: 100%; display: flex; justify-content: center; }
     .secure-channel { position: relative; padding-top: 16px; width: 100%; overflow: hidden; }
@@ -111,11 +111,13 @@
     .footer { margin-top: var(--space-4); display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
     .footer a { background: var(--brand-red); color: #fff; text-decoration: none; padding: 10px 28px; font-size: 13px; font-weight: 900; text-transform: uppercase; }
 
+    /* [복구] 모바일 레이아웃 - 중앙 정렬 및 수직 스크롤 최적화 */
     @media (max-width: 950px) {
-      body { padding: 20px 14px 32px; align-items: flex-start; }
-      .menu-container { grid-template-columns: 1fr; row-gap: 22px; }
+      body { padding: 20px 14px 72px; display: flex; justify-content: center; }
+      .menu-container { grid-template-columns: 1fr; row-gap: 22px; width: 100%; }
       .brand-title { font-size: clamp(30px, 7.2vw, 50px); }
       .pubkey { font-size: 9px; }
+      .page { width: 100%; }
     }
   </style>
 </head>
@@ -137,7 +139,7 @@
       <div class="menu-track">
         <div class="section">
           <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
-          <div class="row capacity-row"><span class="label">CAPACITY</span><span class="value" id="capacityValue">Loading</span></div>
+          <div class="row capacity-row"><span class="label">CAPACITY</span><span class="fill"></span><span class="value" id="capacityValue">Loading</span></div>
           <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value" id="channelsValue">Loading</span></div>
           <div class="row"><span class="label">MIN CHANNEL</span><span class="fill"></span><span class="value">3,000,000 sats</span></div>
           <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value">Auto</span></div>
@@ -228,7 +230,6 @@
         if (state.market.hashrate) this.el('hashrateValue').textContent = state.market.hashrate;
       },
       updateNode() {
-        // [수정] Number() 강제 형변환으로 콤마(toLocaleString) 복구
         const cap = Number(state.node.capacity);
         this.el('capacityValue').textContent = cap ? `${cap.toLocaleString()} SATS` : 'OFFLINE';
         this.el('channelsValue').textContent = Number(state.node.channels).toLocaleString();
@@ -265,8 +266,10 @@
     }
 
     const bindCopy = (id, val, msg) => {
-      const el = UI.el(id); const orig = el.textContent;
+      const el = UI.el(id); if(!el) return;
+      const orig = el.textContent;
       el.addEventListener('click', async (e) => {
+        if (el.tagName === 'A' && el.getAttribute('href').startsWith('mailto')) return;
         e.preventDefault(); await copyToClipboard(val);
         el.textContent = msg; setTimeout(() => { el.textContent = orig; }, 1400);
       });
