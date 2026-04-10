@@ -512,41 +512,40 @@
 
     .system-indicator {
       position: fixed;
-      right: 16px;
+      right: 18px;
       bottom: 14px;
       z-index: 4;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 4px 8px;
-      border: 1px solid rgba(31, 78, 121, 0.34);
-      background: rgba(0, 0, 0, 0.32);
-      box-shadow:
-        0 0 8px rgba(31, 78, 121, 0.10),
-        0 0 10px rgba(124, 252, 0, 0.04);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
+      gap: 7px;
+      padding: 0;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
       pointer-events: none;
+      opacity: 0.72;
     }
 
     .system-spinner {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      border: 1px solid rgba(124, 252, 0, 0.22);
-      border-top-color: var(--terminal-green);
-      border-right-color: rgba(124, 252, 0, 0.78);
-      box-shadow: 0 0 6px rgba(124, 252, 0, 0.12);
+      border: 1px solid rgba(124, 252, 0, 0.10);
+      border-top-color: rgba(124, 252, 0, 0.82);
+      border-right-color: rgba(124, 252, 0, 0.48);
+      border-bottom-color: rgba(124, 252, 0, 0.12);
+      border-left-color: rgba(124, 252, 0, 0.06);
+      box-shadow: 0 0 4px rgba(124, 252, 0, 0.06);
       animation: system-spin 2.2s linear infinite;
       flex: 0 0 auto;
     }
 
     .system-label {
-      font-size: 10px;
+      font-size: 9px;
       line-height: 1;
-      letter-spacing: 0.04em;
-      color: rgba(124, 252, 0, 0.62);
-      text-shadow: 0 0 5px rgba(124, 252, 0, 0.10);
+      letter-spacing: 0.05em;
+      color: rgba(124, 252, 0, 0.50);
+      text-shadow: 0 0 4px rgba(124, 252, 0, 0.06);
       text-transform: lowercase;
       white-space: nowrap;
     }
@@ -652,12 +651,11 @@
       .system-indicator {
         right: 12px;
         bottom: 12px;
-        padding: 4px 7px;
-        gap: 7px;
+        gap: 6px;
       }
 
       .system-label {
-        font-size: 9px;
+        font-size: 8px;
       }
     }
 
@@ -705,7 +703,7 @@
       }
 
       .system-label {
-        font-size: 9px;
+        font-size: 8px;
       }
     }
   </style>
@@ -809,7 +807,7 @@
 
   <div class="system-indicator" aria-label="lightning routing status">
     <span class="system-spinner" aria-hidden="true"></span>
-    <span class="system-label">routing active</span>
+    <span class="system-label">ln routing</span>
   </div>
 
   <script>
