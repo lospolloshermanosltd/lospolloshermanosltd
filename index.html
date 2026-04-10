@@ -42,7 +42,7 @@
       margin: 0;
       padding: 0;
       width: 100%;
-      height: 100%;
+      min-height: 100%;
       background: var(--bg);
       color: var(--fg);
       font-family: 'IBM Plex Mono', monospace;
@@ -60,7 +60,7 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 22px 22px 18px;
+      padding: 20px 22px 18px;
       overflow: hidden;
     }
 
@@ -74,7 +74,7 @@
 
     .brand {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
     }
 
     .brand-title {
@@ -88,22 +88,50 @@
       letter-spacing: -1px;
     }
 
-    .brand .sub {
-      margin-top: 5px;
-      color: var(--fg-dim);
-      font-size: 11px;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
+    .market-strip {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 18px;
+      min-height: 18px;
     }
 
-    .routing-title {
+    .market-line {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 3ch;
+      max-width: 100%;
+      min-width: 0;
+      color: var(--fg-dim);
+      font-size: 11px;
+      letter-spacing: 0.03em;
+      text-shadow: 0 0 6px rgba(243, 216, 13, 0.08);
+      white-space: nowrap;
+    }
+
+    .market-prompt {
       color: var(--accent);
-      font-size: 18px;
-      font-weight: bold;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      text-shadow: 0 0 5px var(--accent-glow);
+      text-shadow: 0 0 6px var(--accent-glow);
+      animation: market-pulse 1.35s ease-in-out infinite;
+      flex: 0 0 auto;
+    }
+
+    .market-item {
+      color: var(--fg-dim);
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    .market-item strong {
+      color: var(--accent);
+      font-weight: 700;
+      text-shadow: 0 0 5px rgba(243,216,13,0.14);
+    }
+
+    @keyframes market-pulse {
+      0%   { opacity: 0.35; }
+      50%  { opacity: 1; }
+      100% { opacity: 0.35; }
     }
 
     .menu-container {
@@ -279,23 +307,21 @@
       box-shadow: 0 0 12px rgba(31, 78, 121, 0.2);
       overflow: hidden;
       animation: node-pulse 2.5s infinite;
-      width: fit-content;
-      min-width: 0;
-      max-width: min(100%, 68ch);
+      width: min(100%, calc(66ch + 24px));
       margin: 0 auto;
     }
 
     .pubkey {
-      font-size: 12px;
+      font-size: 11px;
       line-height: 1.2;
       color: rgba(230, 230, 230, 0.62);
-      padding: 9px 14px;
+      padding: 8px 12px;
       white-space: nowrap;
       transition: color 0.2s ease, background-color 0.2s ease;
       cursor: pointer;
       user-select: none;
       text-align: center;
-      min-height: 38px;
+      min-height: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -304,7 +330,6 @@
     .pubkey.copied,
     .pubkey.copy-failed {
       color: var(--accent);
-      letter-spacing: 0.02em;
       text-shadow: 0 0 6px var(--accent-glow);
     }
 
@@ -425,7 +450,6 @@
 
     @media (max-width: 950px) {
       html {
-        height: auto;
         overflow-x: hidden;
         overflow-y: auto;
       }
@@ -433,10 +457,9 @@
       body {
         display: block;
         min-height: auto;
-        height: auto;
         overflow-x: hidden;
         overflow-y: auto;
-        padding: 20px 15px 28px;
+        padding: 18px 15px 28px;
       }
 
       .page {
@@ -452,6 +475,17 @@
         font-size: 50px;
       }
 
+      .market-strip {
+        margin-bottom: 16px;
+      }
+
+      .market-line {
+        flex-wrap: wrap;
+        justify-content: center;
+        row-gap: 6px;
+        white-space: normal;
+      }
+
       .pubkey-block {
         width: 100%;
         max-width: 100%;
@@ -461,7 +495,7 @@
         white-space: normal;
         word-break: break-all;
         font-size: 11px;
-        padding: 9px 12px;
+        padding: 8px 10px;
       }
 
       .status-strip {
@@ -487,10 +521,16 @@
   <div class="page">
     <div class="brand">
       <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
-      <div class="sub">IF THE ROUTE MATTERS, THE KITCHEN IS OPEN.</div>
     </div>
 
-    <div class="routing-title">ROUTING MENU</div>
+    <div class="market-strip" aria-label="bitcoin network summary">
+      <div class="market-line" id="marketLine">
+        <span class="market-prompt">&gt;</span>
+        <span class="market-item" id="btcPriceItem">BTC <strong>$--,---</strong></span>
+        <span class="market-item" id="hashrateItem">HASH <strong>--- EH/s</strong></span>
+        <span class="market-item" id="halvingItem">HALVING <strong>--.-%</strong></span>
+      </div>
+    </div>
 
     <div class="menu-container">
       <div class="menu-track">
@@ -578,15 +618,20 @@
     const PUBKEY = '033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28';
     const EMAIL = 'lospolloshermanosltd@proton.me';
     const LNURL = 'order@oksu.su';
-    const API_BASE = 'https://mempool.space/api/v1/lightning';
+
+    const MEMPOOL_BASE = 'https://mempool.space/api';
+    const LIGHTNING_BASE = 'https://mempool.space/api/v1/lightning';
+
     const NODE_REFRESH_MS = 60_000;
     const PEER_REFRESH_MS = 120_000;
+    const MARKET_REFRESH_MS = 60_000;
     const FLOW_REFRESH_MS = 2_400;
 
     let tickerRotateInterval = null;
     let waitingInterval = null;
     let nodeRefreshInterval = null;
     let peerRefreshInterval = null;
+    let marketRefreshInterval = null;
     let flowInterval = null;
 
     function formatBTCFromSats(value) {
@@ -597,21 +642,44 @@
       return `${Math.round(Number(value || 0)).toLocaleString('en-US')} sats`;
     }
 
+    function formatUsdWhole(value) {
+      const amount = Math.round(Number(value || 0));
+      return `$${amount.toLocaleString('en-US')}`;
+    }
+
+    function formatHashrate(hashrate) {
+      const units = ['H/s', 'kH/s', 'MH/s', 'GH/s', 'TH/s', 'PH/s', 'EH/s', 'ZH/s', 'YH/s'];
+      let value = Number(hashrate || 0);
+      let unitIndex = 0;
+
+      while (value >= 1000 && unitIndex < units.length - 1) {
+        value /= 1000;
+        unitIndex += 1;
+      }
+
+      const rounded = value >= 100 ? value.toFixed(0) : value.toFixed(1);
+      return `${rounded.replace(/\.0$/, '')} ${units[unitIndex]}`;
+    }
+
     function shortKey(key) {
       if (!key || typeof key !== 'string') return 'unknown';
-      if (key.length <= 15) return key;
       return key.slice(0, 15);
     }
 
     function truncateAlias(alias) {
       const raw = String(alias || 'unknown').trim();
-      if (raw.length <= 15) return raw;
-      return raw.slice(0, 15);
+      return raw.length <= 15 ? raw : raw.slice(0, 15);
     }
 
     function setTickerText(aliasText, capacityText = '') {
       document.querySelector('#tickerText .ticker-alias').textContent = aliasText;
       document.querySelector('#tickerText .ticker-capacity').textContent = capacityText;
+    }
+
+    function setMarketText({ price, hashrate, halving }) {
+      document.getElementById('btcPriceItem').innerHTML = `BTC <strong>${price}</strong>`;
+      document.getElementById('hashrateItem').innerHTML = `HASH <strong>${hashrate}</strong>`;
+      document.getElementById('halvingItem').innerHTML = `HALVING <strong>${halving}</strong>`;
     }
 
     function stopTickerRotation() {
@@ -669,9 +737,7 @@
         const res = await fetch(url, {
           method: 'GET',
           cache: 'no-store',
-          headers: {
-            'Accept': 'application/json'
-          },
+          headers: { 'Accept': 'application/json' },
           signal: controller.signal
         });
 
@@ -687,15 +753,11 @@
 
     async function loadNode() {
       try {
-        const cacheBust = `t=${Date.now()}`;
-        const url = `${API_BASE}/nodes/${PUBKEY}?${cacheBust}`;
+        const url = `${LIGHTNING_BASE}/nodes/${PUBKEY}?t=${Date.now()}`;
         const data = await fetchJson(url);
 
         const capacity = Number(data?.capacity || 0);
-        const channelCount =
-          data?.opened_channel_count ??
-          data?.active_channel_count ??
-          0;
+        const channelCount = data?.opened_channel_count ?? data?.active_channel_count ?? 0;
 
         document.getElementById('capacityValue').textContent = formatBTCFromSats(capacity);
         document.getElementById('channelsValue').textContent = Number(channelCount).toLocaleString('en-US');
@@ -724,8 +786,7 @@
 
     async function loadPeerTicker() {
       try {
-        const cacheBust = `t=${Date.now()}`;
-        const url = `${API_BASE}/channels?public_key=${encodeURIComponent(PUBKEY)}&status=open&index=-1&${cacheBust}`;
+        const url = `${LIGHTNING_BASE}/channels?public_key=${encodeURIComponent(PUBKEY)}&status=open&index=-1&t=${Date.now()}`;
         const data = await fetchJson(url);
 
         const list = Array.isArray(data)
@@ -753,6 +814,43 @@
         console.error('loadPeerTicker failed:', err);
         startWaitingTicker('link waiting');
         return [];
+      }
+    }
+
+    async function loadMarketStrip() {
+      try {
+        const [prices, tipHeight, hashrateData] = await Promise.all([
+          fetchJson(`${MEMPOOL_BASE}/v1/prices?t=${Date.now()}`),
+          fetchJson(`${MEMPOOL_BASE}/blocks/tip/height?t=${Date.now()}`),
+          fetchJson(`${MEMPOOL_BASE}/v1/mining/hashrate/3d?t=${Date.now()}`)
+        ]);
+
+        const usdPrice = prices?.USD ?? prices?.usd ?? 0;
+        const height = Number(tipHeight || 0);
+
+        let currentHashrate = 0;
+        if (typeof hashrateData?.currentHashrate === 'number') {
+          currentHashrate = hashrateData.currentHashrate;
+        } else if (Array.isArray(hashrateData?.hashrates) && hashrateData.hashrates.length) {
+          currentHashrate = Number(hashrateData.hashrates[hashrateData.hashrates.length - 1]?.avgHashrate || 0);
+        } else if (Array.isArray(hashrateData) && hashrateData.length) {
+          currentHashrate = Number(hashrateData[hashrateData.length - 1]?.avgHashrate || 0);
+        }
+
+        const halvingProgress = height > 0 ? ((height % 210000) / 210000) * 100 : 0;
+
+        setMarketText({
+          price: formatUsdWhole(usdPrice),
+          hashrate: formatHashrate(currentHashrate),
+          halving: `${halvingProgress.toFixed(1)}%`
+        });
+      } catch (err) {
+        console.error('loadMarketStrip failed:', err);
+        setMarketText({
+          price: '$--,---',
+          hashrate: '--- EH/s',
+          halving: '--.-%'
+        });
       }
     }
 
@@ -822,8 +920,11 @@
     }
 
     async function refreshAll() {
-      await loadNode();
-      await loadPeerTicker();
+      await Promise.all([
+        loadNode(),
+        loadPeerTicker(),
+        loadMarketStrip()
+      ]);
     }
 
     async function init() {
@@ -835,6 +936,11 @@
       flowInterval = setInterval(randomizeFlow, FLOW_REFRESH_MS);
 
       setTickerText('querying peers', 'loading sats');
+      setMarketText({
+        price: '$--,---',
+        hashrate: '--- EH/s',
+        halving: '--.-%'
+      });
 
       await refreshAll();
 
@@ -845,6 +951,10 @@
       peerRefreshInterval = setInterval(() => {
         loadPeerTicker().catch(err => console.error(err));
       }, PEER_REFRESH_MS);
+
+      marketRefreshInterval = setInterval(() => {
+        loadMarketStrip().catch(err => console.error(err));
+      }, MARKET_REFRESH_MS);
     }
 
     init();
