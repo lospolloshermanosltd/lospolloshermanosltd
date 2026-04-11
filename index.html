@@ -636,7 +636,7 @@
 
     .ticker-text {
       display: inline-flex;
-      align-items: baseline;
+      align-items: center;
       justify-content: flex-start;
       gap: 2ch;
       width: 32ch;
@@ -647,49 +647,68 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .ticker-slot {
+      position: relative;
+      overflow: hidden;
+      height: 1.22em;
+      line-height: 1.22;
+    }
+
+    .alias-slot {
+      flex: 0 0 15ch;
+      width: 15ch;
+      min-width: 15ch;
+      max-width: 15ch;
+      text-align: left;
+    }
+
+    .capacity-slot {
+      flex: 0 0 15ch;
+      width: 15ch;
+      min-width: 15ch;
+      max-width: 15ch;
+      text-align: right;
+    }
+
+    .ticker-reel {
+      display: flex;
+      flex-direction: column;
+      transform: translateY(0);
+      opacity: 1;
+      will-change: transform, opacity;
+    }
+
+    .ticker-reel.is-rolling {
+      transform: translateY(-50%);
+      opacity: 0.92;
+      transition:
+        transform 190ms cubic-bezier(0.36, 0, 0.2, 1),
+        opacity 160ms linear;
+    }
+
+    .ticker-face {
+      display: flex;
+      align-items: center;
+      height: 1.22em;
+      line-height: 1.22;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: clip;
+    }
+
     .ticker-alias,
     .ticker-capacity {
       transition: color 120ms linear, text-shadow 120ms linear, opacity 120ms linear;
     }
 
     .ticker-alias {
-      flex: 0 0 15ch;
-      width: 15ch;
-      min-width: 15ch;
-      max-width: 15ch;
-      overflow: hidden;
-      white-space: nowrap;
+      justify-content: flex-start;
       text-align: left;
-      text-overflow: clip;
     }
 
     .ticker-capacity {
-      flex: 0 0 15ch;
-      width: 15ch;
-      min-width: 15ch;
-      max-width: 15ch;
-      white-space: nowrap;
+      justify-content: flex-end;
       text-align: right;
-    }
-
-    .ticker-flash .ticker-alias,
-    .ticker-flash .ticker-capacity {
-      animation: ticker-refresh 240ms steps(2, end);
-    }
-
-    @keyframes ticker-refresh {
-      0% {
-        opacity: 0.38;
-        text-shadow: none;
-      }
-      45% {
-        opacity: 1;
-        text-shadow: 0 0 6px rgba(124, 252, 0, 0.18);
-      }
-      100% {
-        opacity: 1;
-        text-shadow: none;
-      }
     }
 
     @keyframes live-pulse {
@@ -834,12 +853,17 @@
         text-align: center;
       }
 
-      .ticker-alias,
-      .ticker-capacity {
+      .alias-slot,
+      .capacity-slot {
         width: auto;
         min-width: 0;
         max-width: none;
         flex: 1 1 auto;
+      }
+
+      .ticker-alias,
+      .ticker-capacity {
+        justify-content: center;
         text-align: center;
       }
 
@@ -988,9 +1012,21 @@
 
             <div class="status-strip">
               <span class="live-dot"></span>
+
               <div class="ticker-text" id="tickerText">
-                <span class="ticker-alias">querying peers</span>
-                <span class="ticker-capacity">loading sats</span>
+                <span class="ticker-slot alias-slot">
+                  <span class="ticker-reel" id="tickerAliasReel">
+                    <span class="ticker-face ticker-alias" id="tickerAliasCurrent">querying peers</span>
+                    <span class="ticker-face ticker-alias" id="tickerAliasNext">querying peers</span>
+                  </span>
+                </span>
+
+                <span class="ticker-slot capacity-slot">
+                  <span class="ticker-reel" id="tickerCapacityReel">
+                    <span class="ticker-face ticker-capacity" id="tickerCapacityCurrent">loading sats</span>
+                    <span class="ticker-face ticker-capacity" id="tickerCapacityNext">loading sats</span>
+                  </span>
+                </span>
               </div>
             </div>
           </div>
@@ -1029,7 +1065,8 @@
       },
 
       TICKER: {
-        ALIAS_LEN: 15
+        ALIAS_LEN: 15,
+        ROLL_MS: 190
       }
     };
 
@@ -1057,8 +1094,12 @@
       hashrate: document.getElementById("hashrateValue"),
       halving: document.getElementById("halvingValue"),
       tickerText: document.getElementById("tickerText"),
-      tickerAlias: document.querySelector("#tickerText .ticker-alias"),
-      tickerCapacity: document.querySelector("#tickerText .ticker-capacity"),
+      tickerAliasReel: document.getElementById("tickerAliasReel"),
+      tickerCapacityReel: document.getElementById("tickerCapacityReel"),
+      tickerAliasCurrent: document.getElementById("tickerAliasCurrent"),
+      tickerAliasNext: document.getElementById("tickerAliasNext"),
+      tickerCapacityCurrent: document.getElementById("tickerCapacityCurrent"),
+      tickerCapacityNext: document.getElementById("tickerCapacityNext"),
       email: document.getElementById("emailValue"),
       lnurl: document.getElementById("lnurlValue"),
       pubkey: document.getElementById("pubkeyValue")
@@ -1068,7 +1109,8 @@
       tickerIntervalId: null,
       taskTimers: new Map(),
       taskControllers: new Map(),
-      tickerFlashTimeoutId: null
+      aliasRollTimeoutId: null,
+      capacityRollTimeoutId: null
     };
 
     function formatSats(value) {
@@ -1132,20 +1174,6 @@
       }
     }
 
-    function pulseTicker() {
-      dom.tickerText.classList.remove("ticker-flash");
-      void dom.tickerText.offsetWidth;
-      dom.tickerText.classList.add("ticker-flash");
-
-      if (runtime.tickerFlashTimeoutId) {
-        clearTimeout(runtime.tickerFlashTimeoutId);
-      }
-
-      runtime.tickerFlashTimeoutId = setTimeout(() => {
-        dom.tickerText.classList.remove("ticker-flash");
-      }, 260);
-    }
-
     async function fetchJson(url, { timeoutMs = CONFIG.FETCH.TIMEOUT_MS, signal } = {}) {
       const localController = new AbortController();
       const timeoutId = setTimeout(() => localController.abort(), timeoutMs);
@@ -1203,10 +1231,66 @@
       throw new Error(errors.join(" | "));
     }
 
-    function setTickerText(aliasText, capacityText = "") {
-      dom.tickerAlias.textContent = aliasText;
-      dom.tickerCapacity.textContent = capacityText;
-      pulseTicker();
+    function setTickerField(reel, currentEl, nextEl, value, timeoutKey, animate = true) {
+      const text = String(value ?? "");
+
+      if (!animate) {
+        currentEl.textContent = text;
+        nextEl.textContent = text;
+        reel.classList.remove("is-rolling");
+
+        if (runtime[timeoutKey]) {
+          clearTimeout(runtime[timeoutKey]);
+          runtime[timeoutKey] = null;
+        }
+        return;
+      }
+
+      if (currentEl.textContent === text && !reel.classList.contains("is-rolling")) {
+        nextEl.textContent = text;
+        return;
+      }
+
+      if (runtime[timeoutKey]) {
+        clearTimeout(runtime[timeoutKey]);
+        runtime[timeoutKey] = null;
+      }
+
+      if (reel.classList.contains("is-rolling")) {
+        currentEl.textContent = nextEl.textContent || currentEl.textContent;
+        reel.classList.remove("is-rolling");
+      }
+
+      nextEl.textContent = text;
+      void reel.offsetWidth;
+      reel.classList.add("is-rolling");
+
+      runtime[timeoutKey] = setTimeout(() => {
+        currentEl.textContent = text;
+        nextEl.textContent = text;
+        reel.classList.remove("is-rolling");
+        runtime[timeoutKey] = null;
+      }, CONFIG.TICKER.ROLL_MS);
+    }
+
+    function setTickerText(aliasText, capacityText = "", { animate = true } = {}) {
+      setTickerField(
+        dom.tickerAliasReel,
+        dom.tickerAliasCurrent,
+        dom.tickerAliasNext,
+        aliasText,
+        "aliasRollTimeoutId",
+        animate
+      );
+
+      setTickerField(
+        dom.tickerCapacityReel,
+        dom.tickerCapacityCurrent,
+        dom.tickerCapacityNext,
+        capacityText,
+        "capacityRollTimeoutId",
+        animate
+      );
     }
 
     function renderMarket() {
@@ -1242,7 +1326,7 @@
 
     function renderTickerFrame() {
       if (!Array.isArray(state.peers) || state.peers.length === 0) {
-        setTickerText("link waiting", "");
+        setTickerText("link waiting", "", { animate: true });
         return;
       }
 
@@ -1251,14 +1335,14 @@
       const alias = truncateAlias(aliasRaw);
       const capacity = formatSats(peer?.capacity || 0);
 
-      setTickerText(alias, capacity);
+      setTickerText(alias, capacity, { animate: true });
       state.tickerIndex = (state.tickerIndex + 1) % state.peers.length;
     }
 
     function startTicker() {
       stopTicker();
-
       renderTickerFrame();
+
       runtime.tickerIntervalId = setInterval(() => {
         renderTickerFrame();
       }, CONFIG.INTERVALS.TICKER_ROTATE);
@@ -1270,10 +1354,18 @@
         runtime.tickerIntervalId = null;
       }
 
-      if (runtime.tickerFlashTimeoutId) {
-        clearTimeout(runtime.tickerFlashTimeoutId);
-        runtime.tickerFlashTimeoutId = null;
+      if (runtime.aliasRollTimeoutId) {
+        clearTimeout(runtime.aliasRollTimeoutId);
+        runtime.aliasRollTimeoutId = null;
       }
+
+      if (runtime.capacityRollTimeoutId) {
+        clearTimeout(runtime.capacityRollTimeoutId);
+        runtime.capacityRollTimeoutId = null;
+      }
+
+      dom.tickerAliasReel.classList.remove("is-rolling");
+      dom.tickerCapacityReel.classList.remove("is-rolling");
     }
 
     function buildPeerTickerList(raw) {
@@ -1514,7 +1606,7 @@
 
       renderMarket();
       renderNode();
-      setTickerText("querying peers", "loading sats");
+      setTickerText("querying peers", "loading sats", { animate: false });
       startTicker();
     }
 
