@@ -639,7 +639,7 @@
       align-items: center;
       justify-content: flex-start;
       gap: 2ch;
-      width: 32ch;
+      width: 36ch;
       max-width: 100%;
       min-width: 0;
       text-align: left;
@@ -650,8 +650,8 @@
     .ticker-slot {
       position: relative;
       overflow: hidden;
-      height: 1.22em;
-      line-height: 1.22;
+      height: 1.24em;
+      line-height: 1.24;
     }
 
     .alias-slot {
@@ -659,41 +659,55 @@
       width: 15ch;
       min-width: 15ch;
       max-width: 15ch;
-      text-align: left;
     }
 
     .capacity-slot {
-      flex: 0 0 15ch;
-      width: 15ch;
-      min-width: 15ch;
-      max-width: 15ch;
-      text-align: right;
+      flex: 0 0 19ch;
+      width: 19ch;
+      min-width: 19ch;
+      max-width: 19ch;
     }
 
     .ticker-reel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .ticker-face {
+      position: absolute;
+      inset: 0;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      line-height: 1.24;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: clip;
       transform: translateY(0);
       opacity: 1;
       will-change: transform, opacity;
     }
 
-    .ticker-reel.is-rolling {
-      transform: translateY(-50%);
-      opacity: 0.92;
-      transition:
-        transform 190ms cubic-bezier(0.36, 0, 0.2, 1),
-        opacity 160ms linear;
+    .ticker-face.next {
+      transform: translateY(100%);
+      opacity: 0;
     }
 
-    .ticker-face {
-      display: flex;
-      align-items: center;
-      height: 1.22em;
-      line-height: 1.22;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: clip;
+    .ticker-reel.is-rolling .ticker-face.current {
+      transform: translateY(-100%);
+      opacity: 0.18;
+      transition:
+        transform 210ms cubic-bezier(0.32, 0, 0.2, 1),
+        opacity 150ms linear;
+    }
+
+    .ticker-reel.is-rolling .ticker-face.next {
+      transform: translateY(0);
+      opacity: 1;
+      transition:
+        transform 210ms cubic-bezier(0.32, 0, 0.2, 1),
+        opacity 170ms linear;
     }
 
     .ticker-alias,
@@ -1016,15 +1030,15 @@
               <div class="ticker-text" id="tickerText">
                 <span class="ticker-slot alias-slot">
                   <span class="ticker-reel" id="tickerAliasReel">
-                    <span class="ticker-face ticker-alias" id="tickerAliasCurrent">querying peers</span>
-                    <span class="ticker-face ticker-alias" id="tickerAliasNext">querying peers</span>
+                    <span class="ticker-face ticker-alias current" id="tickerAliasCurrent">querying peers</span>
+                    <span class="ticker-face ticker-alias next" id="tickerAliasNext">querying peers</span>
                   </span>
                 </span>
 
                 <span class="ticker-slot capacity-slot">
                   <span class="ticker-reel" id="tickerCapacityReel">
-                    <span class="ticker-face ticker-capacity" id="tickerCapacityCurrent">loading sats</span>
-                    <span class="ticker-face ticker-capacity" id="tickerCapacityNext">loading sats</span>
+                    <span class="ticker-face ticker-capacity current" id="tickerCapacityCurrent">loading sats</span>
+                    <span class="ticker-face ticker-capacity next" id="tickerCapacityNext">loading sats</span>
                   </span>
                 </span>
               </div>
@@ -1066,7 +1080,7 @@
 
       TICKER: {
         ALIAS_LEN: 15,
-        ROLL_MS: 190
+        ROLL_MS: 215
       }
     };
 
@@ -1093,7 +1107,6 @@
       blockHeight: document.getElementById("blockHeightValue"),
       hashrate: document.getElementById("hashrateValue"),
       halving: document.getElementById("halvingValue"),
-      tickerText: document.getElementById("tickerText"),
       tickerAliasReel: document.getElementById("tickerAliasReel"),
       tickerCapacityReel: document.getElementById("tickerCapacityReel"),
       tickerAliasCurrent: document.getElementById("tickerAliasCurrent"),
@@ -1246,22 +1259,21 @@
         return;
       }
 
-      if (currentEl.textContent === text && !reel.classList.contains("is-rolling")) {
+      if (runtime[timeoutKey]) {
+        clearTimeout(runtime[timeoutKey]);
+        runtime[timeoutKey] = null;
+
+        reel.classList.remove("is-rolling");
+        currentEl.textContent = nextEl.textContent || currentEl.textContent;
+      }
+
+      if (currentEl.textContent === text) {
         nextEl.textContent = text;
         return;
       }
 
-      if (runtime[timeoutKey]) {
-        clearTimeout(runtime[timeoutKey]);
-        runtime[timeoutKey] = null;
-      }
-
-      if (reel.classList.contains("is-rolling")) {
-        currentEl.textContent = nextEl.textContent || currentEl.textContent;
-        reel.classList.remove("is-rolling");
-      }
-
       nextEl.textContent = text;
+
       void reel.offsetWidth;
       reel.classList.add("is-rolling");
 
