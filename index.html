@@ -117,10 +117,12 @@
       opacity: 0.95;
     }
 
+    /* ─── PAUSED VISUALS ─── */
     .paused-visuals body::before,
     .paused-visuals .market-prompt,
     .paused-visuals .packet,
     .paused-visuals .secure-channel::before,
+    .paused-visuals .secure-channel::after,
     .paused-visuals .live-dot {
       animation-play-state: paused !important;
     }
@@ -335,6 +337,7 @@
       overflow: hidden;
     }
 
+    /* ─── DASHED ROUTING LINE — syncs surge with > blink at 3.2s ─── */
     .secure-channel::before {
       content: "";
       position: absolute;
@@ -344,41 +347,106 @@
       height: 1px;
       background: linear-gradient(90deg, var(--line) 50%, transparent 50%);
       background-size: 15px 1px;
-      animation: routing-flow var(--flow-duration) linear infinite;
-      opacity: 0.68;
-      will-change: background-position;
+      animation:
+        routing-flow var(--flow-duration) linear infinite,
+        line-surge var(--flow-duration) ease-in-out infinite;
+      will-change: background-position, opacity;
+    }
+
+    /* ─── SWEEP GLOW — soft energy pulse slides across the wire ─── */
+    .secure-channel::after {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -80px;
+      width: 80px;
+      height: 5px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(243, 216, 13, 0.18) 40%,
+        rgba(255, 255, 200, 0.32) 50%,
+        rgba(243, 216, 13, 0.18) 60%,
+        transparent 100%
+      );
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0;
+      animation: sweep-glow var(--packet-duration) linear infinite;
+      will-change: transform, opacity;
     }
 
     .packet-layer {
       position: absolute;
-      top: -4px;
+      top: -5px;
       left: 0;
       width: 100%;
-      height: 12px;
+      height: 14px;
       pointer-events: none;
       overflow: hidden;
     }
 
+    /* ─── BASE PACKET — standard charge with electric comet tail ─── */
     .packet {
       position: absolute;
       top: 50%;
-      left: -32px;
-      width: 4px;
-      height: 4px;
-      margin-top: -2px;
+      left: -48px;
+      width: 5px;
+      height: 5px;
+      margin-top: -2.5px;
       border-radius: 50%;
-      background: var(--accent);
+      background: #fffde0;
       box-shadow:
-        0 0 6px rgba(243, 216, 13, 0.34),
-        0 0 12px rgba(243, 216, 13, 0.18),
-        0 0 18px rgba(243, 216, 13, 0.08);
+        0 0 3px 1px rgba(255, 255, 220, 0.95),
+        0 0 7px 2px rgba(243, 216, 13, 0.85),
+        0 0 14px 3px rgba(243, 216, 13, 0.45),
+        -8px  0 6px  0 rgba(243, 216, 13, 0.60),
+        -18px 0 10px 0 rgba(243, 216, 13, 0.32),
+        -34px 0 14px 0 rgba(243, 216, 13, 0.14),
+        -52px 0 22px 0 rgba(243, 216, 13, 0.05);
       opacity: 0;
       animation: packet-travel var(--packet-duration) linear infinite;
       will-change: transform, opacity;
     }
 
+    /* p2 — offset by half a cycle */
     .packet.p2 {
       animation-delay: 2.15s;
+    }
+
+    /* p3 — fast small spark, pure white arc flash (hottest point of the circuit) */
+    .packet.p3 {
+      animation-delay: 3.7s;
+      animation-duration: 3.6s;
+      width: 3px;
+      height: 3px;
+      margin-top: -1.5px;
+      background: #ffffff;
+      box-shadow:
+        0 0 2px 1px rgba(255, 255, 255, 0.98),
+        0 0 5px 2px rgba(255, 255, 255, 0.70),
+        0 0 10px 2px rgba(255, 253, 220, 0.35),
+        -6px  0 5px  0 rgba(255, 255, 255, 0.52),
+        -14px 0 8px  0 rgba(243, 216, 13, 0.22),
+        -26px 0 12px 0 rgba(243, 216, 13, 0.08);
+    }
+
+    /* p4 — slow large surge, longer tail */
+    .packet.p4 {
+      animation-delay: 1.05s;
+      animation-duration: 7.4s;
+      width: 6px;
+      height: 6px;
+      margin-top: -3px;
+      background: rgba(255, 252, 180, 0.95);
+      box-shadow:
+        0 0 4px 2px rgba(255, 252, 180, 0.90),
+        0 0 10px 3px rgba(243, 216, 13, 0.75),
+        0 0 20px 5px rgba(243, 216, 13, 0.35),
+        -10px 0 8px  0 rgba(243, 216, 13, 0.55),
+        -22px 0 14px 0 rgba(243, 216, 13, 0.28),
+        -42px 0 20px 0 rgba(243, 216, 13, 0.12),
+        -65px 0 28px 0 rgba(243, 216, 13, 0.05);
     }
 
     @keyframes routing-flow {
@@ -386,13 +454,30 @@
       100% { background-position: 15px 0; }
     }
 
+    /* synced to > blink (3.2s) — line flares up as cursor peaks */
+    @keyframes line-surge {
+      0%   { opacity: 0.52; }
+      46%  { opacity: 1.00; }
+      54%  { opacity: 1.00; }
+      100% { opacity: 0.52; }
+    }
+
+    /* sweep matches packet-duration so it travels alongside p1 */
+    @keyframes sweep-glow {
+      0%   { transform: translateX(0);     opacity: 0;    }
+      6%   { opacity: 0.90; }
+      80%  { opacity: 0.55; }
+      94%  { opacity: 0;    }
+      100% { transform: translateX(calc(100vw + 80px)); opacity: 0; }
+    }
+
     @keyframes packet-travel {
-      0%   { transform: translateX(0) scale(0.82); opacity: 0; }
-      7%   { opacity: 0.12; }
-      16%  { opacity: 0.68; transform: translateX(15vw) scale(1); }
-      48%  { opacity: 0.88; transform: translateX(48vw) scale(1.08); }
-      78%  { opacity: 0.58; transform: translateX(80vw) scale(1); }
-      100% { transform: translateX(100vw) scale(0.86); opacity: 0; }
+      0%   { transform: translateX(0)     scale(0.80); opacity: 0;    }
+      7%   { opacity: 0.14; }
+      16%  { opacity: 0.72; transform: translateX(15vw)  scale(1.00); }
+      48%  { opacity: 0.92; transform: translateX(48vw)  scale(1.10); }
+      78%  { opacity: 0.60; transform: translateX(80vw)  scale(1.00); }
+      100% { transform: translateX(100vw) scale(0.84); opacity: 0;    }
     }
 
     .pubkey-wrap {
@@ -802,7 +887,7 @@
           <div class="row">
             <span class="label">EMAIL</span><span class="fill"></span>
             <span class="value">
-              <a href="#" class="clickable" id="emailValue" title="Click to copy email">lospolloshermanosltd@proton.me</a>
+              <a href="#" class="clickable" id="emailValue" title="Click to copy email"><span class="__cf_email__" data-cfemail="8ee2e1fdfee1e2e2e1fde6ebfce3efe0e1fde2faeacefefce1fae1e0a0e3eb">[email&#160;protected]</span></a>
             </span>
           </div>
           <div class="row">
@@ -812,7 +897,7 @@
           <div class="row">
             <span class="label">LNURL</span><span class="fill"></span>
             <span class="value">
-              <a href="#" class="clickable" id="lnurlValue" title="Click to copy LNURL">order@oksu.su</a>
+              <a href="#" class="clickable" id="lnurlValue" title="Click to copy LNURL"><span class="__cf_email__" data-cfemail="4e213c2a2b3c0e21253d3b603d3b">[email&#160;protected]</span></a>
             </span>
           </div>
           <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">not listed</span></div>
@@ -824,6 +909,8 @@
           <div class="packet-layer" aria-hidden="true">
             <span class="packet p1"></span>
             <span class="packet p2"></span>
+            <span class="packet p3"></span>
+            <span class="packet p4"></span>
           </div>
 
           <div class="pubkey-wrap">
@@ -851,7 +938,7 @@
     </div>
   </div>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     const CONFIG = {
       PUBKEY: "033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28",
       EMAIL: "lospolloshermanosltd@proton.me",
@@ -1365,16 +1452,4 @@
       startTicker();
     }
 
-    function init() {
-      initUi();
-      bindVisibilityHandling();
-
-      scheduleTask("node", updateNode, CONFIG.INTERVALS.NODE);
-      scheduleTask("peers", updatePeers, CONFIG.INTERVALS.PEERS);
-      scheduleTask("market", updateMarket, CONFIG.INTERVALS.MARKET);
-    }
-
-    init();
-  </script>
-</body>
-</html>
+    function init
