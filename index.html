@@ -42,9 +42,9 @@
       --terminal-glow: rgba(124, 252, 0, 0.16);
 
       --flow-duration: 3.2s;
-      --carrier-main-duration: 4.8s;
-      --carrier-hot-duration: 3.7s;
-      --carrier-ghost-duration: 6.2s;
+      --carrier-main-duration: 4.73s;
+      --carrier-hot-duration: 3.91s;
+      --carrier-ghost-duration: 6.37s;
 
       --space-1: 10px;
       --space-2: 16px;
@@ -365,7 +365,7 @@
 
     .current {
       position: absolute;
-      left: -22%;
+      left: -24%;
       top: 50%;
       transform: translateY(-50%);
       border-radius: 999px;
@@ -375,16 +375,17 @@
     }
 
     .current.main {
-      width: 22%;
+      width: 23%;
       height: 3px;
       background:
         linear-gradient(
           90deg,
           rgba(243, 216, 13, 0) 0%,
-          rgba(243, 216, 13, 0.08) 20%,
-          rgba(243, 216, 13, 0.48) 48%,
-          rgba(255, 248, 204, 0.98) 64%,
-          rgba(243, 216, 13, 0.16) 82%,
+          rgba(243, 216, 13, 0.05) 16%,
+          rgba(243, 216, 13, 0.24) 34%,
+          rgba(243, 216, 13, 0.74) 52%,
+          rgba(255, 248, 204, 1) 64%,
+          rgba(243, 216, 13, 0.26) 80%,
           rgba(243, 216, 13, 0) 100%
         );
       box-shadow:
@@ -392,43 +393,45 @@
         0 0 16px rgba(243, 216, 13, 0.08);
       filter: blur(0.25px);
       animation: current-main var(--carrier-main-duration) cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+      animation-delay: 0.17s;
     }
 
     .current.hot {
-      width: 11%;
+      width: 10.5%;
       height: 1px;
       background:
         linear-gradient(
           90deg,
           rgba(255, 248, 204, 0) 0%,
-          rgba(255, 248, 204, 0.16) 24%,
-          rgba(255, 248, 204, 1) 58%,
-          rgba(243, 216, 13, 0.24) 84%,
+          rgba(255, 248, 204, 0.08) 18%,
+          rgba(255, 248, 204, 0.42) 36%,
+          rgba(255, 248, 204, 1) 62%,
+          rgba(243, 216, 13, 0.18) 84%,
           rgba(243, 216, 13, 0) 100%
         );
       box-shadow:
         0 0 6px rgba(255, 248, 204, 0.24),
         0 0 12px rgba(243, 216, 13, 0.1);
       animation: current-hot var(--carrier-hot-duration) linear infinite;
-      animation-delay: 1.1s;
+      animation-delay: 1.97s;
     }
 
     .current.ghost {
-      width: 30%;
+      width: 31%;
       height: 5px;
       background:
         linear-gradient(
           90deg,
           rgba(31, 78, 121, 0) 0%,
-          rgba(31, 78, 121, 0.03) 20%,
-          rgba(243, 216, 13, 0.05) 42%,
-          rgba(243, 216, 13, 0.16) 58%,
-          rgba(31, 78, 121, 0.04) 76%,
+          rgba(31, 78, 121, 0.025) 18%,
+          rgba(243, 216, 13, 0.03) 34%,
+          rgba(243, 216, 13, 0.14) 56%,
+          rgba(243, 216, 13, 0.04) 78%,
           rgba(31, 78, 121, 0) 100%
         );
-      filter: blur(1.2px);
+      filter: blur(1.25px);
       animation: current-ghost var(--carrier-ghost-duration) ease-in-out infinite;
-      animation-delay: 2.3s;
+      animation-delay: 3.41s;
     }
 
     @keyframes routing-flow {
@@ -441,69 +444,105 @@
         transform: translateX(0) translateY(-50%) scaleX(0.9);
         opacity: 0;
       }
-      8% {
-        opacity: 0.06;
+      7% {
+        opacity: 0.03;
       }
-      18% {
+      15% {
+        opacity: 0.18;
+      }
+      26% {
+        opacity: 0.41;
+      }
+      41% {
+        opacity: 0.79;
+        transform: translateX(228%) translateY(-50%) scaleX(0.99);
+      }
+      45% {
+        opacity: 0.62;
+      }
+      49% {
+        opacity: 0.88;
+      }
+      63% {
+        opacity: 0.52;
+        transform: translateX(401%) translateY(-50%) scaleX(1.01);
+      }
+      69% {
         opacity: 0.34;
       }
-      44% {
-        opacity: 0.82;
-        transform: translateX(245%) translateY(-50%) scaleX(1);
-      }
-      68% {
-        opacity: 0.44;
-      }
       100% {
-        transform: translateX(570%) translateY(-50%) scaleX(1.02);
+        transform: translateX(592%) translateY(-50%) scaleX(1.03);
         opacity: 0;
       }
     }
 
     @keyframes current-hot {
       0% {
-        transform: translateX(0) translateY(-50%) scaleX(0.8);
+        transform: translateX(0) translateY(-50%) scaleX(0.82);
         opacity: 0;
       }
-      10% {
-        opacity: 0.1;
+      9% {
+        opacity: 0.06;
       }
-      24% {
-        opacity: 0.78;
+      19% {
+        opacity: 0.22;
       }
-      54% {
-        opacity: 0.92;
-        transform: translateX(520%) translateY(-50%) scaleX(1);
+      27% {
+        opacity: 0.72;
       }
-      76% {
-        opacity: 0.2;
+      38% {
+        opacity: 0.95;
+        transform: translateX(332%) translateY(-50%) scaleX(1);
+      }
+      43% {
+        opacity: 0.66;
+      }
+      47% {
+        opacity: 1;
+      }
+      59% {
+        opacity: 0.38;
+        transform: translateX(612%) translateY(-50%) scaleX(0.99);
+      }
+      73% {
+        opacity: 0.18;
       }
       100% {
-        transform: translateX(980%) translateY(-50%) scaleX(0.96);
+        transform: translateX(1020%) translateY(-50%) scaleX(0.96);
         opacity: 0;
       }
     }
 
     @keyframes current-ghost {
       0% {
-        transform: translateX(0) translateY(-50%) scaleX(0.92);
+        transform: translateX(0) translateY(-50%) scaleX(0.93);
         opacity: 0;
       }
-      12% {
-        opacity: 0.03;
+      11% {
+        opacity: 0.015;
       }
-      28% {
-        opacity: 0.16;
+      21% {
+        opacity: 0.06;
       }
-      56% {
+      33% {
+        opacity: 0.14;
+      }
+      52% {
+        opacity: 0.24;
+        transform: translateX(194%) translateY(-50%) scaleX(1);
+      }
+      58% {
+        opacity: 0.18;
+      }
+      64% {
         opacity: 0.26;
-        transform: translateX(210%) translateY(-50%) scaleX(1);
       }
-      82% {
+      81% {
         opacity: 0.08;
+        transform: translateX(356%) translateY(-50%) scaleX(1.03);
       }
       100% {
-        transform: translateX(460%) translateY(-50%) scaleX(1.04);
+        transform: translateX(472%) translateY(-50%) scaleX(1.05);
         opacity: 0;
       }
     }
