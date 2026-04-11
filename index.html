@@ -42,8 +42,9 @@
       --terminal-glow: rgba(124, 252, 0, 0.16);
 
       --flow-duration: 3.2s;
-      --carrier-duration: 4.9s;
-      --packet-duration: 4.9s;
+      --carrier-main-duration: 4.8s;
+      --carrier-hot-duration: 3.7s;
+      --carrier-ghost-duration: 6.2s;
 
       --space-1: 10px;
       --space-2: 16px;
@@ -120,11 +121,9 @@
 
     .paused-visuals body::before,
     .paused-visuals .market-prompt,
-    .paused-visuals .packet,
-    .paused-visuals .packet::after,
     .paused-visuals .secure-channel::before,
-    .paused-visuals .secure-channel::after,
-    .paused-visuals .live-dot {
+    .paused-visuals .live-dot,
+    .paused-visuals .current {
       animation-play-state: paused !important;
     }
 
@@ -348,124 +347,88 @@
       height: 1px;
       background: linear-gradient(90deg, var(--line) 50%, transparent 50%);
       background-size: 15px 1px;
-      opacity: 0.66;
       animation: routing-flow var(--flow-duration) linear infinite;
+      opacity: 0.68;
       will-change: background-position;
     }
 
-    .secure-channel::after {
-      content: "";
+    .current-layer {
       position: absolute;
-      top: -1px;
-      left: -18%;
-      width: 18%;
-      height: 3px;
-      background: linear-gradient(
-        90deg,
-        rgba(243, 216, 13, 0) 0%,
-        rgba(243, 216, 13, 0.08) 20%,
-        rgba(243, 216, 13, 0.55) 50%,
-        rgba(243, 216, 13, 0.12) 80%,
-        rgba(243, 216, 13, 0) 100%
-      );
-      filter: blur(0.35px);
-      opacity: 0;
-      animation: carrier-sweep var(--carrier-duration) cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
-      will-change: transform, opacity;
-      pointer-events: none;
-    }
-
-    .packet-layer {
-      position: absolute;
-      top: -7px;
+      top: -4px;
       left: 0;
       width: 100%;
-      height: 16px;
+      height: 10px;
       pointer-events: none;
       overflow: hidden;
+      z-index: 2;
     }
 
-    .packet {
+    .current {
       position: absolute;
+      left: -22%;
       top: 50%;
-      left: -44px;
+      transform: translateY(-50%);
       border-radius: 999px;
-      background: var(--accent);
       opacity: 0;
       will-change: transform, opacity;
-      animation: packet-travel var(--packet-duration) cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+      mix-blend-mode: screen;
     }
 
-    .packet::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      right: 100%;
-      transform: translateY(-50%);
-      height: 1px;
-      border-radius: 999px;
-      background: linear-gradient(
-        90deg,
-        rgba(243, 216, 13, 0) 0%,
-        rgba(243, 216, 13, 0.055) 28%,
-        rgba(243, 216, 13, 0.16) 72%,
-        rgba(243, 216, 13, 0.24) 100%
-      );
-      filter: blur(0.2px);
-      opacity: 0;
-      will-change: width, opacity;
-    }
-
-    .packet.lead {
-      width: 6px;
-      height: 6px;
-      margin-top: -3px;
-      box-shadow:
-        0 0 6px rgba(243, 216, 13, 0.42),
-        0 0 12px rgba(243, 216, 13, 0.2),
-        0 0 18px rgba(243, 216, 13, 0.08);
-    }
-
-    .packet.lead::after {
-      width: 26px;
-    }
-
-    .packet.mid {
-      width: 4px;
-      height: 4px;
-      margin-top: -2px;
-      box-shadow:
-        0 0 5px rgba(243, 216, 13, 0.26),
-        0 0 10px rgba(243, 216, 13, 0.12);
-    }
-
-    .packet.mid::after {
-      width: 18px;
-    }
-
-    .packet.tail {
-      width: 3px;
+    .current.main {
+      width: 22%;
       height: 3px;
-      margin-top: -1.5px;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(243, 216, 13, 0) 0%,
+          rgba(243, 216, 13, 0.08) 20%,
+          rgba(243, 216, 13, 0.48) 48%,
+          rgba(255, 248, 204, 0.98) 64%,
+          rgba(243, 216, 13, 0.16) 82%,
+          rgba(243, 216, 13, 0) 100%
+        );
       box-shadow:
-        0 0 4px rgba(243, 216, 13, 0.18),
-        0 0 8px rgba(243, 216, 13, 0.08);
+        0 0 8px rgba(243, 216, 13, 0.18),
+        0 0 16px rgba(243, 216, 13, 0.08);
+      filter: blur(0.25px);
+      animation: current-main var(--carrier-main-duration) cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
     }
 
-    .packet.tail::after {
-      width: 12px;
+    .current.hot {
+      width: 11%;
+      height: 1px;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(255, 248, 204, 0) 0%,
+          rgba(255, 248, 204, 0.16) 24%,
+          rgba(255, 248, 204, 1) 58%,
+          rgba(243, 216, 13, 0.24) 84%,
+          rgba(243, 216, 13, 0) 100%
+        );
+      box-shadow:
+        0 0 6px rgba(255, 248, 204, 0.24),
+        0 0 12px rgba(243, 216, 13, 0.1);
+      animation: current-hot var(--carrier-hot-duration) linear infinite;
+      animation-delay: 1.1s;
     }
 
-    .packet.p1 {
-      animation-delay: 0s;
-    }
-
-    .packet.p2 {
-      animation-delay: 1.55s;
-    }
-
-    .packet.p3 {
-      animation-delay: 3.1s;
+    .current.ghost {
+      width: 30%;
+      height: 5px;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(31, 78, 121, 0) 0%,
+          rgba(31, 78, 121, 0.03) 20%,
+          rgba(243, 216, 13, 0.05) 42%,
+          rgba(243, 216, 13, 0.16) 58%,
+          rgba(31, 78, 121, 0.04) 76%,
+          rgba(31, 78, 121, 0) 100%
+        );
+      filter: blur(1.2px);
+      animation: current-ghost var(--carrier-ghost-duration) ease-in-out infinite;
+      animation-delay: 2.3s;
     }
 
     @keyframes routing-flow {
@@ -473,157 +436,74 @@
       100% { background-position: 15px 0; }
     }
 
-    @keyframes carrier-sweep {
+    @keyframes current-main {
       0% {
-        transform: translateX(0) scaleX(0.92);
-        opacity: 0;
-      }
-      10% {
-        opacity: 0.08;
-      }
-      20% {
-        opacity: 0.3;
-      }
-      52% {
-        opacity: 0.5;
-      }
-      78% {
-        opacity: 0.16;
-      }
-      100% {
-        transform: translateX(690%) scaleX(1.05);
-        opacity: 0;
-      }
-    }
-
-    @keyframes packet-travel {
-      0% {
-        transform: translateX(0) scale(0.84);
+        transform: translateX(0) translateY(-50%) scaleX(0.9);
         opacity: 0;
       }
       8% {
-        opacity: 0.04;
+        opacity: 0.06;
       }
-      16% {
-        opacity: 0.62;
-        transform: translateX(18vw) scale(1);
+      18% {
+        opacity: 0.34;
       }
-      34% {
-        opacity: 0.9;
-        transform: translateX(38vw) scale(1.06);
-      }
-      58% {
+      44% {
         opacity: 0.82;
-        transform: translateX(60vw) scale(1.02);
+        transform: translateX(245%) translateY(-50%) scaleX(1);
       }
-      80% {
+      68% {
         opacity: 0.44;
-        transform: translateX(82vw) scale(0.98);
       }
       100% {
-        transform: translateX(105vw) scale(0.82);
+        transform: translateX(570%) translateY(-50%) scaleX(1.02);
         opacity: 0;
       }
     }
 
-    .packet.lead {
-      animation-name: packet-travel-lead;
-    }
-
-    .packet.mid {
-      animation-name: packet-travel-mid;
-    }
-
-    .packet.tail {
-      animation-name: packet-travel-tail;
-    }
-
-    @keyframes packet-travel-lead {
+    @keyframes current-hot {
       0% {
-        transform: translateX(0) scale(0.86);
+        transform: translateX(0) translateY(-50%) scaleX(0.8);
         opacity: 0;
       }
       10% {
-        opacity: 0.08;
+        opacity: 0.1;
       }
-      18% {
-        opacity: 0.72;
-        transform: translateX(17vw) scale(1);
+      24% {
+        opacity: 0.78;
       }
-      36% {
-        opacity: 0.98;
-        transform: translateX(39vw) scale(1.08);
+      54% {
+        opacity: 0.92;
+        transform: translateX(520%) translateY(-50%) scaleX(1);
       }
-      60% {
-        opacity: 0.84;
-        transform: translateX(61vw) scale(1.03);
-      }
-      82% {
-        opacity: 0.46;
-        transform: translateX(83vw) scale(0.98);
+      76% {
+        opacity: 0.2;
       }
       100% {
-        transform: translateX(105vw) scale(0.84);
+        transform: translateX(980%) translateY(-50%) scaleX(0.96);
         opacity: 0;
       }
     }
 
-    @keyframes packet-travel-mid {
+    @keyframes current-ghost {
       0% {
-        transform: translateX(0) scale(0.8);
+        transform: translateX(0) translateY(-50%) scaleX(0.92);
         opacity: 0;
       }
       12% {
-        opacity: 0.05;
-      }
-      20% {
-        opacity: 0.42;
-        transform: translateX(16vw) scale(0.98);
-      }
-      38% {
-        opacity: 0.62;
-        transform: translateX(37vw) scale(1.03);
-      }
-      62% {
-        opacity: 0.52;
-        transform: translateX(59vw) scale(1);
-      }
-      84% {
-        opacity: 0.24;
-        transform: translateX(81vw) scale(0.96);
-      }
-      100% {
-        transform: translateX(104vw) scale(0.8);
-        opacity: 0;
-      }
-    }
-
-    @keyframes packet-travel-tail {
-      0% {
-        transform: translateX(0) scale(0.78);
-        opacity: 0;
-      }
-      14% {
         opacity: 0.03;
       }
-      22% {
+      28% {
+        opacity: 0.16;
+      }
+      56% {
         opacity: 0.26;
-        transform: translateX(15vw) scale(0.96);
+        transform: translateX(210%) translateY(-50%) scaleX(1);
       }
-      40% {
-        opacity: 0.42;
-        transform: translateX(36vw) scale(1);
-      }
-      64% {
-        opacity: 0.34;
-        transform: translateX(58vw) scale(0.98);
-      }
-      86% {
-        opacity: 0.15;
-        transform: translateX(80vw) scale(0.94);
+      82% {
+        opacity: 0.08;
       }
       100% {
-        transform: translateX(103vw) scale(0.78);
+        transform: translateX(460%) translateY(-50%) scaleX(1.04);
         opacity: 0;
       }
     }
@@ -1054,10 +934,10 @@
 
       <div class="secure-channel-container">
         <div class="secure-channel" id="secureChannel">
-          <div class="packet-layer" aria-hidden="true">
-            <span class="packet lead p1"></span>
-            <span class="packet mid p2"></span>
-            <span class="packet tail p3"></span>
+          <div class="current-layer" aria-hidden="true">
+            <span class="current main"></span>
+            <span class="current hot"></span>
+            <span class="current ghost"></span>
           </div>
 
           <div class="pubkey-wrap">
