@@ -897,24 +897,39 @@
         text-align: center;
       }
     }
+.brand {
+  position: relative;
+}
+
 .brand-status {
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  transform: translateX(-262px);
   font-size: 11px;
   letter-spacing: 0.08em;
-  color: rgba(230, 230, 230, 0.55);
-  margin-bottom: 6px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 6px;
+  min-width: 120px;
+  text-align: left;
+}
+
+.status-dot,
+.status-text {
+  color: var(--terminal-green);
+  text-shadow: 0 0 6px rgba(124, 252, 0, 0.22);
 }
 
 .status-dot {
-  color: #7cfc00;
-  text-shadow: 0 0 6px rgba(124, 252, 0, 0.4);
+  animation: live-pulse 2.6s ease-in-out infinite;
 }
 
-.status-text {
-  color: rgba(230, 230, 230, 0.6);
+.brand-status.is-offline .status-dot,
+.brand-status.is-offline .status-text {
+  color: #ffb347;
+  text-shadow: 0 0 6px rgba(255, 179, 71, 0.18);
 }
 
 .brand-sub {
@@ -923,15 +938,25 @@
   color: rgba(230, 230, 230, 0.42);
   letter-spacing: 0.06em;
 }
+
+@media (max-width: 950px) {
+  .brand-status {
+    position: static;
+    transform: none;
+    justify-content: center;
+    min-width: 0;
+    margin-bottom: 6px;
+  }
+}
   </style>
 </head>
 <body>
   <div class="page">
     <div class="brand">
-  <div class="brand-status">
-    <span class="status-dot">●</span>
-    <span class="status-text">Running</span>
-  </div>
+<div class="brand-status" id="brandStatus">
+  <span class="status-dot" id="brandStatusDot">●</span>
+  <span class="status-text" id="brandStatusText">Running</span>
+</div>
 
   <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
 
