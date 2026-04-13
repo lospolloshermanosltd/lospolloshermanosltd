@@ -943,22 +943,30 @@
   letter-spacing: 0.03em;
   color: rgba(230, 230, 230, 0.54);
   text-shadow: 0 0 4px rgba(243, 216, 13, 0.045);
+}.brand-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
 }
   </style>
 </head>
 <body>
   <div class="page">
     <div class="brand">
-<div class="brand-status" id="brandStatus">
-  <span class="status-dot" id="brandStatusDot">●</span>
-  <span class="status-text" id="brandStatusText">Running</span>
-</div>
-
-  <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
+<div class="brand-meta">
+  <div class="brand-status" id="brandStatus">
+    <span class="status-dot" id="brandStatusDot">●</span>
+    <span class="status-text" id="brandStatusText">Running</span>
+  </div>
 
   <div class="brand-sub">
     LND 0.20.0-beta
   </div>
+</div>
+
+<h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
 </div>
 
     <div class="market-strip" aria-label="bitcoin network summary">
