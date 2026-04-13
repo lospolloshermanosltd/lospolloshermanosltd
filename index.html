@@ -726,10 +726,14 @@
     }
 
     .value a {
-      color: var(--accent);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.value.email a {
+  color: var(--accent);
+}
 
     .value a:hover {
       text-decoration: underline;
@@ -1018,9 +1022,9 @@
           <div class="section-title"><span>[ CONTACT ]</span><span>LINKS</span></div>
           <div class="row">
             <span class="label">EMAIL</span><span class="fill"></span>
-            <span class="value">
-              <a href="#" class="clickable" id="emailValue" title="Click to copy email">lospolloshermanosltd@proton.me</a>
-            </span>
+            <span class="value email">
+  <a href="#" class="clickable" id="emailValue" title="Click to copy email">lospolloshermanosltd@proton.me</a>
+</span>
           </div>
           <div class="row">
             <span class="label">TELEGRAM</span><span class="fill"></span>
