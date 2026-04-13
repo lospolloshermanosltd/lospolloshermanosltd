@@ -897,13 +897,48 @@
         text-align: center;
       }
     }
+.brand-status {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: rgba(230, 230, 230, 0.55);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.status-dot {
+  color: #7cfc00;
+  text-shadow: 0 0 6px rgba(124, 252, 0, 0.4);
+}
+
+.status-text {
+  color: rgba(230, 230, 230, 0.6);
+}
+
+.brand-sub {
+  margin-top: 6px;
+  font-size: 10px;
+  color: rgba(230, 230, 230, 0.42);
+  letter-spacing: 0.06em;
+}
   </style>
 </head>
 <body>
   <div class="page">
     <div class="brand">
-      <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
-    </div>
+  <div class="brand-status">
+    <span class="status-dot">●</span>
+    <span class="status-text">Running</span>
+  </div>
+
+  <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
+
+  <div class="brand-sub">
+    LND 0.20.0-beta
+  </div>
+</div>
 
     <div class="market-strip" aria-label="bitcoin network summary">
       <div class="market-line" id="marketLine">
