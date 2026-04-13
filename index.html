@@ -1241,10 +1241,51 @@
     }
 
     function renderTickerFrame() {
-      if (!Array.isArray(state.peers) || state.peers.length === 0) {
-        setTickerText("link waiting", "");
-        return;
-      }
+  if (!Array.isArray(state.peers) || state.peers.length === 0) return;
+
+  const peer = state.peers[state.tickerIndex % state.peers.length];
+  const aliasRaw = peer?.node?.alias?.trim() || shortKey(peer?.node?.public_key);
+  const alias = truncateAlias(aliasRaw);
+  const capacity = formatSats(peer?.capacity || 0);
+
+  const container = dom.tickerText;
+
+  if (!container.querySelector(".ticker-inner")) {
+    container.innerHTML = `
+      <div class="ticker-inner" id="tickerInner">
+        <div class="ticker-row">
+          <span id="aliasA"></span>
+          <span id="capA"></span>
+        </div>
+        <div class="ticker-row">
+          <span id="aliasB"></span>
+          <span id="capB"></span>
+        </div>
+      </div>
+    `;
+  }
+
+  const inner = document.getElementById("tickerInner");
+
+  document.getElementById("aliasB").textContent = alias;
+  document.getElementById("capB").textContent = capacity;
+
+  inner.style.transform = "translateY(-1.2em)";
+
+  setTimeout(() => {
+    document.getElementById("aliasA").textContent = alias;
+    document.getElementById("capA").textContent = capacity;
+
+    inner.style.transition = "none";
+    inner.style.transform = "translateY(0)";
+
+    setTimeout(() => {
+      inner.style.transition = "transform 0.2s ease-out";
+    }, 10);
+  }, 200);
+
+  state.tickerIndex = (state.tickerIndex + 1) % state.peers.length;
+}
 
       const peer = state.peers[state.tickerIndex % state.peers.length];
       const aliasRaw = peer?.node?.alias?.trim() || shortKey(peer?.node?.public_key);
