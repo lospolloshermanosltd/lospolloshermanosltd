@@ -6,12 +6,10 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   />
-  <title>Los Pollos Hermanos Ltd</title>
+  <title>LOS POLLOS HERMANOS LTD</title>
 
-<link rel="icon" href="data:image/svg+xml,
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
-  <text x='50%' y='58%' text-anchor='middle' dominant-baseline='middle' font-size='52'>🐔</text>
-</svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐔</text></svg>">
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -83,7 +81,7 @@
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
-      padding: 28px 22px 14px;
+      padding: 40px 22px 40px;
     }
 
     body::before {
@@ -140,7 +138,7 @@
       position: relative;
       z-index: 0;
       width: 100%;
-      max-width: 1360px;
+      max-width: 1080px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -220,7 +218,7 @@
     .menu-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      column-gap: 34px;
+      column-gap: 56px;
       width: 100%;
       align-items: start;
     }
@@ -228,7 +226,7 @@
     .menu-track {
       border: 3px solid var(--line);
       background: rgba(10, 10, 10, 0.96);
-      padding: 34px 40px;
+      padding: 24px 28px;
       box-shadow:
         0 0 22px rgba(0, 0, 0, 0.58),
         0 0 12px rgba(31, 78, 121, 0.05);
@@ -244,19 +242,19 @@
       margin-bottom: 0;
     }
 
-.section-title {
-  color: #fff;
-  font-size: 14px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 1px dotted var(--line);
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-}
+    .section-title {
+      color: #fff;
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-bottom: 5px;
+      border-bottom: 1px dotted var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
 
     .row {
       display: flex;
@@ -317,9 +315,17 @@
       gap: 10px;
     }
 
+    .capacity-row .value {
+      color: var(--accent);
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0;
+      text-shadow: 0 0 4px rgba(243, 216, 13, 0.08);
+    }
+
     .secure-channel-container {
       grid-column: 1 / -1;
-      margin-top: 24px;
+      margin-top: var(--space-4);
       text-align: center;
       width: 100%;
       display: flex;
@@ -328,7 +334,7 @@
 
     .secure-channel {
       position: relative;
-      padding-top: 24px;
+      padding-top: 16px;
       width: 100%;
       overflow: hidden;
       isolation: isolate;
@@ -694,13 +700,13 @@
       100% { opacity: 0.46; transform: scale(0.96); }
     }
 
-.footer {
-  margin-top: 12px;
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
+    .footer {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
 
     .footer a {
       background-color: rgba(218, 41, 28, 0.92);
@@ -810,7 +816,7 @@
       }
 
       .secure-channel-container {
-        margin-top: 22px;
+        margin-top: 24px;
       }
 
       .pubkey-block {
@@ -844,7 +850,7 @@
       }
 
       .footer {
-        margin-top: 8px;
+        margin-top: 24px;
         gap: 12px;
       }
 
@@ -939,8 +945,8 @@
   justify-content: center;
   gap: 2px;
 }
-.powered-by {
-  margin-top: 4px;
+    .powered-by {
+  margin-top: 20px; /* ← 핵심: 섹시한 여백 */
   text-align: center;
 
   font-size: 11px;
@@ -991,7 +997,7 @@
 
           <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value" id="channelsValue">Loading</span></div>
           <div class="row"><span class="label">MIN CHANNEL</span><span class="fill"></span><span class="value">3,000,000 sats</span></div>
-          <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value highlight">Auto</span></div>
+          <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value">Auto</span></div>
         </div>
 
         <div class="section">
