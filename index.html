@@ -278,7 +278,7 @@
     .row .fill {
       flex: 1 1 auto;
       min-width: 12px;
-      border-bottom: 1px dotted rgba(31, 78, 121, 0.22);
+      border-bottom: 1px dotted var(--line-glow);
       transform: translateY(-0.16em);
     }
 
@@ -915,18 +915,6 @@
   text-align: center;
 }
 
-.brand-status {
-  margin-bottom: 6px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  line-height: 1;
-  text-align: center;
-}
-
 .status-dot {
   color: var(--terminal-green);
   text-shadow:
@@ -1131,6 +1119,8 @@
       email: document.getElementById("emailValue"),
       lnurl: document.getElementById("lnurlValue"),
       pubkey: document.getElementById("pubkeyValue")
+      brandStatusDot: document.getElementById("brandStatusDot"),
+brandStatusText: document.getElementById("brandStatusText"),
     };
 
     const runtime = {
@@ -1175,7 +1165,7 @@
         : raw.slice(0, CONFIG.TICKER.ALIAS_LEN);
     }
 
-    function escapeUrl(url) {
+    function addCacheBust(url) {
       const u = new URL(url);
       u.searchParams.set("t", String(Date.now()));
       return u.toString();
@@ -1224,7 +1214,7 @@
         : localController.signal;
 
       try {
-        const res = await fetch(escapeUrl(url), {
+        const res = await fetch(addCacheBust(url), {
           method: "GET",
           cache: "no-store",
           headers: { Accept: "application/json" },
@@ -1297,17 +1287,26 @@
       }
     }
 
-    function renderNode() {
-      dom.capacity.textContent =
-        state.node.online && typeof state.node.capacity === "number"
-          ? formatSats(state.node.capacity)
-          : "Offline";
+   function renderNode() {
+  const isOnline = state.node.online && typeof state.node.capacity === "number";
 
-      dom.channels.textContent =
-        state.node.online && typeof state.node.channels === "number"
-          ? Number(state.node.channels).toLocaleString("en-US")
-          : "Offline";
-    }
+  dom.capacity.textContent = isOnline
+    ? formatSats(state.node.capacity)
+    : "Offline";
+
+  dom.channels.textContent = isOnline
+    ? Number(state.node.channels).toLocaleString("en-US")
+    : "Offline";
+
+  // 👉 여기 추가
+  if (isOnline) {
+    dom.brandStatusText.textContent = "Running";
+    dom.brandStatusDot.style.color = "var(--terminal-green)";
+  } else {
+    dom.brandStatusText.textContent = "Offline";
+    dom.brandStatusDot.style.color = "red";
+  }
+}
 
     function renderTickerFrame() {
       if (!Array.isArray(state.peers) || state.peers.length === 0) {
