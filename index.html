@@ -1240,30 +1240,74 @@
           : "Offline";
     }
 
-    function renderTickerFrame() {
-  if (!Array.isArray(state.peers) || state.peers.length === 0) return;
+function renderTickerFrame() {
+  const container = dom.tickerText;
+
+  if (!Array.isArray(state.peers) || state.peers.length === 0) {
+    container.innerHTML = `
+      <div class="ticker-inner" id="tickerInner">
+        <div class="ticker-row">
+          <span class="ticker-alias" id="aliasA">link waiting</span>
+          <span class="ticker-capacity" id="capA"></span>
+        </div>
+        <div class="ticker-row">
+          <span class="ticker-alias" id="aliasB">link waiting</span>
+          <span class="ticker-capacity" id="capB"></span>
+        </div>
+      </div>
+    `;
+    return;
+  }
 
   const peer = state.peers[state.tickerIndex % state.peers.length];
   const aliasRaw = peer?.node?.alias?.trim() || shortKey(peer?.node?.public_key);
   const alias = truncateAlias(aliasRaw);
   const capacity = formatSats(peer?.capacity || 0);
 
-  const container = dom.tickerText;
-
   if (!container.querySelector(".ticker-inner")) {
     container.innerHTML = `
       <div class="ticker-inner" id="tickerInner">
         <div class="ticker-row">
-          <span id="aliasA"></span>
-          <span id="capA"></span>
+          <span class="ticker-alias" id="aliasA">${alias}</span>
+          <span class="ticker-capacity" id="capA">${capacity}</span>
         </div>
         <div class="ticker-row">
-          <span id="aliasB"></span>
-          <span id="capB"></span>
+          <span class="ticker-alias" id="aliasB"></span>
+          <span class="ticker-capacity" id="capB"></span>
         </div>
       </div>
     `;
+    state.tickerIndex = (state.tickerIndex + 1) % state.peers.length;
+    return;
   }
+
+  const inner = document.getElementById("tickerInner");
+  const aliasB = document.getElementById("aliasB");
+  const capB = document.getElementById("capB");
+  const aliasA = document.getElementById("aliasA");
+  const capA = document.getElementById("capA");
+
+  if (!inner || !aliasA || !capA || !aliasB || !capB) return;
+
+  aliasB.textContent = alias;
+  capB.textContent = capacity;
+
+  inner.style.transform = "translateY(-1.2em)";
+
+  setTimeout(() => {
+    aliasA.textContent = alias;
+    capA.textContent = capacity;
+
+    inner.style.transition = "none";
+    inner.style.transform = "translateY(0)";
+
+    setTimeout(() => {
+      inner.style.transition = "transform 0.2s ease-out";
+    }, 10);
+  }, 200);
+
+  state.tickerIndex = (state.tickerIndex + 1) % state.peers.length;
+}
 
   const inner = document.getElementById("tickerInner");
 
