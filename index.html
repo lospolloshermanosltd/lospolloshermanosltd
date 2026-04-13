@@ -218,7 +218,7 @@ body {
 .menu-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 56px;
+  column-gap: 40px;
   width: 100%;
   align-items: start;
 }
@@ -256,15 +256,15 @@ body {
       gap: 12px;
     }
 
-    .row {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      margin-bottom: 10px;
-      font-size: 14px;
-      line-height: 1.28;
-      min-width: 0;
-    }
+.row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.28;
+  min-width: 0;
+}
 
     .row:last-child {
       margin-bottom: 0;
@@ -323,14 +323,14 @@ body {
       text-shadow: 0 0 4px rgba(243, 216, 13, 0.08);
     }
 
-    .secure-channel-container {
-      grid-column: 1 / -1;
-      margin-top: var(--space-4);
-      text-align: center;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
+.secure-channel-container {
+  grid-column: 1 / -1;
+  margin-top: 40px;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 
     .secure-channel {
       position: relative;
@@ -559,22 +559,22 @@ body {
       margin-top: 8px;
     }
 
-    .pubkey-block {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: "IBM Plex Mono", monospace;
-      border: 1px solid rgba(31, 78, 121, 0.72);
-      background: rgba(0, 0, 0, 0.34);
-      box-shadow:
-        0 0 8px rgba(31, 78, 121, 0.1),
-        0 0 6px rgba(243, 216, 13, 0.018);
-      overflow: hidden;
-      width: fit-content;
-      max-width: min(100%, 78ch);
-      margin: 0 auto;
-    }
+.pubkey-block {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "IBM Plex Mono", monospace;
+  border: 1px solid rgba(31, 78, 121, 0.72);
+  background: rgba(0, 0, 0, 0.34);
+  box-shadow:
+    0 0 8px rgba(31, 78, 121, 0.1),
+    0 0 6px rgba(243, 216, 13, 0.018);
+  overflow: hidden;
+  width: fit-content;
+  max-width: min(100%, 68ch);
+  margin: 0 auto;
+}
 
     .pubkey {
       font-size: 11px;
@@ -700,13 +700,13 @@ body {
       100% { opacity: 0.46; transform: scale(0.96); }
     }
 
-    .footer {
-      margin-top: 24px;
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
+.footer {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
 
     .footer a {
       background-color: rgba(218, 41, 28, 0.92);
@@ -945,8 +945,8 @@ body {
   justify-content: center;
   gap: 2px;
 }
-    .powered-by {
-  margin-top: 20px; /* ← 핵심: 섹시한 여백 */
+.powered-by {
+  margin-top: 16px;
   text-align: center;
 
   font-size: 11px;
@@ -957,16 +957,11 @@ body {
 }
 @media (min-width: 951px) {
   html {
-    zoom: 1.1;
+    zoom: 1.05;
   }
 
   body {
-    padding: 24px 22px 24px;
-  }
-}
-
-  body {
-    padding: 24px 22px 24px;
+    padding: 20px 22px 20px;
   }
 }
   </style>
