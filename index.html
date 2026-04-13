@@ -1134,6 +1134,7 @@
       pubkey: document.getElementById("pubkeyValue"),
       brandStatusDot: document.getElementById("brandStatusDot"),
       brandStatusText: document.getElementById("brandStatusText"),
+      statusStrip: document.querySelector(".status-strip"),
     };
 
     const runtime = {
@@ -1312,16 +1313,28 @@
     : "Offline";
 
   if (dom.brandStatusText && dom.brandStatusDot) {
-    if (isOnline) {
-      dom.brandStatusText.textContent = "Running";
-      dom.brandStatusDot.style.color = "var(--terminal-green)";
-    } else {
-      dom.brandStatusText.textContent = "Connecting...";
-      dom.brandStatusDot.style.color = "orange";
-    }
+  if (isOnline) {
+  dom.brandStatusText.textContent = "Running";
+  dom.brandStatusText.style.color = "var(--terminal-green-dim)";
+  dom.brandStatusDot.style.color = "var(--terminal-green)";
+} else {
+  dom.brandStatusText.textContent = "Connecting...";
+  dom.brandStatusText.style.color = "var(--accent)";
+  dom.brandStatusDot.style.color = "var(--accent)";
+}
+function setPeerStatusColor(mode) {
+  if (!dom.statusStrip || !dom.tickerAlias || !dom.tickerCapacity) return;
+
+  if (mode === "connecting") {
+    dom.statusStrip.style.color = "var(--accent)";
+    dom.tickerAlias.style.color = "var(--accent)";
+    dom.tickerCapacity.style.color = "var(--accent)";
+  } else {
+    dom.statusStrip.style.color = "";
+    dom.tickerAlias.style.color = "";
+    dom.tickerCapacity.style.color = "";
   }
 }
-
     function renderTickerFrame() {
       if (!Array.isArray(state.peers) || state.peers.length === 0) {
         setTickerText("link waiting", "");
@@ -1333,6 +1346,7 @@
       const alias = truncateAlias(aliasRaw);
       const capacity = formatSats(peer?.capacity || 0);
 
+      setPeerStatusColor("normal");
       setTickerText(alias, capacity);
       state.tickerIndex = (state.tickerIndex + 1) % state.peers.length;
     }
@@ -1596,6 +1610,7 @@
 
       renderMarket();
       renderNode();
+      setPeerStatusColor("connecting");
       setTickerText("connecting...", "waiting for data");
       startTicker();
     }
