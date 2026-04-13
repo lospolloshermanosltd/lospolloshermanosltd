@@ -1303,8 +1303,8 @@
       dom.brandStatusText.textContent = "Running";
       dom.brandStatusDot.style.color = "var(--terminal-green)";
     } else {
-      dom.brandStatusText.textContent = "Offline";
-      dom.brandStatusDot.style.color = "red";
+      dom.brandStatusText.textContent = "Connecting...";
+      dom.brandStatusDot.style.color = "orange";
     }
   }
 }
@@ -1583,7 +1583,7 @@
 
       renderMarket();
       renderNode();
-      setTickerText("querying peers", "loading sats");
+      setTickerText("connecting...", "waiting for data");
       startTicker();
     }
 
