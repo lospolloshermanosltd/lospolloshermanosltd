@@ -1118,7 +1118,7 @@
       tickerCapacity: document.querySelector("#tickerText .ticker-capacity"),
       email: document.getElementById("emailValue"),
       lnurl: document.getElementById("lnurlValue"),
-      pubkey: document.getElementById("pubkeyValue")
+      pubkey: document.getElementById("pubkeyValue"),
       brandStatusDot: document.getElementById("brandStatusDot"),
       brandStatusText: document.getElementById("brandStatusText"),
     };
@@ -1288,16 +1288,26 @@
     }
 
     function renderNode() {
-      dom.capacity.textContent =
-        state.node.online && typeof state.node.capacity === "number"
-          ? formatSats(state.node.capacity)
-          : "Offline";
+  const isOnline = state.node.online && typeof state.node.capacity === "number";
 
-      dom.channels.textContent =
-        state.node.online && typeof state.node.channels === "number"
-          ? Number(state.node.channels).toLocaleString("en-US")
-          : "Offline";
+  dom.capacity.textContent = isOnline
+    ? formatSats(state.node.capacity)
+    : "Offline";
+
+  dom.channels.textContent = isOnline
+    ? Number(state.node.channels).toLocaleString("en-US")
+    : "Offline";
+
+  if (dom.brandStatusText && dom.brandStatusDot) {
+    if (isOnline) {
+      dom.brandStatusText.textContent = "Running";
+      dom.brandStatusDot.style.color = "var(--terminal-green)";
+    } else {
+      dom.brandStatusText.textContent = "Offline";
+      dom.brandStatusDot.style.color = "red";
     }
+  }
+}
 
     function renderTickerFrame() {
       if (!Array.isArray(state.peers) || state.peers.length === 0) {
