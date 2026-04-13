@@ -943,16 +943,6 @@
   justify-content: center;
   gap: 2px;
 }
-    .powered-by {
-  margin-top: 18px; /* ← 핵심: 섹시한 여백 */
-  text-align: center;
-
-  font-size: 11px;
-  letter-spacing: 0.03em;
-
-  color: rgba(230, 230, 230, 0.54);
-  text-shadow: 0 0 4px rgba(243, 216, 13, 0.045);
-}
   </style>
 </head>
 <body>
@@ -1069,9 +1059,6 @@
       <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">AMBOSS</a>
       <a href="https://mempool.space/lightning/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">MEMPOOL</a>
     </div>
-    <div class="powered-by">
-  Running on Lightning
-</div>
   </div>
 
   <script>
@@ -1134,7 +1121,6 @@
       pubkey: document.getElementById("pubkeyValue"),
       brandStatusDot: document.getElementById("brandStatusDot"),
       brandStatusText: document.getElementById("brandStatusText"),
-      statusStrip: document.querySelector(".status-strip"),
     };
 
     const runtime = {
@@ -1313,28 +1299,16 @@
     : "Offline";
 
   if (dom.brandStatusText && dom.brandStatusDot) {
-  if (isOnline) {
-  dom.brandStatusText.textContent = "Running";
-  dom.brandStatusText.style.color = "var(--terminal-green-dim)";
-  dom.brandStatusDot.style.color = "var(--terminal-green)";
-} else {
-  dom.brandStatusText.textContent = "Connecting...";
-  dom.brandStatusText.style.color = "var(--accent)";
-  dom.brandStatusDot.style.color = "var(--accent)";
-}
-function setPeerStatusColor(mode) {
-  if (!dom.statusStrip || !dom.tickerAlias || !dom.tickerCapacity) return;
-
-  if (mode === "connecting") {
-    dom.statusStrip.style.color = "var(--accent)";
-    dom.tickerAlias.style.color = "var(--accent)";
-    dom.tickerCapacity.style.color = "var(--accent)";
-  } else {
-    dom.statusStrip.style.color = "";
-    dom.tickerAlias.style.color = "";
-    dom.tickerCapacity.style.color = "";
+    if (isOnline) {
+      dom.brandStatusText.textContent = "Running";
+      dom.brandStatusDot.style.color = "var(--terminal-green)";
+    } else {
+      dom.brandStatusText.textContent = "Connecting...";
+      dom.brandStatusDot.style.color = "orange";
+    }
   }
 }
+
     function renderTickerFrame() {
       if (!Array.isArray(state.peers) || state.peers.length === 0) {
         setTickerText("link waiting", "");
@@ -1346,7 +1320,6 @@ function setPeerStatusColor(mode) {
       const alias = truncateAlias(aliasRaw);
       const capacity = formatSats(peer?.capacity || 0);
 
-      setPeerStatusColor("normal");
       setTickerText(alias, capacity);
       state.tickerIndex = (state.tickerIndex + 1) % state.peers.length;
     }
@@ -1610,7 +1583,6 @@ function setPeerStatusColor(mode) {
 
       renderMarket();
       renderNode();
-      setPeerStatusColor("connecting");
       setTickerText("connecting...", "waiting for data");
       startTicker();
     }
