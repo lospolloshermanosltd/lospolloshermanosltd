@@ -992,7 +992,7 @@
           </div>
 
           <div class="row"><span class="label">CHANNELS</span><span class="fill"></span><span class="value" id="channelsValue">Loading</span></div>
-          <div class="row"><span class="label">MIN CHANNEL</span><span class="fill"></span><span class="value">3,000,000 sats</span></div>
+          <div class="row"><span class="label">AVG CHANNEL</span><span class="fill"></span><span class="value" id="avgChannelValue">Loading</span></div>
           <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value">Auto</span></div>
         </div>
 
@@ -1108,10 +1108,11 @@
         hashrateText: "--- EH/s"
       },
       node: {
-        capacity: null,
-        channels: null,
-        online: false
-      },
+  capacity: null,
+  channels: null,
+  avgChannel: null,
+  online: false
+},
       peers: [],
       tickerIndex: 0,
       tasksRunning: true
@@ -1120,6 +1121,7 @@
     const dom = {
       capacity: document.getElementById("capacityValue"),
       channels: document.getElementById("channelsValue"),
+      avgChannel: document.getElementById("avgChannelValue"),
       btcPrice: document.getElementById("btcPriceValue"),
       blockHeight: document.getElementById("blockHeightValue"),
       hashrate: document.getElementById("hashrateValue"),
@@ -1298,7 +1300,7 @@
       }
     }
 
-    function renderNode() {
+function renderNode() {
   const isOnline = state.node.online && typeof state.node.capacity === "number";
 
   dom.capacity.textContent = isOnline
@@ -1307,6 +1309,10 @@
 
   dom.channels.textContent = isOnline
     ? Number(state.node.channels).toLocaleString("en-US")
+    : "Offline";
+
+  dom.avgChannel.textContent = isOnline && typeof state.node.avgChannel === "number"
+    ? formatSats(state.node.avgChannel)
     : "Offline";
 
   if (dom.brandStatusText && dom.brandStatusDot) {
@@ -1366,6 +1372,18 @@
       return list.filter((ch) => ch?.node?.public_key);
     }
 
+function calculateAvgChannelSize(channels) {
+  if (!Array.isArray(channels) || channels.length === 0) {
+    return null;
+  }
+
+  const total = channels.reduce((sum, ch) => {
+    return sum + Number(ch.capacity || 0);
+  }, 0);
+
+  return Math.round(total / channels.length);
+}
+    
     function extractHashrate(hashrateData) {
       if (typeof hashrateData?.currentHashrate === "number") {
         return hashrateData.currentHashrate;
@@ -1390,19 +1408,24 @@
       renderNode();
     }
 
-    async function updatePeers() {
-      const data = await fetchFromBases(
-        `/v1/lightning/channels?public_key=${encodeURIComponent(CONFIG.PUBKEY)}&status=open&index=-1`,
-        "peers"
-      );
+async function updatePeers() {
+  const data = await fetchFromBases(
+    `/v1/lightning/channels?public_key=${encodeURIComponent(CONFIG.PUBKEY)}&status=open&index=-1`,
+    "peers"
+  );
 
-      state.peers = buildPeerTickerList(data);
-      if (state.tickerIndex >= state.peers.length) {
-        state.tickerIndex = 0;
-      }
+  const channels = buildPeerTickerList(data);
 
-      renderTickerFrame();
-    }
+  state.peers = channels;
+  state.node.avgChannel = calculateAvgChannelSize(channels);
+
+  if (state.tickerIndex >= state.peers.length) {
+    state.tickerIndex = 0;
+  }
+
+  renderNode();
+  renderTickerFrame();
+}
 
     async function updateMarket() {
       const [prices, tipHeight, hashrate] = await Promise.all([
