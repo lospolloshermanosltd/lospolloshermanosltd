@@ -951,80 +951,6 @@
       color: rgba(230, 230, 230, 0.54);
       text-shadow: 0 0 4px rgba(243, 216, 13, 0.045);
     }
-    .panel {
-  width: 100%;
-  border: 2px solid var(--line);
-  padding: 20px;
-  background: rgba(10,10,10,0.95);
-}
-
-/* SYSTEM LINE */
-.system-line {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border-bottom: 1px solid var(--line);
-}
-
-.spec-box {
-  padding: 12px;
-  border-right: 1px solid var(--line);
-  text-align: center;
-}
-
-.spec-box:last-child {
-  border-right: none;
-}
-
-.spec-label {
-  font-size: 11px;
-  color: var(--fg-dim);
-}
-
-.spec-value {
-  font-size: 16px;
-  color: var(--accent);
-}
-
-/* CORE */
-.core-display {
-  margin: 20px 0;
-  padding: 30px;
-  border: 1px solid var(--line);
-  text-align: center;
-}
-
-.core-main {
-  font-size: 32px;
-  color: var(--accent);
-}
-
-.core-sub {
-  font-size: 18px;
-}
-
-.core-status {
-  font-size: 12px;
-  color: var(--terminal-green);
-  margin-top: 8px;
-}
-
-/* CONTROL */
-.control-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.control-panel {
-  border: 1px solid var(--line);
-  padding: 16px;
-}
-
-.panel-title {
-  font-size: 12px;
-  margin-bottom: 10px;
-  border-bottom: 1px dotted var(--line);
-}
   </style>
 </head>
 <body>
@@ -1054,51 +980,61 @@
       </div>
     </div>
 
-<div class="panel">
+    <div class="menu-container">
+      <div class="menu-track">
+        <div class="section">
+          <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
 
-  <!-- SYSTEM LINE -->
-  <div class="system-line">
-    <div class="spec-box">
-      <div class="spec-label">TOTAL CAP</div>
-      <div class="spec-value" id="capacityValue">--</div>
-    </div>
-    <div class="spec-box">
-      <div class="spec-label">CHANNELS</div>
-      <div class="spec-value" id="channelsValue">--</div>
-    </div>
-    <div class="spec-box">
-      <div class="spec-label">RAM</div>
-      <div class="spec-value">64GB</div>
-    </div>
-    <div class="spec-box">
-      <div class="spec-label">STORAGE</div>
-      <div class="spec-value">4TB</div>
-    </div>
-  </div>
+          <div class="row capacity-row">
+            <span class="label">TOTAL CAPACITY</span>
+            <span class="fill"></span>
+            <span class="value highlight" id="capacityValue">Loading</span>
+          </div>
 
-  <!-- CORE DISPLAY -->
-  <div class="core-display">
-    <div class="core-main" id="coreCapacity">-- BTC</div>
-    <div class="core-sub" id="coreChannels">-- CHANNELS</div>
-    <div class="core-status">STATUS: ACTIVE</div>
-  </div>
+          <div class="row"><span class="label">ACTIVE CHANNELS</span><span class="fill"></span><span class="value" id="channelsValue">Loading</span></div>
+          <div class="row"><span class="label">AVG SIZE CHANNEL</span><span class="fill"></span><span class="value" id="avgChannelValue">Loading</span></div>
+          <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value highlight">Auto</span></div>
+        </div>
 
-  <!-- CONTROL -->
-  <div class="control-row">
-    <div class="control-panel">
-      <div class="panel-title">ROUTING</div>
-      <div class="row">MODE<span class="value">Dynamic</span></div>
-      <div class="row">FEE<span class="value">1 ppm</span></div>
-    </div>
+        <div class="section">
+          <div class="section-title"><span>[ HARDWARE ]</span><span>SPEC</span></div>
+          <div class="row"><span class="label">RAM</span><span class="fill"></span><span class="value highlight">64GB</span></div>
+          <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
+          <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS-Backed</span></div>
+          <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value">24/7</span></div>
+        </div>
+      </div>
 
-    <div class="control-panel">
-      <div class="panel-title">CONTACT</div>
-      <div class="row">EMAIL<span class="value">lospollos...</span></div>
-      <div class="row">LN<span class="value">order@oksu</span></div>
-    </div>
-  </div>
+      <div class="menu-track">
+        <div class="section">
+          <div class="section-title"><span>[ ROUTING SPICE LEVELS ]</span><span>FEES</span></div>
+          <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">Classic</span></div>
+<div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">Mild</span></div>
+<div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">Spicy</span></div>
+          <div class="row"><span class="label">FEE POLICY</span><span class="fill"></span><span class="value highlight">Dynamic</span></div>
+        </div>
 
-</div>
+        <div class="section">
+          <div class="section-title"><span>[ CONTACT ]</span><span>LINKS</span></div>
+          <div class="row">
+            <span class="label">EMAIL</span><span class="fill"></span>
+            <span class="value email">
+  <a href="#" class="clickable" id="emailValue" title="Click to copy email">lospolloshermanosltd@proton.me</a>
+</span>
+          </div>
+          <div class="row">
+            <span class="label">TELEGRAM</span><span class="fill"></span>
+            <span class="value"><a href="https://t.me/lospolloshermanosltd" target="_blank" rel="noopener noreferrer">@lospolloshermanosltd</a></span>
+          </div>
+          <div class="row">
+            <span class="label">LN ADDRESS</span><span class="fill"></span>
+            <span class="value">
+              <a href="#" class="clickable" id="lnurlValue" title="Click to copy LN Address">order@oksu.su</a>
+            </span>
+          </div>
+          <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">-</span></div>
+        </div>
+      </div>
 
       <div class="secure-channel-container">
         <div class="secure-channel" id="secureChannel">
