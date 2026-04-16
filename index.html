@@ -213,7 +213,7 @@
 
 .menu-container {
   display: grid;
-  grid-template-columns: 1fr 1.4fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 28px;
   width: 100%;
   align-items: stretch;
@@ -234,10 +234,12 @@
 }
 
 .menu-track.center-track {
+  border-color: var(--accent);
   box-shadow:
     0 0 22px rgba(0, 0, 0, 0.58),
-    0 0 18px rgba(31, 78, 121, 0.12),
-    0 0 10px rgba(243, 216, 13, 0.05);
+    0 0 18px rgba(31, 78, 121, 0.14),
+    0 0 18px rgba(243, 216, 13, 0.10);
+  transform: translateY(-6px);
 }
 
     .section {
