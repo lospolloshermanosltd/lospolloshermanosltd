@@ -1092,85 +1092,7 @@
 .contact-table-section .kv-val.email a {
   color: var(--accent);
 }
- .hero-card {
-  border: 1px solid rgba(243, 216, 13, 0.18);
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.015),
-    rgba(243, 216, 13, 0.02)
-  );
-  box-shadow:
-    inset 0 0 18px rgba(243, 216, 13, 0.025),
-    0 0 14px rgba(243, 216, 13, 0.03);
-  padding: 18px 16px 16px;
-  margin: 8px 0 14px;
-  text-align: center;
-}
 
-.hero-kicker {
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  color: var(--fg-dim);
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-
-.hero-value {
-  font-size: 22px;
-  line-height: 1.05;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  color: var(--accent);
-  text-shadow:
-    0 0 6px rgba(243, 216, 13, 0.08),
-    0 0 16px rgba(243, 216, 13, 0.03);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.hero-unit {
-  margin-top: 8px;
-  font-size: 11px;
-  color: var(--fg-dim);
-  letter-spacing: 0.08em;
-}
-    .status-mini-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  margin-top: 6px;
-}
-
-.status-mini-card {
-  border: 1px solid rgba(31, 78, 121, 0.28);
-  background: rgba(255, 255, 255, 0.01);
-  padding: 10px 12px;
-}
-
-.status-mini-label {
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: var(--fg-dim);
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-.status-mini-value {
-  font-size: 18px;
-  line-height: 1.1;
-  color: var(--fg-soft);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.status-mini-value.highlight {
-  color: var(--accent);
-  text-shadow:
-    0 0 4px rgba(243, 216, 13, 0.06),
-    0 0 6px rgba(243, 216, 13, 0.015);
-}
     .stack-card-list {
   display: flex;
   flex-direction: column;
@@ -1222,6 +1144,30 @@
 
 .stack-card-value.highlight {
   color: var(--accent);
+}
+    .status-card-section .stack-card-hero {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-color: rgba(243, 216, 13, 0.22);
+  box-shadow:
+    inset 0 0 18px rgba(243, 216, 13, 0.025),
+    0 0 10px rgba(243, 216, 13, 0.02);
+}
+
+.status-card-section .stack-card-hero .stack-card-label {
+  margin-bottom: 10px;
+}
+
+.status-card-section .stack-card-hero .stack-card-value {
+  font-size: 21px;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+}
+
+.status-card-section .stack-card-value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
     </style>
 </head>
@@ -1282,31 +1228,31 @@
   </div>
 
   <div class="menu-track center-track">
-    <div class="section">
-      <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
+    <div class="section status-card-section">
+  <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
 
-<div class="hero-card">
-  <div class="hero-kicker">TOTAL CAPACITY</div>
-  <div class="hero-value highlight" id="capacityValue">Loading</div>
-</div>
-
-<div class="status-mini-grid">
-  <div class="status-mini-card">
-    <div class="status-mini-label">ACTIVE CHANNELS</div>
-    <div class="status-mini-value" id="channelsValue">Loading</div>
-  </div>
-
-  <div class="status-mini-card">
-    <div class="status-mini-label">AVG SIZE</div>
-    <div class="status-mini-value" id="avgChannelValue">Loading</div>
-  </div>
-
-  <div class="status-mini-card">
-    <div class="status-mini-label">REBALANCE</div>
-    <div class="status-mini-value highlight">Auto</div>
-  </div>
-</div>
+  <div class="stack-card-list">
+    <div class="stack-card stack-card-hero">
+      <div class="stack-card-label">TOTAL CAPACITY</div>
+      <div class="stack-card-value highlight" id="capacityValue">Loading</div>
     </div>
+
+    <div class="stack-card">
+      <div class="stack-card-label">ACTIVE CHANNELS</div>
+      <div class="stack-card-value" id="channelsValue">Loading</div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-card-label">AVG SIZE</div>
+      <div class="stack-card-value" id="avgChannelValue">Loading</div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-card-label">REBALANCE</div>
+      <div class="stack-card-value highlight">Auto</div>
+    </div>
+  </div>
+</div>
 
   </div>
 
