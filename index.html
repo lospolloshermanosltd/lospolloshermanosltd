@@ -220,6 +220,7 @@
 }
 
 .menu-track {
+  position: relative;
   border: 3px solid var(--line);
   background: rgba(10, 10, 10, 0.96);
   padding: 24px 28px;
@@ -231,13 +232,34 @@
   height: 332px;
   display: flex;
   flex-direction: column;
+  transition:
+    transform 0.22s ease,
+    opacity 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.menu-track:not(.center-track) {
+  transform: scale(0.985);
+  opacity: 0.88;
 }
 
 .menu-track.center-track {
+  transform: translateY(-6px) scale(1.015);
+  z-index: 2;
+  opacity: 1;
   box-shadow:
     0 0 22px rgba(0, 0, 0, 0.58),
-    0 0 18px rgba(31, 78, 121, 0.12),
-    0 0 10px rgba(243, 216, 13, 0.05);
+    0 0 18px rgba(31, 78, 121, 0.16),
+    0 0 14px rgba(243, 216, 13, 0.08);
+}
+
+.menu-track.center-track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(243, 216, 13, 0.22);
+  pointer-events: none;
+  box-shadow: inset 0 0 10px rgba(243, 216, 13, 0.03);
 }
 
     .section {
@@ -774,6 +796,14 @@
         padding: 20px 14px 32px;
       }
 
+      .menu-track:not(.center-track) {
+  transform: none;
+  opacity: 1;
+}
+
+.menu-track.center-track {
+  transform: none;
+}
       body::before {
         opacity: 0.3;
       }
@@ -1094,6 +1124,16 @@
   background: rgba(255, 255, 255, 0.01);
   padding: 9px 12px 10px;
   min-width: 0;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.center-track .stack-card {
+  background: rgba(243, 216, 13, 0.018);
+  border-color: rgba(243, 216, 13, 0.10);
+  box-shadow: inset 0 0 8px rgba(243, 216, 13, 0.02);
 }
 
 .stack-card-label {
@@ -1133,6 +1173,15 @@
 
 .stack-card-value.highlight {
   color: var(--accent);
+  text-shadow:
+    0 0 4px rgba(243, 216, 13, 0.06),
+    0 0 6px rgba(243, 216, 13, 0.015);
+}
+
+.center-track .stack-card-value.highlight {
+  text-shadow:
+    0 0 6px rgba(243, 216, 13, 0.12),
+    0 0 10px rgba(243, 216, 13, 0.04);
 }
     
 .status-card-section .stack-card-value {
