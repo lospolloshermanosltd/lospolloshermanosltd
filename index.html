@@ -972,6 +972,52 @@
       color: rgba(230, 230, 230, 0.54);
       text-shadow: 0 0 4px rgba(243, 216, 13, 0.045);
     }
+    /* 기존 CSS들 쭉 있음 */
+
+.footer a:hover {
+  ...
+}
+
+/* 🔽 여기부터 추가 */
+.hardware-compact {
+  margin-top: auto;
+}
+
+.hardware-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 6px 0;
+  font-size: 14px;
+  line-height: 1.35;
+  border-bottom: 1px dotted rgba(31, 78, 121, 0.38);
+  white-space: nowrap;
+}
+
+.hardware-line + .hardware-line {
+  margin-top: 4px;
+}
+
+.hw-label {
+  color: var(--fg-soft);
+  text-transform: uppercase;
+}
+
+.hw-value {
+  color: var(--fg-soft);
+  margin-right: 18px;
+}
+
+.hw-value.highlight {
+  color: var(--accent);
+  text-shadow:
+    0 0 4px rgba(243, 216, 13, 0.06),
+    0 0 6px rgba(243, 216, 13, 0.015);
+}
+/* 🔼 여기까지 추가 */
+
+</style>
   </style>
 </head>
 <body>
@@ -1027,13 +1073,23 @@
       <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value highlight">Auto</span></div>
     </div>
 
-    <div class="section">
-      <div class="section-title"><span>[ HARDWARE ]</span><span>SPEC</span></div>
-      <div class="row"><span class="label">RAM</span><span class="fill"></span><span class="value highlight">64GB</span></div>
-      <div class="row"><span class="label">STORAGE</span><span class="fill"></span><span class="value highlight">4TB NVMe</span></div>
-      <div class="row"><span class="label">POWER</span><span class="fill"></span><span class="value">UPS-Backed</span></div>
-      <div class="row"><span class="label">UPTIME</span><span class="fill"></span><span class="value">24/7</span></div>
-    </div>
+<div class="section hardware-compact">
+  <div class="section-title"><span>[ HARDWARE ]</span><span>SPEC</span></div>
+
+  <div class="hardware-line">
+    <span class="hw-label">RAM</span>
+    <span class="hw-value highlight">64GB</span>
+    <span class="hw-label">STORAGE</span>
+    <span class="hw-value highlight">4TB NVMe</span>
+  </div>
+
+  <div class="hardware-line">
+    <span class="hw-label">POWER</span>
+    <span class="hw-value">UPS-Backed</span>
+    <span class="hw-label">UPTIME</span>
+    <span class="hw-value">24/7</span>
+  </div>
+</div>
   </div>
 
   <div class="menu-track">
