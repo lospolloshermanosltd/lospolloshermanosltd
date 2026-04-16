@@ -319,27 +319,22 @@
       text-shadow: 0 0 4px rgba(243, 216, 13, 0.08);
     }
 
-.secure-channel-container {
-  margin-top: var(--space-3);
-  margin-bottom: var(--space-4);
-  text-align: center;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
+    .secure-channel-container {
+      grid-column: 1 / -1;
+      margin-top: var(--space-4);
+      text-align: center;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
 
-.secure-channel {
-  position: relative;
-  width: min(100%, 520px);
-  padding: 26px 20px 18px;
-  overflow: hidden;
-  isolation: isolate;
-  border: 3px solid var(--line);
-  background: rgba(10, 10, 10, 0.96);
-  box-shadow:
-    0 0 22px rgba(0, 0, 0, 0.58),
-    0 0 12px rgba(31, 78, 121, 0.05);
-}
+    .secure-channel {
+      position: relative;
+      padding-top: 16px;
+      width: 100%;
+      overflow: hidden;
+      isolation: isolate;
+    }
 
     .secure-channel::before {
       content: "";
@@ -984,34 +979,7 @@
         <span class="market-item">HALVING <strong id="halvingValue">--.-%</strong></span>
       </div>
     </div>
-    
-<div class="secure-channel-container">
-        <div class="secure-channel" id="secureChannel">
-          <div class="current-layer" aria-hidden="true">
-            <span class="current main"></span>
-            <span class="current hot"></span>
-            <span class="current ghost"></span>
-          </div>
 
-          <div class="pubkey-wrap">
-            <div class="pubkey-block">
-              <div class="pubkey" id="pubkeyValue" title="Click to copy pubkey">
-                033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
-              </div>
-            </div>
-
-            <div class="status-strip">
-              <span class="live-dot"></span>
-              <div class="ticker-text" id="tickerText">
-                <span class="ticker-alias">querying peers</span>
-                <span class="ticker-capacity">loading sats</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  
     <div class="menu-container">
       <div class="menu-track">
         <div class="section">
@@ -1067,6 +1035,33 @@
           <div class="row"><span class="label">NOSTR</span><span class="fill"></span><span class="value">-</span></div>
         </div>
       </div>
+
+      <div class="secure-channel-container">
+        <div class="secure-channel" id="secureChannel">
+          <div class="current-layer" aria-hidden="true">
+            <span class="current main"></span>
+            <span class="current hot"></span>
+            <span class="current ghost"></span>
+          </div>
+
+          <div class="pubkey-wrap">
+            <div class="pubkey-block">
+              <div class="pubkey" id="pubkeyValue" title="Click to copy pubkey">
+                033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28
+              </div>
+            </div>
+
+            <div class="status-strip">
+              <span class="live-dot"></span>
+              <div class="ticker-text" id="tickerText">
+                <span class="ticker-alias">querying peers</span>
+                <span class="ticker-capacity">loading sats</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="footer">
       <a href="https://amboss.space/node/033667040797f8f7ab18e864ead4f091a773a6c048d8f3f74a550236034f120f28" target="_blank" rel="noopener noreferrer">AMBOSS</a>
