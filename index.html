@@ -1135,6 +1135,42 @@
   color: var(--fg-dim);
   letter-spacing: 0.08em;
 }
+    .status-mini-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.status-mini-card {
+  border: 1px solid rgba(31, 78, 121, 0.28);
+  background: rgba(255, 255, 255, 0.01);
+  padding: 10px 12px;
+}
+
+.status-mini-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--fg-dim);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.status-mini-value {
+  font-size: 18px;
+  line-height: 1.1;
+  color: var(--fg-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-mini-value.highlight {
+  color: var(--accent);
+  text-shadow:
+    0 0 4px rgba(243, 216, 13, 0.06),
+    0 0 6px rgba(243, 216, 13, 0.015);
+}
     </style>
 </head>
 <body>
@@ -1202,9 +1238,22 @@
   <div class="hero-value highlight" id="capacityValue">Loading</div>
 </div>
 
-      <div class="row"><span class="label">ACTIVE CHANNELS</span><span class="fill"></span><span class="value" id="channelsValue">Loading</span></div>
-      <div class="row"><span class="label">AVG SIZE CHANNEL</span><span class="fill"></span><span class="value" id="avgChannelValue">Loading</span></div>
-      <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value highlight">Auto</span></div>
+<div class="status-mini-grid">
+  <div class="status-mini-card">
+    <div class="status-mini-label">ACTIVE CHANNELS</div>
+    <div class="status-mini-value" id="channelsValue">Loading</div>
+  </div>
+
+  <div class="status-mini-card">
+    <div class="status-mini-label">AVG SIZE</div>
+    <div class="status-mini-value" id="avgChannelValue">Loading</div>
+  </div>
+
+  <div class="status-mini-card">
+    <div class="status-mini-label">REBALANCE</div>
+    <div class="status-mini-value highlight">Auto</div>
+  </div>
+</div>
     </div>
 
   </div>
