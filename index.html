@@ -161,6 +161,23 @@
       white-space: nowrap;
       text-align: center;
     }
+    .hero-capacity {
+  margin-top: 12px;
+  font-size: clamp(32px, 6vw, 64px);
+  color: var(--accent);
+  text-align: center;
+  text-shadow:
+    0 0 12px rgba(243, 216, 13, 0.18),
+    0 0 24px rgba(243, 216, 13, 0.08);
+  letter-spacing: 0.02em;
+}
+
+.hero-capacity-sub {
+  font-size: 11px;
+  color: var(--fg-dim);
+  text-align: center;
+  margin-top: 4px;
+}
 
     .market-strip {
       width: 100%;
@@ -968,6 +985,8 @@
 </div>
 
 <h1 class="brand-title">LOS POLLOS HERMANOS LTD</h1>
+      <div class="hero-capacity" id="heroCapacity">--,--- sats</div>
+<div class="hero-capacity-sub">LIQUIDITY AVAILABLE</div>
 </div>
 
     <div class="market-strip" aria-label="bitcoin network summary">
@@ -984,12 +1003,6 @@
       <div class="menu-track">
         <div class="section">
           <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
-
-          <div class="row capacity-row">
-            <span class="label">TOTAL CAPACITY</span>
-            <span class="fill"></span>
-            <span class="value highlight" id="capacityValue">Loading</span>
-          </div>
 
           <div class="row"><span class="label">ACTIVE CHANNELS</span><span class="fill"></span><span class="value" id="channelsValue">Loading</span></div>
           <div class="row"><span class="label">AVG SIZE CHANNEL</span><span class="fill"></span><span class="value" id="avgChannelValue">Loading</span></div>
@@ -1134,6 +1147,7 @@
       pubkey: document.getElementById("pubkeyValue"),
       brandStatusDot: document.getElementById("brandStatusDot"),
       brandStatusText: document.getElementById("brandStatusText"),
+      heroCapacity: document.getElementById("heroCapacity"),
     };
 
     const runtime = {
@@ -1306,6 +1320,9 @@ function renderNode() {
   dom.capacity.textContent = isOnline
     ? formatSats(state.node.capacity)
     : "Offline";
+  dom.heroCapacity.textContent = isOnline
+  ? formatSats(state.node.capacity)
+  : "--,--- sats";
 
   dom.channels.textContent = isOnline
     ? Number(state.node.channels).toLocaleString("en-US")
