@@ -197,18 +197,6 @@
       white-space: nowrap;
     }
 
-    .market-item strong {
-      color: var(--accent);
-      font-weight: 700;
-      text-shadow: 0 0 4px rgba(243, 216, 13, 0.1);
-    }
-
-    @keyframes market-pulse {
-      0%   { opacity: 0.42; }
-      50%  { opacity: 0.88; }
-      100% { opacity: 0.42; }
-    }
-
 .menu-container {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1185,6 +1173,35 @@
       0 0 12px rgba(243, 216, 13, 0.08);
   }
 }
+#marketLine strong {
+  animation: market-value-blink 1.8s steps(1, end) infinite;
+}
+
+#marketLine .market-item:nth-child(2) strong { animation-delay: 0s; }
+#marketLine .market-item:nth-child(3) strong { animation-delay: 0.25s; }
+#marketLine .market-item:nth-child(4) strong { animation-delay: 0.5s; }
+#marketLine .market-item:nth-child(5) strong { animation-delay: 0.75s; }
+
+@keyframes market-value-blink {
+  0%, 84%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 4px rgba(243, 216, 13, 0.10);
+  }
+  85%, 89% {
+    opacity: 0.72;
+    text-shadow: 0 0 2px rgba(243, 216, 13, 0.04);
+  }
+  90%, 94% {
+    opacity: 1;
+    text-shadow:
+      0 0 6px rgba(243, 216, 13, 0.18),
+      0 0 10px rgba(243, 216, 13, 0.06);
+  }
+  95%, 99% {
+    opacity: 0.82;
+    text-shadow: 0 0 3px rgba(243, 216, 13, 0.06);
+  }
+}    
     </style>
 </head>
 <body>
