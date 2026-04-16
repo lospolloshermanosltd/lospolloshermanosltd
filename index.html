@@ -1171,6 +1171,58 @@
     0 0 4px rgba(243, 216, 13, 0.06),
     0 0 6px rgba(243, 216, 13, 0.015);
 }
+    .stack-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.stack-card {
+  border: 1px solid rgba(31, 78, 121, 0.24);
+  background: rgba(255, 255, 255, 0.01);
+  padding: 10px 12px;
+  min-width: 0;
+}
+
+.stack-card-label {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--fg-dim);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  white-space: nowrap;
+}
+
+.stack-card-value {
+  min-width: 0;
+  font-size: 16px;
+  line-height: 1.15;
+  color: var(--fg-soft);
+}
+
+.stack-card-value a {
+  display: block;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stack-card-value a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.stack-card-value.email a {
+  color: var(--accent);
+}
+
+.stack-card-value.highlight {
+  color: var(--accent);
+}
     </style>
 </head>
 <body>
@@ -1259,34 +1311,34 @@
   </div>
 
   <div class="menu-track">
-   <div class="section contact-table-section">
+<div class="section contact-card-section">
   <div class="section-title"><span>[ CONTACT ]</span><span>LINKS</span></div>
 
-  <div class="kv-table">
-    <div class="kv-row">
-      <span class="kv-key">EMAIL</span>
-      <span class="kv-val email">
+  <div class="stack-card-list">
+    <div class="stack-card">
+      <div class="stack-card-label">EMAIL</div>
+      <div class="stack-card-value email">
         <a href="#" class="clickable" id="emailValue" title="Click to copy email">lospolloshermanosltd@proton.me</a>
-      </span>
+      </div>
     </div>
 
-    <div class="kv-row">
-      <span class="kv-key">TELEGRAM</span>
-      <span class="kv-val">
+    <div class="stack-card">
+      <div class="stack-card-label">TELEGRAM</div>
+      <div class="stack-card-value">
         <a href="https://t.me/lospolloshermanosltd" target="_blank" rel="noopener noreferrer">@lospolloshermanosltd</a>
-      </span>
+      </div>
     </div>
 
-    <div class="kv-row">
-      <span class="kv-key">LN ADDRESS</span>
-      <span class="kv-val">
+    <div class="stack-card">
+      <div class="stack-card-label">LN ADDRESS</div>
+      <div class="stack-card-value">
         <a href="#" class="clickable" id="lnurlValue" title="Click to copy LN Address">order@oksu.su</a>
-      </span>
+      </div>
     </div>
 
-    <div class="kv-row">
-      <span class="kv-key">NOSTR</span>
-      <span class="kv-val">-</span>
+    <div class="stack-card">
+      <div class="stack-card-label">NOSTR</div>
+      <div class="stack-card-value">-</div>
     </div>
   </div>
 </div>
