@@ -1181,14 +1181,16 @@
 
 @keyframes market-value-breathe {
   0%, 100% {
-    opacity: 0.85;
-    text-shadow: 0 0 4px rgba(243, 216, 13, 0.08);
+    color: var(--accent);
+    text-shadow: 0 0 4px rgba(243, 216, 13, 0.10);
+    filter: brightness(0.92);
   }
   50% {
-    opacity: 1;
+    color: var(--accent);
     text-shadow:
       0 0 6px rgba(243, 216, 13, 0.18),
       0 0 10px rgba(243, 216, 13, 0.06);
+    filter: brightness(1.08);
   }
 }
     </style>
