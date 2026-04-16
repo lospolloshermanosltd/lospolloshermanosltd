@@ -213,8 +213,8 @@
 
 .menu-container {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  column-gap: 28px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
   width: 100%;
   align-items: stretch;
 }
@@ -222,12 +222,15 @@
 .menu-track {
   border: 3px solid var(--line);
   background: rgba(10, 10, 10, 0.96);
-  padding: 24px 24px;
+  padding: 24px 28px;
   box-shadow:
     0 0 22px rgba(0, 0, 0, 0.58),
     0 0 12px rgba(31, 78, 121, 0.05);
-  border-radius: 0px;
-  min-height: 100%;
+  border-radius: 0;
+  min-height: 332px;
+  height: 332px;
+  display: flex;
+  flex-direction: column;
 }
 
 .menu-track.center-track {
