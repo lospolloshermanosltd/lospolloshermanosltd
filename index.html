@@ -1174,34 +1174,21 @@
   }
 }
 #marketLine strong {
-  animation: market-value-blink 1.8s steps(1, end) infinite;
+  animation: market-value-breathe 3.2s ease-in-out infinite;
 }
 
-#marketLine .market-item:nth-child(2) strong { animation-delay: 0s; }
-#marketLine .market-item:nth-child(3) strong { animation-delay: 0.25s; }
-#marketLine .market-item:nth-child(4) strong { animation-delay: 0.5s; }
-#marketLine .market-item:nth-child(5) strong { animation-delay: 0.75s; }
-
-@keyframes market-value-blink {
-  0%, 84%, 100% {
-    opacity: 1;
-    text-shadow: 0 0 4px rgba(243, 216, 13, 0.10);
+@keyframes market-value-breathe {
+  0%, 100% {
+    opacity: 0.85;
+    text-shadow: 0 0 4px rgba(243, 216, 13, 0.08);
   }
-  85%, 89% {
-    opacity: 0.72;
-    text-shadow: 0 0 2px rgba(243, 216, 13, 0.04);
-  }
-  90%, 94% {
+  50% {
     opacity: 1;
     text-shadow:
       0 0 6px rgba(243, 216, 13, 0.18),
       0 0 10px rgba(243, 216, 13, 0.06);
   }
-  95%, 99% {
-    opacity: 0.82;
-    text-shadow: 0 0 3px rgba(243, 216, 13, 0.06);
-  }
-}    
+}
     </style>
 </head>
 <body>
