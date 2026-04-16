@@ -1124,21 +1124,28 @@
   text-shadow: 0 0 6px rgba(124, 252, 0, 0.18);
 }
 .market-sub {
-  margin-top: -12px;
-  margin-bottom: 20px;
+  margin-top: -10px;
+  margin-bottom: 22px;
+  min-height: 18px;
 }
 
 .market-sub-line {
-  color: rgba(230,230,230,0.38);
-  font-size: 10px;
-  letter-spacing: 0.02em;
+  gap: 2.4ch;
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: rgba(230, 230, 230, 0.56);
+  text-shadow: none;
 }
 
-.market-sub-line .market-prompt {
-  color: rgba(230,230,230,0.38);
+.market-sub-line .market-item {
+  color: rgba(230, 230, 230, 0.50);
+}
+
+.market-sub-line .market-item strong {
+  color: rgba(230, 230, 230, 0.82);
+  font-weight: 700;
   text-shadow: none;
-  animation: none;
-}    
+}
     </style>
 </head>
 <body>
@@ -1170,11 +1177,10 @@
     
 <div class="market-strip market-sub">
   <div class="market-line market-sub-line">
-    <span class="market-prompt">&gt;</span>
-    <span class="market-item">64GB RAM</span>
-    <span class="market-item">4TB NVMe</span>
-    <span class="market-item">UPS-BACKED</span>
-    <span class="market-item">24/7 UPTIME</span>
+    <span class="market-item">RAM <strong>64GB</strong></span>
+    <span class="market-item">STORAGE <strong>4TB NVMe</strong></span>
+    <span class="market-item">POWER <strong>UPS-BACKED</strong></span>
+    <span class="market-item">UPTIME <strong>24/7</strong></span>
   </div>
 </div>
     
