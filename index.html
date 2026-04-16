@@ -273,15 +273,19 @@
       gap: 16px;
     }
 
-    .row {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      margin-bottom: 8px;
-      font-size: 14px;
-      line-height: 1.28;
-      min-width: 0;
-    }
+.row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 0;
+  padding: 10px 0;
+  font-size: 14px;
+  line-height: 1.28;
+  min-width: 0;
+}
+    .row:last-child {
+  padding-bottom: 0;
+}
 
     .row:last-child {
       margin-bottom: 0;
