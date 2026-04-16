@@ -1379,12 +1379,6 @@
         : raw.slice(0, CONFIG.TICKER.ALIAS_LEN);
     }
 
-    function escapeUrl(url) {
-      const u = new URL(url);
-      u.searchParams.set("t", String(Date.now()));
-      return u.toString();
-    }
-
     function getHiddenAwareDelay(ms) {
       return document.hidden ? CONFIG.INTERVALS.HIDDEN_POLL : ms;
     }
@@ -1428,7 +1422,7 @@
         : localController.signal;
 
       try {
-        const res = await fetch(escapeUrl(url), {
+        const res = await fetch(url, {
           method: "GET",
           cache: "no-store",
           headers: { Accept: "application/json" },
