@@ -1194,6 +1194,13 @@
 .menu-track.center-track .highlight {
   color: var(--terminal-green);
   text-shadow: 0 0 6px rgba(124, 252, 0, 0.18);
+}
+.menu-track.center-track .status-caret {
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--terminal-green);
+  text-shadow: 0 0 4px rgba(124, 252, 0, 0.18);
+  animation: terminal-caret-blink 1s steps(1, end) infinite;
 }    
     </style>
 </head>
@@ -1255,7 +1262,7 @@
 
   <div class="menu-track center-track">
     <div class="section status-card-section">
-  <div class="section-title">STATUS</div>
+  <div class="section-title">STATUS<span class="status-caret">_</span></div>
 
   <div class="stack-card-list">
     <div class="stack-card stack-card-hero">
