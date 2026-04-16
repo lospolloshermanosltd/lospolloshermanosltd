@@ -981,41 +981,41 @@
 /* 🔽 여기부터 추가 */
 .hardware-compact {
   margin-top: auto;
+  font-family: "IBM Plex Mono", monospace;
 }
 
 .hardware-line {
-  display: flex;
+  display: grid;
+  grid-template-columns: 72px 1fr 92px 1fr;
   align-items: baseline;
-  justify-content: flex-start;
-  gap: 12px;
-  padding: 6px 0;
-  font-size: 14px;
+  padding: 7px 0;
+  font-size: 13.5px;
   line-height: 1.35;
-  border-bottom: 1px dotted rgba(31, 78, 121, 0.38);
+  letter-spacing: 0.02em;
+  border-bottom: 1px dotted rgba(31, 78, 121, 0.28);
+}
+
+.hardware-line span {
   white-space: nowrap;
 }
 
-.hardware-line + .hardware-line {
-  margin-top: 4px;
-}
-
-.hw-label {
-  color: var(--fg-soft);
+.hardware-line span:nth-child(1),
+.hardware-line span:nth-child(3) {
+  color: var(--fg-dim);
   text-transform: uppercase;
 }
 
-.hw-value {
+.hardware-line span:nth-child(2),
+.hardware-line span:nth-child(4) {
   color: var(--fg-soft);
-  margin-right: 18px;
 }
 
-.hw-value.highlight {
+.hardware-line .highlight {
   color: var(--accent);
   text-shadow:
     0 0 4px rgba(243, 216, 13, 0.06),
     0 0 6px rgba(243, 216, 13, 0.015);
 }
-/* 🔼 여기까지 추가 */
 
 </style>
   </style>
@@ -1074,20 +1074,18 @@
     </div>
 
 <div class="section hardware-compact">
-  <div class="section-title"><span>[ HARDWARE ]</span><span>SPEC</span></div>
-
-  <div class="hardware-line">
-    <span class="hw-label">RAM</span>
-    <span class="hw-value highlight">64GB</span>
-    <span class="hw-label">STORAGE</span>
-    <span class="hw-value highlight">4TB NVMe</span>
+  <div class="hardware-line mono">
+    <span>RAM</span>
+    <span class="highlight">64GB</span>
+    <span>STORAGE</span>
+    <span class="highlight">4TB NVMe</span>
   </div>
 
-  <div class="hardware-line">
-    <span class="hw-label">POWER</span>
-    <span class="hw-value">UPS-Backed</span>
-    <span class="hw-label">UPTIME</span>
-    <span class="hw-value">24/7</span>
+  <div class="hardware-line mono">
+    <span>POWER</span>
+    <span>UPS-Backed</span>
+    <span>UPTIME</span>
+    <span>24/7</span>
   </div>
 </div>
   </div>
