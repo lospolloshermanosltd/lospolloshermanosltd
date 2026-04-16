@@ -319,22 +319,27 @@
       text-shadow: 0 0 4px rgba(243, 216, 13, 0.08);
     }
 
-    .secure-channel-container {
-      grid-column: 1 / -1;
-      margin-top: var(--space-4);
-      text-align: center;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
+.secure-channel-container {
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-4);
+  text-align: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 
-    .secure-channel {
-      position: relative;
-      padding-top: 16px;
-      width: 100%;
-      overflow: hidden;
-      isolation: isolate;
-    }
+.secure-channel {
+  position: relative;
+  width: min(100%, 520px);
+  padding: 26px 20px 18px;
+  overflow: hidden;
+  isolation: isolate;
+  border: 3px solid var(--line);
+  background: rgba(10, 10, 10, 0.96);
+  box-shadow:
+    0 0 22px rgba(0, 0, 0, 0.58),
+    0 0 12px rgba(31, 78, 121, 0.05);
+}
 
     .secure-channel::before {
       content: "";
