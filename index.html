@@ -1123,6 +1123,22 @@
   color: var(--terminal-green);
   text-shadow: 0 0 6px rgba(124, 252, 0, 0.18);
 }
+.market-sub {
+  margin-top: -12px;
+  margin-bottom: 20px;
+}
+
+.market-sub-line {
+  color: rgba(230,230,230,0.38);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+}
+
+.market-sub-line .market-prompt {
+  color: rgba(230,230,230,0.38);
+  text-shadow: none;
+  animation: none;
+}    
     </style>
 </head>
 <body>
@@ -1151,7 +1167,17 @@
         <span class="market-item">HALVING <strong id="halvingValue">--.-%</strong></span>
       </div>
     </div>
-
+    
+<div class="market-strip market-sub">
+  <div class="market-line market-sub-line">
+    <span class="market-prompt">&gt;</span>
+    <span class="market-item">64GB RAM</span>
+    <span class="market-item">4TB NVMe</span>
+    <span class="market-item">UPS-BACKED</span>
+    <span class="market-item">24/7 UPTIME</span>
+  </div>
+</div>
+    
 <div class="menu-container">
   <div class="menu-track">
   <div class="section routing-card-section">
