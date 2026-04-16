@@ -1164,11 +1164,44 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+ .market-top {
+  position: relative;
+  overflow: hidden;
+}
+
+.market-top::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -25%;
+  width: 25%;
+  height: 100%;
+  pointer-events: none;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 235, 120, 0.08),
+    rgba(255, 255, 200, 0.18),
+    rgba(255, 235, 120, 0.08),
+    transparent
+  );
+
+  animation: scanline 6s linear infinite;
+}
+
+@keyframes scanline {
+  0% { transform: translateX(0); opacity: 0; }
+  10% { opacity: 0.3; }
+  50% { opacity: 0.45; }
+  90% { opacity: 0.25; }
+  100% { transform: translateX(500%); opacity: 0; }
+}   
     </style>
 </head>
 <body>
   <div class="page">
-        <div class="market-strip" aria-label="bitcoin network summary">
+        <div class="market-strip market-top" aria-label="bitcoin network summary">
       <div class="market-line" id="marketLine">
         <span class="market-prompt">&gt;</span>
         <span class="market-item">BTC <strong id="btcPriceValue">$--,---</strong></span>
