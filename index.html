@@ -218,7 +218,61 @@
       width: 100%;
       align-items: start;
     }
+.hero-panel {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto 28px;
+  border: 3px solid var(--line);
+  background: rgba(10, 10, 10, 0.96);
+  box-shadow:
+    0 0 22px rgba(0, 0, 0, 0.58),
+    0 0 12px rgba(31, 78, 121, 0.05);
+  padding: 22px 28px;
+  text-align: center;
+}
 
+.hero-kicker {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(230, 230, 230, 0.54);
+  margin-bottom: 10px;
+}
+
+.hero-capacity {
+  font-size: clamp(34px, 6vw, 56px);
+  line-height: 1;
+  color: var(--accent);
+  text-shadow:
+    0 0 6px rgba(243, 216, 13, 0.12),
+    0 0 12px rgba(243, 216, 13, 0.05);
+  margin-bottom: 8px;
+}
+
+.hero-unit {
+  font-size: 13px;
+  color: rgba(230, 230, 230, 0.72);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-meta {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+
+.hero-meta-item {
+  color: var(--fg-soft);
+}
+
+.hero-meta-item strong {
+  color: var(--accent);
+  font-weight: 400;
+}
     .menu-track {
       border: 3px solid var(--line);
       background: rgba(10, 10, 10, 0.96);
@@ -979,20 +1033,23 @@
         <span class="market-item">HALVING <strong id="halvingValue">--.-%</strong></span>
       </div>
     </div>
+    
+<div class="hero-panel">
+  <div class="hero-kicker">Node Capacity</div>
+  <div class="hero-capacity" id="capacityValue">Loading</div>
+  <div class="hero-unit">satoshis</div>
 
+  <div class="hero-meta">
+    <div class="hero-meta-item">CHANNELS <strong id="channelsValue">Loading</strong></div>
+    <div class="hero-meta-item">AVG SIZE <strong id="avgChannelValue">Loading</strong></div>
+  </div>
+</div>
+    
     <div class="menu-container">
       <div class="menu-track">
         <div class="section">
           <div class="section-title"><span>[ STATUS ]</span><span>DATA</span></div>
 
-          <div class="row capacity-row">
-            <span class="label">TOTAL CAPACITY</span>
-            <span class="fill"></span>
-            <span class="value highlight" id="capacityValue">Loading</span>
-          </div>
-
-          <div class="row"><span class="label">ACTIVE CHANNELS</span><span class="fill"></span><span class="value" id="channelsValue">Loading</span></div>
-          <div class="row"><span class="label">AVG SIZE CHANNEL</span><span class="fill"></span><span class="value" id="avgChannelValue">Loading</span></div>
           <div class="row"><span class="label">REBALANCE</span><span class="fill"></span><span class="value highlight">Auto</span></div>
         </div>
 
