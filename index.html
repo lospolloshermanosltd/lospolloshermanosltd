@@ -1158,11 +1158,37 @@
   100% { opacity: 0.42; }
 }
 #marketLine strong {
-  color: var(--accent);
+  color: transparent;
   font-weight: 700;
-  text-shadow: 0 0 4px rgba(243, 216, 13, 0.1);
-  animation: market-pulse 3.2s ease-in-out infinite;
-}    
+  background-image: linear-gradient(
+    90deg,
+    rgba(243, 216, 13, 0.72) 0%,
+    rgba(255, 248, 204, 0.98) 45%,
+    rgba(243, 216, 13, 0.72) 100%
+  );
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 4px rgba(243, 216, 13, 0.08);
+  animation: market-shimmer 3.8s linear infinite;
+}
+    @keyframes market-shimmer {
+  0% {
+    background-position: 0% 50%;
+    filter: brightness(0.92);
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: brightness(1.06);
+  }
+  100% {
+    background-position: 0% 50%;
+    filter: brightness(0.92);
+  }
+}
     </style>
 </head>
 <body>
