@@ -820,8 +820,10 @@
       }
       
 .market-sub-line {
-  font-size: 9px;
-  gap: 1.2ch;
+  font-size: 8.2px;
+  gap: 0.7ch;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
       .section-title {
         font-size: 13px;
@@ -893,9 +895,10 @@
       }
 
 .market-sub-line {
-  font-size: 7.8px;
-  gap: 0.8ch;
-  letter-spacing: 0;
+  font-size: 6.6px;
+  gap: 0.45ch;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
 }
       
       .menu-track {
@@ -1155,6 +1158,11 @@
   color: rgba(230, 230, 230, 0.82);
   font-weight: 700;
   text-shadow: none;
+}
+    .market-sub-line {
+  white-space: normal;
+  flex-wrap: wrap;
+  justify-content: center;
 }
     </style>
 </head>
