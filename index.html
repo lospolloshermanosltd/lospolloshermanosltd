@@ -1020,8 +1020,46 @@
     0 0 4px rgba(243, 216, 13, 0.06),
     0 0 6px rgba(243, 216, 13, 0.015);
 }
+.kv-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 4px;
+}
 
-</style>
+.kv-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 18px;
+  padding: 12px 0;
+  border-bottom: 1px dotted rgba(31, 78, 121, 0.28);
+  min-width: 0;
+}
+
+.kv-row:last-child {
+  border-bottom: 0;
+}
+
+.kv-key {
+  min-width: 0;
+  color: var(--fg-soft);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.kv-val {
+  color: var(--fg-soft);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.kv-val.highlight {
+  color: var(--accent);
+  text-shadow:
+    0 0 4px rgba(243, 216, 13, 0.06),
+    0 0 6px rgba(243, 216, 13, 0.015);
+}
   </style>
 </head>
 <body>
@@ -1054,12 +1092,31 @@
 <div class="menu-container">
   <div class="menu-track">
     <div class="section">
-      <div class="section-title"><span>[ ROUTING ]</span><span>FEES</span></div>
-      <div class="row"><span class="label">BALANCED</span><span class="fill"></span><span class="value">Classic</span></div>
-      <div class="row"><span class="label">OUTBOUND HEAVY</span><span class="fill"></span><span class="value">Mild</span></div>
-      <div class="row"><span class="label">INBOUND HEAVY</span><span class="fill"></span><span class="value">Spicy</span></div>
-      <div class="row"><span class="label">FEE POLICY</span><span class="fill"></span><span class="value highlight">Dynamic</span></div>
+     <div class="section routing-table-section">
+  <div class="section-title"><span>[ ROUTING ]</span><span>FEES</span></div>
+
+  <div class="kv-table">
+    <div class="kv-row">
+      <span class="kv-key">BALANCED</span>
+      <span class="kv-val">Classic</span>
     </div>
+
+    <div class="kv-row">
+      <span class="kv-key">OUTBOUND HEAVY</span>
+      <span class="kv-val">Mild</span>
+    </div>
+
+    <div class="kv-row">
+      <span class="kv-key">INBOUND HEAVY</span>
+      <span class="kv-val">Spicy</span>
+    </div>
+
+    <div class="kv-row">
+      <span class="kv-key">FEE POLICY</span>
+      <span class="kv-val highlight">Dynamic</span>
+    </div>
+  </div>
+</div>
   </div>
 
   <div class="menu-track center-track">
