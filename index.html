@@ -1151,6 +1151,45 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.status-live-rail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 18px;
+  margin: -2px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px dotted rgba(124, 252, 0, 0.16);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--terminal-green-dim);
+  text-shadow: 0 0 4px var(--terminal-glow);
+}
+
+.status-live-dot {
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  border-radius: 50%;
+  background: var(--terminal-green);
+  box-shadow:
+    0 0 4px rgba(124, 252, 0, 0.34),
+    0 0 7px rgba(124, 252, 0, 0.10);
+  animation: live-pulse 2.6s ease-in-out infinite;
+}
+
+.status-live-text {
+  white-space: nowrap;
+}
+
+.status-live-caret {
+  color: var(--terminal-green);
+  animation: terminal-caret-blink 1s steps(1, end) infinite;
+}
+
+@keyframes terminal-caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}    
     </style>
 </head>
 <body>
@@ -1212,7 +1251,11 @@
   <div class="menu-track center-track">
     <div class="section status-card-section">
   <div class="section-title">STATUS</div>
-
+<div class="status-live-rail">
+  <span class="status-live-dot"></span>
+  <span class="status-live-text">LIVE NODE / ROUTING ACTIVE</span>
+  <span class="status-live-caret">_</span>
+</div>
   <div class="stack-card-list">
     <div class="stack-card stack-card-hero">
       <div class="stack-card-label">TOTAL CAPACITY</div>
