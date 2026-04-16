@@ -236,8 +236,7 @@
 .menu-track.center-track {
   box-shadow:
     0 0 22px rgba(0, 0, 0, 0.58),
-    0 0 18px rgba(31, 78, 121, 0.12),
-    0 0 10px rgba(243, 216, 13, 0.05);
+    0 0 12px rgba(31, 78, 121, 0.05);
 }
 
     .section {
@@ -1092,7 +1091,7 @@
 .stack-card {
   border: 1px solid rgba(31, 78, 121, 0.22);
   background: rgba(255, 255, 255, 0.01);
-  padding: 9px 12px 10px;
+  padding: 10px 14px;
   min-width: 0;
 }
 
@@ -1178,7 +1177,106 @@
 @keyframes terminal-caret-blink {
   0%, 49% { opacity: 1; }
   50%, 100% { opacity: 0; }
-}    
+}
+    .stack-card-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+/* 레이어 */
+.signal-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* 공통 */
+.signal {
+  position: absolute;
+  top: 50%;
+  left: -30%;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+/* 메인 캐리어 */
+.signal.main {
+  width: 40%;
+  height: 2px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(243,216,13,0.25),
+      rgba(255,248,204,1),
+      rgba(243,216,13,0.25),
+      transparent
+    );
+  box-shadow:
+    0 0 6px rgba(243,216,13,0.2),
+    0 0 12px rgba(243,216,13,0.08);
+
+  animation: signal-main 4.8s linear infinite;
+}
+
+/* 얇은 핫 신호 */
+.signal.hot {
+  width: 20%;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,248,204,0.5),
+      #fff,
+      rgba(243,216,13,0.3),
+      transparent
+    );
+
+  animation: signal-hot 3.6s linear infinite;
+  animation-delay: 1.2s;
+}
+
+/* 애니메이션 */
+@keyframes signal-main {
+  0% {
+    transform: translateX(0) translateY(-50%);
+    opacity: 0;
+  }
+  15% { opacity: 0.3; }
+  40% {
+    opacity: 0.9;
+    transform: translateX(250%) translateY(-50%);
+  }
+  100% {
+    transform: translateX(600%) translateY(-50%);
+    opacity: 0;
+  }
+}
+
+@keyframes signal-hot {
+  0% {
+    transform: translateX(0) translateY(-50%);
+    opacity: 0;
+  }
+  20% { opacity: 0.4; }
+  50% {
+    opacity: 1;
+    transform: translateX(400%) translateY(-50%);
+  }
+  100% {
+    transform: translateX(900%) translateY(-50%);
+    opacity: 0;
+  }
+}
+    .stack-card-hero .stack-card-label,
+.stack-card-hero .stack-card-value {
+  position: relative;
+  z-index: 2;
+}
     </style>
 </head>
 <body>
@@ -1243,6 +1341,10 @@
 
   <div class="stack-card-list">
     <div class="stack-card stack-card-hero">
+      <div class="signal-layer" aria-hidden="true">
+  <span class="signal main"></span>
+  <span class="signal hot"></span>
+</div>
       <div class="stack-card-label">TOTAL CAPACITY</div>
       <div class="stack-card-value highlight" id="capacityValue">Loading</div>
     </div>
