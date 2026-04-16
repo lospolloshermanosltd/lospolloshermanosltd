@@ -1372,11 +1372,6 @@
       return `${rounded.replace(/\.0$/, "")} ${units[unitIndex]}`;
     }
 
-    function shortKey(key) {
-      if (!key || typeof key !== "string") return "unknown";
-      return key.slice(0, CONFIG.TICKER.ALIAS_LEN);
-    }
-
     function truncateAlias(alias) {
       const raw = String(alias || "unknown").trim();
       return raw.length <= CONFIG.TICKER.ALIAS_LEN
@@ -1539,7 +1534,7 @@ function renderNode() {
       }
 
       const peer = state.peers[state.tickerIndex % state.peers.length];
-      const aliasRaw = peer?.node?.alias?.trim() || shortKey(peer?.node?.public_key);
+      const aliasRaw = peer?.node?.alias?.trim() || String(peer?.node?.public_key || "unknown");
       const alias = truncateAlias(aliasRaw);
       const capacity = formatSats(peer?.capacity || 0);
 
