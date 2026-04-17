@@ -1177,64 +1177,16 @@
   animation: market-prompt-pulse 5.2s ease-in-out infinite;
   flex: 0 0 auto;
 }
+.market-prompt {
+  color: var(--accent);
+  animation: live-pulse 2.6s ease-in-out infinite;
+}
 
 #marketLine strong {
   display: inline-block;
   color: var(--accent);
   font-weight: 700;
-  animation: market-value-pulse 5.2s ease-in-out infinite;
-}
-
-@keyframes market-prompt-pulse {
-  0% {
-    opacity: 0.46;
-    text-shadow:
-      0 0 2px rgba(243, 216, 13, 0.06),
-      0 0 4px rgba(243, 216, 13, 0.02);
-    transform: scale(0.985);
-  }
-
-  50% {
-    opacity: 0.82;
-    text-shadow:
-      0 0 4px rgba(243, 216, 13, 0.14),
-      0 0 8px rgba(243, 216, 13, 0.05);
-    transform: scale(1);
-  }
-
-  100% {
-    opacity: 0.46;
-    text-shadow:
-      0 0 2px rgba(243, 216, 13, 0.06),
-      0 0 4px rgba(243, 216, 13, 0.02);
-    transform: scale(0.985);
-  }
-}
-
-@keyframes market-value-pulse {
-  0% {
-    opacity: 0.52;
-    text-shadow:
-      0 0 2px rgba(243, 216, 13, 0.08),
-      0 0 5px rgba(243, 216, 13, 0.03);
-    transform: scale(0.992);
-  }
-
-  50% {
-    opacity: 0.9;
-    text-shadow:
-      0 0 5px rgba(243, 216, 13, 0.18),
-      0 0 10px rgba(243, 216, 13, 0.07);
-    transform: scale(1);
-  }
-
-  100% {
-    opacity: 0.52;
-    text-shadow:
-      0 0 2px rgba(243, 216, 13, 0.08),
-      0 0 5px rgba(243, 216, 13, 0.03);
-    transform: scale(0.992);
-  }
+  animation: live-pulse 2.6s ease-in-out infinite;
 }
     </style>
 </head>
