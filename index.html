@@ -1185,60 +1185,42 @@
   will-change: filter, text-shadow, opacity;
 }
 
-#marketLine strong::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    100deg,
-    rgba(255,255,255,0) 0%,
-    rgba(255,244,170,0) 35%,
-    rgba(255,248,210,0.16) 48%,
-    rgba(255,252,235,0.32) 50%,
-    rgba(255,248,210,0.16) 52%,
-    rgba(255,244,170,0) 65%,
-    rgba(255,255,255,0) 100%
+#marketLine strong {
+  display: inline-block;
+  font-weight: 700;
+  color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    #c8ab00 0%,
+    #f3d80d 22%,
+    #fff3a0 38%,
+    #fff8cc 50%,
+    #fff3a0 62%,
+    #f3d80d 78%,
+    #c8ab00 100%
   );
-  transform: translateX(-160%);
-  opacity: 0;
-  mix-blend-mode: screen;
-  pointer-events: none;
-  animation: market-value-sheen 4.8s ease-in-out infinite;
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 0 3px rgba(243, 216, 13, 0.12));
+  animation: market-number-glow 4.8s ease-in-out infinite;
 }
 
-@keyframes market-value-glow {
-  0%, 100% {
-    filter: brightness(0.97);
-    text-shadow:
-      0 0 4px rgba(243, 216, 13, 0.06),
-      0 0 8px rgba(243, 216, 13, 0.02);
+@keyframes market-number-glow {
+  0% {
+    background-position: 0% 50%;
+    filter: drop-shadow(0 0 2px rgba(243, 216, 13, 0.08));
   }
   50% {
-    filter: brightness(1.08);
-    text-shadow:
-      0 0 6px rgba(243, 216, 13, 0.14),
-      0 0 14px rgba(243, 216, 13, 0.05);
-  }
-}
-
-@keyframes market-value-sheen {
-  0% {
-    transform: translateX(-160%);
-    opacity: 0;
-  }
-  18% {
-    opacity: 0;
-  }
-  42% {
-    opacity: 0.75;
-  }
-  58% {
-    transform: translateX(160%);
-    opacity: 0.75;
+    background-position: 100% 50%;
+    filter: drop-shadow(0 0 5px rgba(243, 216, 13, 0.18));
   }
   100% {
-    transform: translateX(160%);
-    opacity: 0;
+    background-position: 0% 50%;
+    filter: drop-shadow(0 0 2px rgba(243, 216, 13, 0.08));
   }
 }
     </style>
