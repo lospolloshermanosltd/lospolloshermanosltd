@@ -1175,22 +1175,25 @@
   color: var(--accent);
   font-weight: 700;
   text-shadow:
-    0 0 4px rgba(243, 216, 13, 0.10),
-    0 0 8px rgba(243, 216, 13, 0.03);
-  animation: market-value-breathe 4.8s ease-in-out infinite;
+    0 0 4px rgba(243, 216, 13, 0.18),
+    0 0 10px rgba(243, 216, 13, 0.08);
+  animation: market-value-pulse 2.4s ease-in-out infinite;
 }
 
-@keyframes market-value-breathe {
+@keyframes market-value-pulse {
   0%,
   100% {
+    color: #e7cf22;
     text-shadow:
-      0 0 4px rgba(243, 216, 13, 0.10),
-      0 0 8px rgba(243, 216, 13, 0.03);
+      0 0 4px rgba(243, 216, 13, 0.14),
+      0 0 8px rgba(243, 216, 13, 0.05);
   }
   50% {
+    color: #fff07a;
     text-shadow:
-      0 0 6px rgba(243, 216, 13, 0.16),
-      0 0 12px rgba(243, 216, 13, 0.06);
+      0 0 7px rgba(255, 240, 122, 0.34),
+      0 0 16px rgba(243, 216, 13, 0.18),
+      0 0 24px rgba(243, 216, 13, 0.08);
   }
 }
     </style>
