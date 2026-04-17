@@ -1172,26 +1172,32 @@
   text-shadow: 0 0 4px rgba(243, 216, 13, 0.1);
 }
 #marketLine strong {
+  display: inline-block;
   color: var(--accent);
   font-weight: 700;
-  text-shadow:
-    0 0 4px rgba(243, 216, 13, 0.16),
-    0 0 10px rgba(243, 216, 13, 0.06);
-  animation: market-value-pulse 2.6s ease-in-out infinite;
+  will-change: transform, opacity, text-shadow, filter;
+  animation: market-value-pulse 1.9s ease-in-out infinite;
 }
 
 @keyframes market-value-pulse {
   0%,
   100% {
+    opacity: 0.88;
+    transform: translateY(0) scale(1);
+    filter: brightness(1);
     text-shadow:
-      0 0 4px rgba(243, 216, 13, 0.14),
-      0 0 8px rgba(243, 216, 13, 0.05);
+      0 0 2px rgba(243, 216, 13, 0.18),
+      0 0 6px rgba(243, 216, 13, 0.08);
   }
+
   50% {
+    opacity: 1;
+    transform: translateY(-0.5px) scale(1.035);
+    filter: brightness(1.18);
     text-shadow:
-      0 0 8px rgba(243, 216, 13, 0.28),
-      0 0 18px rgba(243, 216, 13, 0.16),
-      0 0 28px rgba(243, 216, 13, 0.08);
+      0 0 6px rgba(243, 216, 13, 0.34),
+      0 0 14px rgba(243, 216, 13, 0.22),
+      0 0 24px rgba(243, 216, 13, 0.12);
   }
 }
     </style>
