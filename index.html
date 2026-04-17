@@ -1174,21 +1174,23 @@
 #marketLine strong {
   color: var(--accent);
   font-weight: 700;
-  animation: market-value-pulse 2.6s ease-in-out infinite;
+  animation: market-value-pulse 1.8s ease-in-out infinite;
 }
 
 @keyframes market-value-pulse {
   0%,
   100% {
+    opacity: 0.82;
     text-shadow:
-      0 0 2px rgba(243, 216, 13, 0.08),
-      0 0 5px rgba(243, 216, 13, 0.03);
+      0 0 2px rgba(243, 216, 13, 0.10),
+      0 0 5px rgba(243, 216, 13, 0.04);
   }
 
   50% {
+    opacity: 1;
     text-shadow:
-      0 0 4px rgba(243, 216, 13, 0.16),
-      0 0 10px rgba(243, 216, 13, 0.06);
+      0 0 5px rgba(243, 216, 13, 0.22),
+      0 0 12px rgba(243, 216, 13, 0.10);
   }
 }
  @keyframes market-pulse {
