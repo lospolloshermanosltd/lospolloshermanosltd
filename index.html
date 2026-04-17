@@ -1179,6 +1179,22 @@
   animation: market-value-pulse 1.9s ease-in-out infinite;
 }
 
+@keyframes market-pulse {
+  0%,
+  100% {
+    opacity: 0.72;
+    text-shadow:
+      0 0 3px rgba(243, 216, 13, 0.10);
+  }
+
+  50% {
+    opacity: 1;
+    text-shadow:
+      0 0 8px rgba(243, 216, 13, 0.24),
+      0 0 16px rgba(243, 216, 13, 0.10);
+  }
+}
+    
 @keyframes market-value-pulse {
   0%,
   100% {
