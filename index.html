@@ -1173,56 +1173,16 @@
   100% { opacity: 0.42; }
 }
 #marketLine strong {
-  position: relative;
-  display: inline-block;
   color: var(--accent);
   font-weight: 700;
-  text-shadow:
-    0 0 4px rgba(243, 216, 13, 0.08),
-    0 0 8px rgba(243, 216, 13, 0.03);
-  filter: brightness(0.98);
-  animation: market-value-glow 3.6s ease-in-out infinite;
-  will-change: filter, text-shadow, opacity;
+  text-shadow: 0 0 4px rgba(243, 216, 13, 0.10);
+  animation: market-pulse 3.2s ease-in-out infinite;
 }
 
-#marketLine strong {
-  display: inline-block;
-  font-weight: 700;
-  color: transparent;
-  background-image: linear-gradient(
-    90deg,
-    #c8ab00 0%,
-    #f3d80d 22%,
-    #fff3a0 38%,
-    #fff8cc 50%,
-    #fff3a0 62%,
-    #f3d80d 78%,
-    #c8ab00 100%
-  );
-  background-size: 220% 100%;
-  background-position: 0% 50%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: none;
-  filter: drop-shadow(0 0 3px rgba(243, 216, 13, 0.12));
-  animation: market-number-glow 4.8s ease-in-out infinite;
-}
-
-@keyframes market-number-glow {
-  0% {
-    background-position: 0% 50%;
-    filter: drop-shadow(0 0 2px rgba(243, 216, 13, 0.08));
-  }
-  50% {
-    background-position: 100% 50%;
-    filter: drop-shadow(0 0 5px rgba(243, 216, 13, 0.18));
-  }
-  100% {
-    background-position: 0% 50%;
-    filter: drop-shadow(0 0 2px rgba(243, 216, 13, 0.08));
-  }
-}
+#btcPriceValue { animation-delay: 0s; }
+#blockHeightValue { animation-delay: 0.12s; }
+#hashrateValue { animation-delay: 0.24s; }
+#halvingValue { animation-delay: 0.36s; }
     </style>
 </head>
 <body>
