@@ -1171,19 +1171,63 @@
   font-weight: 700;
   text-shadow: 0 0 4px rgba(243, 216, 13, 0.1);
 }
-@keyframes market-pulse {
-  0%   { opacity: 0.42; }
-  50%  { opacity: 0.88; }
-  100% { opacity: 0.42; }
-}
+
 #marketLine strong {
-  color: #f7df3a;
+  position: relative;
+  display: inline-block;
+  color: var(--accent);
   font-weight: 700;
   text-shadow:
-    0 0 6px rgba(243, 216, 13, 0.22),
-    0 0 14px rgba(243, 216, 13, 0.10);
+    0 0 4px rgba(243, 216, 13, 0.12),
+    0 0 6px rgba(243, 216, 13, 0.04);
+  overflow: hidden;
 }
-    }
+
+#marketLine strong::after {
+  content: "";
+  position: absolute;
+  top: -10%;
+  left: -45%;
+  width: 38%;
+  height: 120%;
+  pointer-events: none;
+  transform: skewX(-18deg);
+
+  background: linear-gradient(
+    90deg,
+    rgba(243, 216, 13, 0) 0%,
+    rgba(255, 248, 204, 0.00) 20%,
+    rgba(255, 248, 204, 0.55) 50%,
+    rgba(243, 216, 13, 0) 100%
+  );
+
+  opacity: 0;
+  animation: value-shimmer 7s ease-in-out infinite;
+}
+
+@keyframes value-shimmer {
+  0% {
+    left: -45%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.10;
+  }
+  28% {
+    opacity: 0.22;
+  }
+  42% {
+    left: 115%;
+    opacity: 0;
+  }
+  100% {
+    left: 115%;
+    opacity: 0;
+  }
+}
     </style>
 </head>
 <body>
