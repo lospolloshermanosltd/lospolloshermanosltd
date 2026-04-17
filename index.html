@@ -1175,38 +1175,71 @@
 #marketLine strong {
   position: relative;
   display: inline-block;
-  overflow: hidden;
   color: var(--accent);
   font-weight: 700;
-  text-shadow: 0 0 4px rgba(243, 216, 13, 0.10);
-  animation: market-value-breathe 3.2s ease-in-out infinite;
+  text-shadow:
+    0 0 4px rgba(243, 216, 13, 0.08),
+    0 0 8px rgba(243, 216, 13, 0.03);
+  filter: brightness(0.98);
+  animation: market-value-glow 3.6s ease-in-out infinite;
+  will-change: filter, text-shadow, opacity;
 }
 
 #marketLine strong::after {
   content: "";
   position: absolute;
-  inset: -20% -40%;
+  inset: 0;
   background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255,255,255,0) 30%,
-    rgba(255,245,180,0.0) 40%,
-    rgba(255,245,180,0.75) 50%,
-    rgba(255,245,180,0.0) 60%,
-    transparent 100%
+    100deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,244,170,0) 35%,
+    rgba(255,248,210,0.16) 48%,
+    rgba(255,252,235,0.32) 50%,
+    rgba(255,248,210,0.16) 52%,
+    rgba(255,244,170,0) 65%,
+    rgba(255,255,255,0) 100%
   );
-  transform: translateX(-140%);
-  animation: market-shimmer 2.8s linear infinite;
-  pointer-events: none;
+  transform: translateX(-160%);
+  opacity: 0;
   mix-blend-mode: screen;
+  pointer-events: none;
+  animation: market-value-sheen 4.8s ease-in-out infinite;
 }
 
-@keyframes market-shimmer {
-  0%   { transform: translateX(-140%); opacity: 0; }
-  8%   { opacity: 0.0; }
-  18%  { opacity: 1; }
-  42%  { transform: translateX(140%); opacity: 0.9; }
-  100% { transform: translateX(140%); opacity: 0; }
+@keyframes market-value-glow {
+  0%, 100% {
+    filter: brightness(0.97);
+    text-shadow:
+      0 0 4px rgba(243, 216, 13, 0.06),
+      0 0 8px rgba(243, 216, 13, 0.02);
+  }
+  50% {
+    filter: brightness(1.08);
+    text-shadow:
+      0 0 6px rgba(243, 216, 13, 0.14),
+      0 0 14px rgba(243, 216, 13, 0.05);
+  }
+}
+
+@keyframes market-value-sheen {
+  0% {
+    transform: translateX(-160%);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0;
+  }
+  42% {
+    opacity: 0.75;
+  }
+  58% {
+    transform: translateX(160%);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateX(160%);
+    opacity: 0;
+  }
 }
     </style>
 </head>
