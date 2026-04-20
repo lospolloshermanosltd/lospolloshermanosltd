@@ -129,7 +129,7 @@
 
    .page {
       position: relative;
-      z-index: 0;
+      z-index: 3;
       width: 100%;
       max-width: 1080px;
       display: flex;
@@ -200,7 +200,7 @@
 
 .menu-track {
   border: 3px solid var(--line);
-  background: rgba(10, 10, 10, 0.96);
+  background: rgba(10, 10, 10, 0.82);
   padding: 24px 28px;
   box-shadow:
     0 0 22px rgba(0, 0, 0, 0.58),
@@ -1180,19 +1180,19 @@
     #marketLine strong {
   color: #FA660F;
 }
-  .center-bg {
+.center-bg {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  
-  width: 420px;        /* 크기 조절 */
+
+  width: 420px;
   max-width: 70vw;
 
-  opacity: 0.18;       /* 이게 핵심 (은근히 보이게) */
-  filter: blur(2px);   /* 살짝 흐림 */
+  opacity: 0.35;      /* ← 이게 보이게 하는 핵심 */
+  filter: blur(1px);
 
-  z-index: 0;          /* UI 뒤로 */
+  z-index: 2;         /* ← 앞으로 올림 */
   pointer-events: none;
 }  
     </style>
