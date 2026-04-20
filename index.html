@@ -1431,7 +1431,7 @@
         unitIndex += 1;
       }
 
-      const rounded = value >= 100 ? value.toFixed(0) : value.toFixed(1);
+      const rounded = value.toFixed(2);
       return `${rounded.replace(/\.0$/, "")} ${units[unitIndex]}`;
     }
 
