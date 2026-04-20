@@ -210,6 +210,8 @@
   height: 332px;
   display: flex;
   flex-direction: column;
+    position: relative;   /* 추가 */
+  z-index: 5;           /* 추가 */
 }
 
 .menu-track.center-track {
@@ -1195,7 +1197,7 @@
   opacity: 0.78;
   filter: blur(0.1px) contrast(1.12);
 
-  z-index: 2;
+  z-index: 4;
   pointer-events: none;
 }
     </style>
