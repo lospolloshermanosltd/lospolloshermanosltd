@@ -1182,18 +1182,18 @@
 }
 .center-bg {
   position: fixed;
-  top: 38%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  width: min(40vw, 560px);
-  height: min(80vh, 920px);
+  width: min(60vw, 800px);   /* 🔥 핵심: 더 크게 */
+  height: min(95vh, 1100px); /* 🔥 세로도 확장 */
 
   object-fit: cover;
   object-position: center 0%;
 
-  opacity: 0.78;
-  filter: blur(0.1px) contrast(1.12);
+  opacity: 0.65;   /* 🔥 커지면 투명도 낮춰야 안 거슬림 */
+  filter: blur(0.2px) contrast(1.1);
 
   z-index: 2;
   pointer-events: none;
