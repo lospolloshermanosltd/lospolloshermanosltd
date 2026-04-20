@@ -129,7 +129,7 @@
 
    .page {
       position: relative;
-      z-index: 3;
+      z-index: 0;
       width: 100%;
       max-width: 1080px;
       display: flex;
@@ -184,6 +184,13 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .market-prompt {
+      color: var(--accent);
+      text-shadow: 0 0 4px rgba(243, 216, 13, 0.12);
+      animation: market-pulse 3.2s ease-in-out infinite;
+      flex: 0 0 auto;
+    }
+
     .market-item {
       color: rgba(230, 230, 230, 0.56);
       flex: 0 0 auto;
@@ -200,7 +207,7 @@
 
 .menu-track {
   border: 3px solid var(--line);
-  background: rgba(10, 10, 10, 0.82);
+  background: rgba(10, 10, 10, 0.96);
   padding: 24px 28px;
   box-shadow:
     0 0 22px rgba(0, 0, 0, 0.58),
@@ -977,7 +984,11 @@
       color: rgba(230, 230, 230, 0.54);
       text-shadow: 0 0 4px rgba(243, 216, 13, 0.045);
     }
+    /* 기존 CSS들 쭉 있음 */
 
+.footer a:hover {
+  ...
+}
     .stack-card-list {
   display: flex;
   flex-direction: column;
@@ -1160,7 +1171,12 @@
   font-weight: 700;
   text-shadow: 0 0 4px rgba(243, 216, 13, 0.1);
 }
-
+.market-prompt {
+  color: var(--accent);
+  text-shadow: 0 0 2px rgba(243, 216, 13, 0.08);
+  animation: market-prompt-pulse 5.2s ease-in-out infinite;
+  flex: 0 0 auto;
+}
 .market-prompt {
   color: var(--accent);
   animation: live-pulse 2.6s ease-in-out infinite;
@@ -1177,31 +1193,9 @@
   50%  { opacity: 0.9; }
   100% { opacity: 0.6; }
 }
-    #marketLine strong {
-  color: #FA660F;
-}
-.center-bg {
-  position: fixed;
-  top: 46%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  width: min(38vw, 520px);
-  height: min(78vh, 900px);
-
-  object-fit: cover;
-  object-position: center 22%;
-
-  opacity: 0.62;
-  filter: blur(0.2px) contrast(1.08);
-
-  z-index: 2;
-  pointer-events: none;
-}
     </style>
 </head>
 <body>
-  <img src="gus-fring.webp" class="center-bg">
   <div class="page">
         <div class="market-strip market-top" aria-label="bitcoin network summary">
       <div class="market-line" id="marketLine">
@@ -1453,8 +1447,8 @@
         unitIndex += 1;
       }
 
-      const rounded = value.toFixed(2);
-      return `${rounded} ${units[unitIndex]}`;
+      const rounded = value >= 100 ? value.toFixed(0) : value.toFixed(1);
+      return `${rounded.replace(/\.0$/, "")} ${units[unitIndex]}`;
     }
 
     function shortKey(key) {
