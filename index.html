@@ -1182,19 +1182,22 @@
 }
 .center-bg {
   position: fixed;
-  top: 50%;
+  top: 54%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  width: 420px;
-  max-width: 70vw;
+  width: min(38vw, 520px);
+  height: min(78vh, 900px);
 
-  opacity: 0.35;      /* ← 이게 보이게 하는 핵심 */
-  filter: blur(1px);
+  object-fit: cover;
+  object-position: center 22%;
 
-  z-index: 2;         /* ← 앞으로 올림 */
+  opacity: 0.62;
+  filter: blur(0.2px) contrast(1.08);
+
+  z-index: 2;
   pointer-events: none;
-}  
+}
     </style>
 </head>
 <body>
