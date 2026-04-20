@@ -1180,9 +1180,25 @@
     #marketLine strong {
   color: #FA660F;
 }
+  .center-bg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  width: 420px;        /* 크기 조절 */
+  max-width: 70vw;
+
+  opacity: 0.18;       /* 이게 핵심 (은근히 보이게) */
+  filter: blur(2px);   /* 살짝 흐림 */
+
+  z-index: 0;          /* UI 뒤로 */
+  pointer-events: none;
+}  
     </style>
 </head>
 <body>
+  <img src="gus-fring.webp" class="center-bg">
   <div class="page">
         <div class="market-strip market-top" aria-label="bitcoin network summary">
       <div class="market-line" id="marketLine">
