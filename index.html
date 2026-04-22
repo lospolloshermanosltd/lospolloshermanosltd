@@ -1194,6 +1194,17 @@
   50%  { opacity: 0.9; }
   100% { opacity: 0.6; }
 }
+ .live-dot.offline {
+  background: #ef4444;
+  box-shadow:
+    0 0 4px rgba(239, 68, 68, 0.4),
+    0 0 7px rgba(239, 68, 68, 0.2);
+}
+
+.status-text.offline {
+  color: #ef4444;
+  text-shadow: 0 0 4px rgba(239,68,68,0.3);
+}
     </style>
 </head>
 <body>
@@ -1588,6 +1599,7 @@
 
 function renderNode() {
   const isOnline = state.node.online && typeof state.node.capacity === "number";
+  const dots = document.querySelectorAll(".live-dot");
 
   dom.capacity.textContent = isOnline
     ? formatSats(state.node.capacity)
@@ -1605,13 +1617,16 @@ function renderNode() {
     if (isOnline) {
       dom.brandStatusText.textContent = "Running";
       dom.brandStatusDot.style.color = "var(--terminal-green)";
+      dom.brandStatusText.classList.remove("offline");
+      dots.forEach(d => d.classList.remove("offline"));
     } else {
-      dom.brandStatusText.textContent = "Connecting...";
-      dom.brandStatusDot.style.color = "orange";
+      dom.brandStatusText.textContent = "Offline";
+      dom.brandStatusDot.style.color = "#ef4444";
+      dom.brandStatusText.classList.add("offline");
+      dots.forEach(d => d.classList.add("offline"));
     }
   }
 }
-
     function renderTickerFrame() {
       if (!Array.isArray(state.peers) || state.peers.length === 0) {
         setTickerText("link waiting", "");
