@@ -130,7 +130,7 @@
 
    .page {
       position: relative;
-      z-index: 0;
+      z-index: 3;
       width: 100%;
       max-width: 1080px;
       display: flex;
@@ -1982,12 +1982,12 @@ async function updatePeers() {
 
       container.innerHTML = "";
 
-      const count = window.innerWidth < 700 ? 28 : 48;
+      const count = window.innerWidth < 700 ? 60 : 110;
 
       for (let i = 0; i < count; i++) {
         const dot = document.createElement("span");
 
-        const size = Math.random() < 0.75 ? 2 : 3;
+        const size = Math.random() < 0.70 ? 3 : 4;
         const startX = Math.random() * window.innerWidth;
         const startY = Math.random() * window.innerHeight;
 
