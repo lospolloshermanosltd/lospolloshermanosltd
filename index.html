@@ -1209,19 +1209,20 @@
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   overflow: hidden;
-  opacity: 0.22;
+  opacity: 1;
+  mix-blend-mode: screen;
 }
 
 .bg-flow span {
   position: absolute;
   display: block;
   border-radius: 50%;
-  background: rgba(124, 252, 0, 0.9);
+  background: rgba(124, 252, 0, 1);
   box-shadow:
-    0 0 6px rgba(124, 252, 0, 0.22),
-    0 0 12px rgba(124, 252, 0, 0.08);
+    0 0 10px rgba(124, 252, 0, 0.55),
+    0 0 18px rgba(124, 252, 0, 0.28);
   will-change: transform, opacity;
   animation-name: bg-flow-move;
   animation-timing-function: linear;
